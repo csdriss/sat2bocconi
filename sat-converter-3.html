@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertitore SAT - Bocconi</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #F0F4F8;
+        }
+        .custom-shadow {
+            box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.1), 0 2px 4px -1px rgba(30, 64, 175, 0.06);
+        }
+        .custom-input:focus {
+            border-color: #1E40AF;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const ScoreConverter = () => {
+            const [satMath, setSatMath] = React.useState('');
+            const [satVerbal, setSatVerbal] = React.useState('');
+
+            const calculateBocconiScore = () => {
+                const totalSAT = Number(satMath) + Number(satVerbal);
+                if (totalSAT < 1040 || Number(satMath) < 520 || Number(satVerbal) < 520) {
+                    return 'Sotto i requisiti minimi';
+                }
+
+                const satRange = 1600 - 1040;
+                const bocconiRange = 50 - 17;
+                const normalizedScore = (totalSAT - 1040) / satRange;
+                const bocconiScore = Math.round(17 + (normalizedScore * bocconiRange));
+
+                return `~${bocconiScore}/50`;
+            };
+
+            return (
+                <div className="min-h-screen py-12 px-4" style={{ backgroundColor: '#F0F4F8' }}>
+                    <div className="max-w-md mx-auto">
+                        <div className="backdrop-blur-sm rounded-lg custom-shadow p-6" 
+                             style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
+                            <div className="mb-6">
+                                <h1 className="text-2xl font-serif text-center" style={{ color: '#1E40AF' }}>
+                                    Convertitore Punteggio SAT - Bocconi
+                                </h1>
+                            </div>
+                            <div className="space-y-6">
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-medium" style={{ color: '#2B4C8C' }}>
+                                        Punteggio SAT Matematica
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="200"
+                                        max="800"
+                                        value={satMath}
+                                        onChange={(e) => setSatMath(e.target.value)}
+                                        placeholder="Inserisci punteggio matematica (200-800)"
+                                        className="w-full px-3 py-2 border rounded-md custom-input"
+                                        style={{ 
+                                            backgroundColor: '#F8FAFC',
+                                            borderColor: '#93C5FD'
+                                        }}
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-medium" style={{ color: '#2B4C8C' }}>
+                                        Punteggio SAT Lettura e Scrittura
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="200"
+                                        max="800"
+                                        value={satVerbal}
+                                        onChange={(e) => setSatVerbal(e.target.value)}
+                                        placeholder="Inserisci punteggio verbale (200-800)"
+                                        className="w-full px-3 py-2 border rounded-md custom-input"
+                                        style={{ 
+                                            backgroundColor: '#F8FAFC',
+                                            borderColor: '#93C5FD'
+                                        }}
+                                    />
+                                </div>
+
+                                {satMath && satVerbal && (
+                                    <div className="mt-6 space-y-4">
+                                        <div className="text-center p-4 rounded-lg" 
+                                             style={{ backgroundColor: '#EFF6FF' }}>
+                                            <p className="text-lg font-serif mb-2" style={{ color: '#2B4C8C' }}>
+                                                Punteggio Bocconi Equivalente:
+                                            </p>
+                                            <p className="text-3xl font-serif font-bold" style={{ color: '#1E40AF' }}>
+                                                {calculateBocconiScore()}
+                                            </p>
+                                        </div>
+                                        
+                                        <div className="text-xs text-center mt-4" style={{ color: '#4B749C' }}>
+                                            <p className="font-medium">Requisiti minimi:</p>
+                                            <p>SAT: 1040 totale (520 matematica, 520 verbale)</p>
+                                            <p>Test Bocconi: 17/50</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<ScoreConverter />, document.getElementById('root'));
+    </script>
+</body>
+</html>
