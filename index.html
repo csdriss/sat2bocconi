@@ -9,8 +9,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'Arial Rounded Bold';
+            src: local('Arial Rounded MT Bold');
+        }
+
         body {
             background-color: #F0F4F8;
+            font-family: 'Arial Rounded Bold', 'Arial', sans-serif;
         }
         .custom-shadow {
             box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.1), 0 2px 4px -1px rgba(30, 64, 175, 0.06);
@@ -18,6 +24,14 @@
         .custom-input:focus {
             border-color: #1E40AF;
             box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
         }
         .swap-button {
             background-color: #ffffff;
@@ -41,6 +55,7 @@
         }
         .mode-text {
             transition: all 0.3s ease;
+            font-family: 'Arial Rounded Bold', 'Arial', sans-serif;
         }
         .mode-text.active {
             color: #DC2626;
@@ -49,6 +64,18 @@
         }
         .mode-text.inactive {
             color: #6B7280;
+        }
+        .error-message {
+            color: #DC2626;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        input::placeholder {
+            color: #CBD5E1;
+            opacity: 0.7;
+        }
+        .input-error {
+            border-color: #DC2626 !important;
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -68,6 +95,61 @@
             const [satMath, setSatMath] = React.useState('');
             const [satVerbal, setSatVerbal] = React.useState('');
             const [bocconiScore, setBocconiScore] = React.useState('');
+            const [errors, setErrors] = React.useState({});
+
+            const validateSATInput = (value, field) => {
+                if (value === '') return '';
+                const num = Number(value);
+                if (isNaN(num)) return '';
+                if (num < 520) return '520';
+                if (num > 800) return '800';
+                return value;
+            };
+
+            const validateBocconiInput = (value) => {
+                if (value === '') return '';
+                const num = Number(value);
+                if (isNaN(num)) return '';
+                if (num < 17) return '17';
+                if (num > 50) return '50';
+                return value;
+            };
+
+            const handleSATMathChange = (e) => {
+                const value = validateSATInput(e.target.value);
+                setSatMath(value);
+                if (value && (Number(value) < 520 || Number(value) > 800)) {
+                    setErrors({...errors, math: 'Il punteggio deve essere tra 520 e 800'});
+                } else {
+                    const newErrors = {...errors};
+                    delete newErrors.math;
+                    setErrors(newErrors);
+                }
+            };
+
+            const handleSATVerbalChange = (e) => {
+                const value = validateSATInput(e.target.value);
+                setSatVerbal(value);
+                if (value && (Number(value) < 520 || Number(value) > 800)) {
+                    setErrors({...errors, verbal: 'Il punteggio deve essere tra 520 e 800'});
+                } else {
+                    const newErrors = {...errors};
+                    delete newErrors.verbal;
+                    setErrors(newErrors);
+                }
+            };
+
+            const handleBocconiChange = (e) => {
+                const value = validateBocconiInput(e.target.value);
+                setBocconiScore(value);
+                if (value && (Number(value) < 17 || Number(value) > 50)) {
+                    setErrors({...errors, bocconi: 'Il punteggio deve essere tra 17 e 50'});
+                } else {
+                    const newErrors = {...errors};
+                    delete newErrors.bocconi;
+                    setErrors(newErrors);
+                }
+            };
 
             const calculateBocconiScore = (math, verbal) => {
                 const totalSAT = Number(math) + Number(verbal);
@@ -105,6 +187,7 @@
                 setSatMath('');
                 setSatVerbal('');
                 setBocconiScore('');
+                setErrors({});
             };
 
             return (
@@ -113,7 +196,7 @@
                         <div className="backdrop-blur-sm rounded-lg custom-shadow p-6" 
                              style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
                             <div className="mb-6">
-                                <h1 className="text-2xl font-serif text-center mb-6" style={{ color: '#1E40AF' }}>
+                                <h1 className="text-2xl text-center mb-6" style={{ color: '#1E40AF' }}>
                                     Convertitore Punteggio
                                 </h1>
                                 
@@ -143,17 +226,16 @@
                                             </label>
                                             <input
                                                 type="number"
-                                                min="200"
-                                                max="800"
                                                 value={satMath}
-                                                onChange={(e) => setSatMath(e.target.value)}
-                                                placeholder="Inserisci punteggio matematica (200-800)"
-                                                className="w-full px-3 py-2 border rounded-md custom-input"
+                                                onChange={handleSATMathChange}
+                                                placeholder="Inserisci punteggio matematica (520-800)"
+                                                className={`w-full px-3 py-2 border rounded-md custom-input ${errors.math ? 'input-error' : ''}`}
                                                 style={{ 
                                                     backgroundColor: '#F8FAFC',
-                                                    borderColor: '#93C5FD'
+                                                    borderColor: errors.math ? '#DC2626' : '#93C5FD'
                                                 }}
                                             />
+                                            {errors.math && <p className="error-message">{errors.math}</p>}
                                         </div>
 
                                         <div className="space-y-2">
@@ -162,27 +244,26 @@
                                             </label>
                                             <input
                                                 type="number"
-                                                min="200"
-                                                max="800"
                                                 value={satVerbal}
-                                                onChange={(e) => setSatVerbal(e.target.value)}
-                                                placeholder="Inserisci punteggio verbale (200-800)"
-                                                className="w-full px-3 py-2 border rounded-md custom-input"
+                                                onChange={handleSATVerbalChange}
+                                                placeholder="Inserisci punteggio verbale (520-800)"
+                                                className={`w-full px-3 py-2 border rounded-md custom-input ${errors.verbal ? 'input-error' : ''}`}
                                                 style={{ 
                                                     backgroundColor: '#F8FAFC',
-                                                    borderColor: '#93C5FD'
+                                                    borderColor: errors.verbal ? '#DC2626' : '#93C5FD'
                                                 }}
                                             />
+                                            {errors.verbal && <p className="error-message">{errors.verbal}</p>}
                                         </div>
 
-                                        {satMath && satVerbal && (
+                                        {satMath && satVerbal && !errors.math && !errors.verbal && (
                                             <div className="mt-6 space-y-4">
                                                 <div className="text-center p-4 rounded-lg" 
                                                      style={{ backgroundColor: '#EFF6FF' }}>
-                                                    <p className="text-lg font-serif mb-2" style={{ color: '#2B4C8C' }}>
+                                                    <p className="text-lg mb-2" style={{ color: '#2B4C8C' }}>
                                                         Punteggio Bocconi Equivalente:
                                                     </p>
-                                                    <p className="text-3xl font-serif font-bold" style={{ color: '#DC2626' }}>
+                                                    <p className="text-3xl font-bold" style={{ color: '#DC2626' }}>
                                                         {calculateBocconiScore(satMath, satVerbal)}
                                                     </p>
                                                 </div>
@@ -197,27 +278,26 @@
                                             </label>
                                             <input
                                                 type="number"
-                                                min="0"
-                                                max="50"
                                                 value={bocconiScore}
-                                                onChange={(e) => setBocconiScore(e.target.value)}
-                                                placeholder="Inserisci punteggio Bocconi (0-50)"
-                                                className="w-full px-3 py-2 border rounded-md custom-input"
+                                                onChange={handleBocconiChange}
+                                                placeholder="Inserisci punteggio Bocconi (17-50)"
+                                                className={`w-full px-3 py-2 border rounded-md custom-input ${errors.bocconi ? 'input-error' : ''}`}
                                                 style={{ 
                                                     backgroundColor: '#F8FAFC',
-                                                    borderColor: '#93C5FD'
+                                                    borderColor: errors.bocconi ? '#DC2626' : '#93C5FD'
                                                 }}
                                             />
+                                            {errors.bocconi && <p className="error-message">{errors.bocconi}</p>}
                                         </div>
 
-                                        {bocconiScore && (
+                                        {bocconiScore && !errors.bocconi && (
                                             <div className="mt-6 space-y-4">
                                                 <div className="text-center p-4 rounded-lg" 
                                                      style={{ backgroundColor: '#EFF6FF' }}>
-                                                    <p className="text-lg font-serif mb-2" style={{ color: '#2B4C8C' }}>
+                                                    <p className="text-lg mb-2" style={{ color: '#2B4C8C' }}>
                                                         Punteggio SAT Equivalente:
                                                     </p>
-                                                    <p className="text-3xl font-serif font-bold" style={{ color: '#DC2626' }}>
+                                                    <p className="text-3xl font-bold" style={{ color: '#DC2626' }}>
                                                         {calculateSATScore(bocconiScore)}
                                                     </p>
                                                 </div>
@@ -238,7 +318,4 @@
             );
         };
 
-        ReactDOM.render(<ScoreConverter />, document.getElementById('root'));
-    </script>
-</body>
-</html>
+        ReactDOM.render(<ScoreConverter />,
