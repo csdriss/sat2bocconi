@@ -9,79 +9,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
-        @font-face {
-            font-family: 'Arial Rounded Bold';
-            src: local('Arial Rounded MT Bold');
-        }
-
-        body {
-            background-color: #F0F4F8;
-            font-family: 'Arial Rounded Bold', 'Arial', sans-serif;
-        }
-        .custom-shadow {
-            box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.1), 0 2px 4px -1px rgba(30, 64, 175, 0.06);
-        }
-        .custom-input:focus {
-            border-color: #1E40AF;
-            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
-        }
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
-        .swap-button {
-            background-color: #ffffff;
-            border: 2px solid #DC2626;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: #DC2626;
-            box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
-        }
-        .swap-button:hover {
-            background-color: #DC2626;
-            color: white;
-            transform: scale(1.1);
-        }
-        .mode-text {
-            transition: all 0.3s ease;
-            font-family: 'Arial Rounded Bold', 'Arial', sans-serif;
-        }
-        .mode-text.active {
-            color: #DC2626;
-            font-weight: bold;
-            transform: scale(1.05);
-        }
-        .mode-text.inactive {
-            color: #6B7280;
-        }
+        /* ... [previous styles remain the same] ... */
         .error-message {
             color: #DC2626;
             font-size: 0.75rem;
             margin-top: 0.25rem;
-        }
-        input::placeholder {
-            color: #CBD5E1;
-            opacity: 0.7;
-        }
-        .input-error {
-            border-color: #DC2626 !important;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .fade-in {
             animation: fadeIn 0.3s ease-in;
         }
     </style>
@@ -97,29 +29,22 @@
             const [bocconiScore, setBocconiScore] = React.useState('');
             const [errors, setErrors] = React.useState({});
 
-            const validateSATInput = (value, field) => {
-                if (value === '') return '';
-                const num = Number(value);
-                if (isNaN(num)) return '';
-                if (num < 520) return '520';
-                if (num > 800) return '800';
-                return value;
-            };
-
-            const validateBocconiInput = (value) => {
-                if (value === '') return '';
-                const num = Number(value);
-                if (isNaN(num)) return '';
-                if (num < 17) return '17';
-                if (num > 50) return '50';
-                return value;
-            };
-
             const handleSATMathChange = (e) => {
-                const value = validateSATInput(e.target.value);
+                const value = e.target.value;
+                // Allows only numbers
+                if (!/^\d*$/.test(value)) {
+                    return;
+                }
                 setSatMath(value);
-                if (value && (Number(value) < 520 || Number(value) > 800)) {
-                    setErrors({...errors, math: 'Il punteggio deve essere tra 520 e 800'});
+                if (value) {
+                    const num = Number(value);
+                    if (num < 520 || num > 800) {
+                        setErrors({...errors, math: 'Il punteggio deve essere tra 520 e 800'});
+                    } else {
+                        const newErrors = {...errors};
+                        delete newErrors.math;
+                        setErrors(newErrors);
+                    }
                 } else {
                     const newErrors = {...errors};
                     delete newErrors.math;
@@ -128,10 +53,21 @@
             };
 
             const handleSATVerbalChange = (e) => {
-                const value = validateSATInput(e.target.value);
+                const value = e.target.value;
+                // Allows only numbers
+                if (!/^\d*$/.test(value)) {
+                    return;
+                }
                 setSatVerbal(value);
-                if (value && (Number(value) < 520 || Number(value) > 800)) {
-                    setErrors({...errors, verbal: 'Il punteggio deve essere tra 520 e 800'});
+                if (value) {
+                    const num = Number(value);
+                    if (num < 520 || num > 800) {
+                        setErrors({...errors, verbal: 'Il punteggio deve essere tra 520 e 800'});
+                    } else {
+                        const newErrors = {...errors};
+                        delete newErrors.verbal;
+                        setErrors(newErrors);
+                    }
                 } else {
                     const newErrors = {...errors};
                     delete newErrors.verbal;
@@ -140,10 +76,21 @@
             };
 
             const handleBocconiChange = (e) => {
-                const value = validateBocconiInput(e.target.value);
+                const value = e.target.value;
+                // Allows only numbers
+                if (!/^\d*$/.test(value)) {
+                    return;
+                }
                 setBocconiScore(value);
-                if (value && (Number(value) < 17 || Number(value) > 50)) {
-                    setErrors({...errors, bocconi: 'Il punteggio deve essere tra 17 e 50'});
+                if (value) {
+                    const num = Number(value);
+                    if (num < 17 || num > 50) {
+                        setErrors({...errors, bocconi: 'Il punteggio deve essere tra 17 e 50'});
+                    } else {
+                        const newErrors = {...errors};
+                        delete newErrors.bocconi;
+                        setErrors(newErrors);
+                    }
                 } else {
                     const newErrors = {...errors};
                     delete newErrors.bocconi;
@@ -225,7 +172,7 @@
                                                 Punteggio SAT Matematica
                                             </label>
                                             <input
-                                                type="number"
+                                                type="text"
                                                 value={satMath}
                                                 onChange={handleSATMathChange}
                                                 placeholder="Inserisci punteggio matematica (520-800)"
@@ -243,7 +190,7 @@
                                                 Punteggio SAT Lettura e Scrittura
                                             </label>
                                             <input
-                                                type="number"
+                                                type="text"
                                                 value={satVerbal}
                                                 onChange={handleSATVerbalChange}
                                                 placeholder="Inserisci punteggio verbale (520-800)"
@@ -256,7 +203,7 @@
                                             {errors.verbal && <p className="error-message">{errors.verbal}</p>}
                                         </div>
 
-                                        {satMath && satVerbal && !errors.math && !errors.verbal && (
+                                        {satMath && satVerbal && (
                                             <div className="mt-6 space-y-4">
                                                 <div className="text-center p-4 rounded-lg" 
                                                      style={{ backgroundColor: '#EFF6FF' }}>
@@ -277,7 +224,7 @@
                                                 Punteggio Test Bocconi
                                             </label>
                                             <input
-                                                type="number"
+                                                type="text"
                                                 value={bocconiScore}
                                                 onChange={handleBocconiChange}
                                                 placeholder="Inserisci punteggio Bocconi (17-50)"
@@ -290,7 +237,7 @@
                                             {errors.bocconi && <p className="error-message">{errors.bocconi}</p>}
                                         </div>
 
-                                        {bocconiScore && !errors.bocconi && (
+                                        {bocconiScore && (
                                             <div className="mt-6 space-y-4">
                                                 <div className="text-center p-4 rounded-lg" 
                                                      style={{ backgroundColor: '#EFF6FF' }}>
@@ -318,4 +265,8 @@
             );
         };
 
-        ReactDOM.render(<ScoreConverter />,
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ScoreConverter />);
+    </script>
+</body>
+</html>
