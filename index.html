@@ -1,470 +1,608 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bocconi University Admissions Score Converter</title>
-    <meta name="description" content="Convert Bocconi Selection Test scores to SAT equivalents and vice versa based on historical admissions data.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bocconi ⇄ SAT Converter</title>
+    <meta name="description" content="Strumento di conversione punteggi Bocconi - SAT basato su dati statistici Early Session 2026.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+
     <style>
-        /* 
-         * ------------------------------------------------------------------
-         * DESIGN SYSTEM & CSS VARIABLES
-         * Inspired by Bocconi's institutional branding: Navy, White, Orange.
-         * ------------------------------------------------------------------
-         */
         :root {
-            --color-primary: #002B49; /* Bocconi Navy */
-            --color-primary-light: #00406b;
-            --color-accent: #FF6600;  /* Interaction Orange */
-            --color-success: #28a745;
-            --color-warning: #ffc107;
-            --color-danger: #dc3545;
-            --color-bg: #f0f2f5;
-            --color-card: #ffffff;
-            --color-text: #333333;
-            --color-text-muted: #6c757d;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-            --shadow-lg: 0 15px 30px rgba(0,0,0,0.1);
-            --radius: 12px;
-            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            /* Palette Blu Cobalto & Armonie */
+            --primary: #0047AB;        /* Cobalt Blue */
+            --primary-dark: #002E6D;   /* Darker Cobalt */
+            --primary-light: #E6F0FF;  /* Very light blue */
+            --accent: #0073e6;         /* Bright Blue */
+            
+            --bg-gradient: linear-gradient(135deg, #F5F7FA 0%, #C3CFE2 100%);
+            
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            
+            --card-bg: rgba(255, 255, 255, 0.95);
+            
+            --danger: #ef4444;
+            
+            --shadow-soft: 0 15px 35px -5px rgba(0, 71, 171, 0.15);
+            --radius: 24px;
+            --radius-sm: 12px;
+            
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
 
         body {
-            font-family: var(--font-family);
-            background-color: var(--color-bg);
-            color: var(--color-text);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            font-family: var(--font-body);
+            background: var(--bg-gradient);
+            color: var(--text-main);
             min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        /* ------------------------------------------------------------------
-         * MAIN CARD COMPONENT
-         * ------------------------------------------------------------------
-         */
-       .converter-card {
-            background-color: var(--color-card);
-            width: 100%;
-            max-width: 650px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
-            overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-
-       .card-header {
-            background-color: var(--color-primary);
-            color: white;
-            padding: 35px 30px;
-            text-align: center;
-            position: relative;
-        }
-
-       .card-header h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
-        }
-
-       .card-header p {
-            font-size: 0.95rem;
-            opacity: 0.9;
-            font-weight: 300;
-        }
-
-        /* ------------------------------------------------------------------
-         * INPUT SECTION
-         * ------------------------------------------------------------------
-         */
-       .card-body {
-            padding: 40px 30px;
-        }
-
-       .input-group {
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-       .label-row {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            padding: 20px;
+        }
+
+        /* Layout Principale */
+        .converter-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 600px; /* Leggermente più largo per l'insight */
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(255,255,255,0.8);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .card-header {
+            padding: 40px 40px 20px 40px;
+            text-align: center;
+        }
+
+        .header-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 800;
+            color: white;
+            background: var(--primary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0, 71, 171, 0.25);
+        }
+
+        .card-header h1 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--primary-dark);
+            line-height: 1.1;
             margin-bottom: 8px;
         }
 
-       .input-label {
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--color-primary);
+        .card-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
-       .input-subtext {
-            font-size: 0.75rem;
-            color: var(--color-text-muted);
+        .card-body {
+            padding: 20px 40px 40px 40px;
         }
 
-       .input-wrapper {
+        /* Toggle Switch */
+        .mode-toggle-container {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 5px;
+            display: flex;
             position: relative;
+            margin-bottom: 40px;
+            height: 56px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .mode-toggle-slider {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: calc(50% - 5px);
+            height: calc(100% - 10px);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: 1;
+        }
+        
+        .mode-toggle-container.flipped .mode-toggle-slider {
+            transform: translateX(100%);
+        }
+
+        .mode-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            z-index: 2;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: color 0.3s;
             display: flex;
             align-items: center;
+            justify-content: center;
+        }
+
+        .mode-btn.active { color: var(--primary); }
+        
+        .toggle-icon-btn {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            background: var(--primary);
+            color: white;
+            border: 2px solid white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .toggle-icon-btn:hover { 
+            transform: translate(-50%, -50%) scale(1.1) rotate(180deg); 
+            background-color: var(--primary-dark);
+        }
+
+        /* Sezioni Input/Output */
+        .conversion-grid {
+            display: grid;
+            gap: 20px;
+            position: relative;
+        }
+
+        .io-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 25px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .io-card.active-input {
+            background: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 8px 30px rgba(0, 71, 171, 0.08);
+        }
+
+        .io-card.read-only {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+        }
+
+        .label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .label-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+        
+        .active-input .label-title { color: var(--primary); }
+
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: baseline;
         }
 
         input[type="number"] {
             width: 100%;
-            padding: 18px 20px;
-            font-size: 1.3rem;
-            font-weight: 600;
-            font-family: var(--font-family);
-            color: var(--color-primary);
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            background-color: #fdfdfd;
+            border: none;
+            background: transparent;
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            padding: 0;
+            margin: 0;
+            line-height: 1;
             -moz-appearance: textfield;
         }
+        
+        input[type="number"]:focus { outline: none; }
+        input[type="number"]::placeholder { color: #cbd5e1; }
+        input[type="number"]:disabled { color: var(--text-muted); -webkit-text-fill-color: var(--text-muted); }
 
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        input[type="number"]:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 4px rgba(0, 43, 73, 0.15);
-        }
-
-        input[type="number"].invalid {
-            border-color: var(--color-danger);
-            background-color: #fff8f8;
-        }
-
-       .suffix {
-            position: absolute;
-            right: 16px;
-            background-color: #e9ecef;
-            color: var(--color-text-muted);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+        .unit-suffix {
+            font-size: 1.2rem;
             font-weight: 600;
-            pointer-events: none;
+            color: var(--text-light);
+            margin-left: 10px;
+            white-space: nowrap;
         }
 
-        /* ------------------------------------------------------------------
-         * VISUAL INDICATORS
-         * ------------------------------------------------------------------
-         */
-       .progress-track {
+        /* Barra di progresso */
+        .progress-container {
             height: 6px;
-            background-color: #e9ecef;
+            background: #e2e8f0;
             border-radius: 3px;
-            margin-top: 12px;
+            margin-top: 20px;
             overflow: hidden;
         }
-
-       .progress-fill {
+        
+        .progress-bar {
             height: 100%;
-            background-color: var(--color-primary);
+            background: var(--primary);
             width: 0%;
-            transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s;
+            transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            border-radius: 3px;
+        }
+        
+        .read-only .progress-bar { background: var(--accent); opacity: 0.7; }
+
+        .range-info {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 8px;
+            text-align: right;
         }
 
-       .swap-indicator {
+        .error-toast {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: var(--danger);
+            font-size: 0.8rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+        }
+        
+        .io-card.invalid { border-color: var(--danger); background-color: #fef2f2; }
+        .io-card.invalid .error-toast { opacity: 1; transform: translateY(0); }
+
+        /* Context Box - Analisi */
+        .analysis-card {
+            margin-top: 30px;
+            background: linear-gradient(145deg, #ffffff 0%, var(--primary-light) 100%);
+            border-radius: var(--radius-sm);
+            padding: 25px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .analysis-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin: -10px 0 20px;
-            color: var(--color-text-muted);
-            font-size: 0.9rem;
-            opacity: 0.6;
+            gap: 10px;
+            margin-bottom: 12px;
         }
 
-       .swap-indicator span {
-            background: var(--color-card);
-            padding: 0 10px;
-            z-index: 2;
-        }
-
-       .swap-line {
-            position: absolute;
-            height: 1px;
-            background: #e9ecef;
-            width: 100%;
-            z-index: 1;
-        }
-
-        /* ------------------------------------------------------------------
-         * CONTEXT BOX
-         * ------------------------------------------------------------------
-         */
-       .context-box {
-            background-color: #f8f9fa;
-            border-left: 5px solid var(--color-text-muted);
-            padding: 20px;
-            border-radius: 4px;
-            margin-top: 30px;
-            transition: all 0.3s ease;
-        }
-
-       .context-title {
+        .analysis-title {
+            font-family: var(--font-heading);
             font-weight: 700;
-            font-size: 0.9rem;
-            margin-bottom: 6px;
-            color: var(--color-primary);
+            font-size: 1.1rem;
+            color: var(--primary);
         }
 
-       .context-desc {
-            font-size: 0.9rem;
-            color: var(--color-text);
-        }
-
-       .badge {
-            display: inline-block;
+        .analysis-badge {
+            background: var(--primary);
+            color: white;
+            font-size: 0.65rem;
             padding: 3px 8px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            border-radius: 4px;
+            border-radius: 6px;
+            font-weight: 600;
             text-transform: uppercase;
-            margin-left: 8px;
-            vertical-align: middle;
         }
 
-       .badge-danger { background: #ffebee; color: var(--color-danger); }
-       .badge-warning { background: #fff8e1; color: #d97706; }
-       .badge-success { background: #e6f4ea; color: var(--color-success); }
-       .badge-elite { background: #e3f2fd; color: var(--color-primary); }
+        .analysis-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
 
-       .disclaimer {
-            margin-top: 30px;
+        /* Footer Tecnico */
+        footer {
+            margin-top: 40px;
+            border-top: 1px solid #e2e8f0;
             padding-top: 20px;
-            border-top: 1px solid #e9ecef;
             font-size: 0.75rem;
-            color: var(--color-text-muted);
-            text-align: center;
-            line-height: 1.5;
+            color: var(--text-muted);
+            text-align: justify;
+            line-height: 1.6;
         }
+        
+        footer strong { color: var(--primary); font-weight: 600; }
+        .disclaimer-note { margin-top: 10px; font-style: italic; color: var(--text-light); }
+        .dev-credits a { color: inherit; text-decoration: none; font-weight: 600; }
+        .dev-credits a:hover { text-decoration: underline; color: var(--primary); }
 
-        /* ------------------------------------------------------------------
-         * RESPONSIVENESS
-         * ------------------------------------------------------------------
-         */
+        /* Responsive */
         @media (max-width: 500px) {
-           .card-header { padding: 25px 20px; }
-           .card-header h1 { font-size: 1.4rem; }
-           .card-body { padding: 30px 20px; }
+            .card-header h1 { font-size: 1.6rem; }
+            input[type="number"] { font-size: 2.8rem; }
+            .card-body { padding: 20px; }
         }
+        
+        .fade-enter { animation: fadeIn 0.4s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 <body>
 
     <main class="converter-card">
         <header class="card-header">
-            <h1>Admissions Score Converter</h1>
-            <p>Bocconi Selection Test ⇄ SAT Concordance Tool</p>
+            <span class="header-badge">Presurometro</span>
+            <h1>Bocconi ⇄ SAT</h1>
+            <p>Strumento di conversione punteggi</p>
         </header>
 
         <section class="card-body">
             
-            <div class="input-group">
-                <div class="label-row">
-                    <label for="bocconi" class="input-label">Bocconi Test Score</label>
-                    <span class="input-subtext">Range: 0 - 50</span>
+            <div class="mode-toggle-container" id="toggle-container">
+                <div class="mode-toggle-slider"></div>
+                <button class="mode-btn active" id="btn-bocconi">
+                    <span>Bocconi Test</span>
+                </button>
+                <button class="toggle-icon-btn" id="toggle-btn" title="Inverti conversione">⇄</button>
+                <button class="mode-btn" id="btn-sat">
+                    <span>SAT Score</span>
+                </button>
+            </div>
+
+            <div class="conversion-grid">
+                
+                <div class="io-card active-input" id="input-card">
+                    <div class="label-row">
+                        <span class="label-title" id="input-label">Inserisci Punteggio Bocconi</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" id="input-score" placeholder="0" min="17" max="50" step="0.1" inputmode="decimal">
+                        <span class="unit-suffix" id="input-suffix">/ 50</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="input-bar"></div>
+                    </div>
+                    <div class="range-info" id="input-range">Min: 17 - Max: 50</div>
+                    <div class="error-toast" id="error-msg">Valore fuori dal range consentito</div>
                 </div>
-                <div class="input-wrapper">
-                    <input type="number" id="bocconi" placeholder="0.0" min="0" max="50" step="0.1">
-                    <span class="suffix">/ 50</span>
+
+                <div class="io-card read-only" id="output-card">
+                    <div class="label-row">
+                        <span class="label-title" id="output-label">Equivalente SAT Stimato</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" id="output-score" placeholder="---" disabled>
+                        <span class="unit-suffix" id="output-suffix">/ 1600</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="output-bar"></div>
+                    </div>
                 </div>
-                <div class="progress-track">
-                    <div class="progress-fill" id="bocconi-bar"></div>
+
+            </div>
+
+            <div class="analysis-card fade-enter">
+                <div class="analysis-header">
+                    <span class="analysis-title">Insight & Analisi</span>
+                    <span class="analysis-badge">Report Early 2026</span>
+                </div>
+                <div class="analysis-text" id="context-text">
+                    Inserisci un punteggio per visualizzare l'analisi basata sui dati statistici Early 2026.
                 </div>
             </div>
 
-            <div class="swap-indicator">
-                <div class="swap-line"></div>
-                <span>⇄ Equivalent To ⇄</span>
-            </div>
-
-            <div class="input-group" style="margin-top: 30px;">
-                <div class="label-row">
-                    <label for="sat" class="input-label">SAT Total Score</label>
-                    <span class="input-subtext">Range: 400 - 1600</span>
-                </div>
-                <div class="input-wrapper">
-                    <input type="number" id="sat" placeholder="0" min="400" max="1600" step="10">
-                    <span class="suffix">/ 1600</span>
-                </div>
-                <div class="progress-track">
-                    <div class="progress-fill" id="sat-bar"></div>
-                </div>
-            </div>
-
-            <div class="context-box" id="context-panel">
-                <div class="context-title">Analysis <span id="status-badge" class="badge">Waiting for Input</span></div>
-                <p class="context-desc" id="context-text">Enter a score above to view the estimated conversion and admissions competitiveness for Università Bocconi undergraduate programs.</p>
-            </div>
-
-            <footer class="disclaimer">
-                <strong>Methodology Note:</strong> This tool employs a Piecewise Linear Regression model derived from historical admissions data (2022-2024 cycles). Bocconi University does not publish official linear conversion tables as admission relies on round-specific percentile distributions. 
+            <footer>
+                <strong>Metodologia:</strong> Conversione tramite interpolazione lineare su dati storici.
                 <br><br>
-                <strong>Eligibility Floors:</strong> SAT < 1040 or Bocconi < 17 results in automatic disqualification. 
-                <strong>BAI Program:</strong> Requires SAT Math ≥ 600 or Bocconi Math ≥ 11/28.
+                <strong>Fonte Dati:</strong> Analisi basata sul <em>Report TopSquad Early Session 2026</em> condotto su 150 candidati. Il report evidenzia un tasso di ammissione nel campione del 72%, con una media scolastica prevalente intorno all'8.5.
+                <br>
+                <div class="disclaimer-note">
+                    Nota: Sito indipendente e non affiliato con l'Università Bocconi.
+                    <span class="dev-credits"> | <a href="https://www.instagram.com/drissyakisoba/" target="_blank">@drissyakisoba</a></span>
+                </div>
             </footer>
 
         </section>
     </main>
 
     <script>
-        /**
-         * BOCCONI ADMISSIONS CONVERTER ENGINE
-         * -----------------------------------
-         * This script handles the bidirectional conversion between Bocconi Test scores (0-50)
-         * and SAT scores (400-1600) using a piecewise linear interpolation model.
-         * 
-         * CORE DATA POINTS (Derived from Research):
-         * - Floor: 17 Bocconi ~= 1040 SAT (Minimum Eligibility) 
-         * - Base: 28 Bocconi ~= 1350 SAT (Lower Competitive Bound) 
-         * - Target: 35 Bocconi ~= 1460 SAT (Admitted Average) 
-         * - High: 40 Bocconi ~= 1500 SAT (Strong Applicant) 
-         * - Elite: 45 Bocconi ~= 1570 SAT (Top 1%) 
-         */
+        const ANCHORS = [
+            {b: 17, s: 1040}, {b: 28, s: 1350}, {b: 35, s: 1460},
+            {b: 40, s: 1500}, {b: 45, s: 1570}, {b: 50, s: 1600}
+        ];
 
-        // Configuration: The Anchor Points defining the curve
-        const ANCHORS =;
-
-        // DOM Elements
         const els = {
-            bInput: document.getElementById('bocconi'),
-            sInput: document.getElementById('sat'),
-            bBar: document.getElementById('bocconi-bar'),
-            sBar: document.getElementById('sat-bar'),
-            panel: document.getElementById('context-panel'),
-            title: document.querySelector('.context-title'),
-            text: document.getElementById('context-text'),
-            badge: document.getElementById('status-badge')
+            inputScore: document.getElementById('input-score'),
+            outputScore: document.getElementById('output-score'),
+            inputBar: document.getElementById('input-bar'),
+            outputBar: document.getElementById('output-bar'),
+            inputLabel: document.getElementById('input-label'),
+            outputLabel: document.getElementById('output-label'),
+            inputSuffix: document.getElementById('input-suffix'),
+            outputSuffix: document.getElementById('output-suffix'),
+            inputRange: document.getElementById('input-range'),
+            inputCard: document.getElementById('input-card'),
+            errorMsg: document.getElementById('error-msg'),
+            toggleContainer: document.getElementById('toggle-container'),
+            toggleBtn: document.getElementById('toggle-btn'),
+            btnBocconi: document.getElementById('btn-bocconi'),
+            btnSat: document.getElementById('btn-sat'),
+            contextText: document.getElementById('context-text')
         };
 
-        /**
-         * Interpolation Function
-         * Calculates value y for input x given a set of points.
-         * @param {number} val - Input value
-         * @param {string} inKey - Key of input unit ('b' or 's')
-         * @param {string} outKey - Key of output unit ('b' or 's')
-         */
-        function convert(val, inKey, outKey) {
-            // Clamp values to valid ranges
-            if (inKey === 'b') val = Math.max(0, Math.min(50, val));
-            if (inKey === 's') val = Math.max(400, Math.min(1600, val));
+        let currentMode = 'bocconi-to-sat'; 
 
-            // Find the segment
+        function convert(val, inKey, outKey) {
+            if (inKey === 'b') val = Math.max(17, Math.min(50, val));
+            if (inKey === 's') val = Math.max(1040, Math.min(1600, val));
+
             for (let i = 0; i < ANCHORS.length - 1; i++) {
                 const lower = ANCHORS[i];
                 const upper = ANCHORS[i+1];
-
-                const minVal = lower[inKey];
-                const maxVal = upper[inKey];
-
-                if (val >= minVal && val <= maxVal) {
-                    // Linear Interpolation Formula
-                    const pct = (val - minVal) / (maxVal - minVal);
-                    const result = lower[outKey] + pct * (upper[outKey] - lower[outKey]);
-                    return result;
+                if (val >= lower[inKey] && val <= upper[inKey]) {
+                    const pct = (val - lower[inKey]) / (upper[inKey] - lower[inKey]);
+                    return lower[outKey] + pct * (upper[outKey] - lower[outKey]);
                 }
             }
-            return ANCHORS[outKey]; // Fallback to max
+            return ANCHORS[ANCHORS.length-1][outKey];
         }
 
-        /**
-         * Update UI Context
-         * Provides analysis based on the scores.
-         */
-        function updateContext(bScore, sScore) {
-            let status = "";
-            let msg = "";
-            let color = "";
-            let badgeClass = "";
-
-            if (sScore < 1040) {
-                status = "Ineligible";
-                msg = "Score is below the minimum threshold (1040 SAT / 17 Bocconi). Applicants in this range are automatically excluded from selection.";
-                color = "var(--color-danger)";
-                badgeClass = "badge-danger";
-            } else if (sScore < 1350) {
-                status = "Below Average";
-                msg = "Eligible to apply, but significantly below the competitive average. Admission is unlikely unless accompanied by a near-perfect GPA.";
-                color = "#d97706"; // Amber
-                badgeClass = "badge-warning";
-            } else if (sScore < 1480) {
-                status = "Competitive";
-                msg = "Falls within the typical range of admitted students for programs like BIEM and BIEF. Strong probability of admission with a solid GPA.";
-                color = "var(--color-success)";
-                badgeClass = "badge-success";
-            } else {
-                status = "Elite";
-                msg = "Excellent score. Places you in the top tier of applicants. Highly competitive for all programs, including the BAI (Artificial Intelligence) track.";
-                color = "var(--color-primary)";
-                badgeClass = "badge-elite";
+        function getAnalysis(bScore, sScore) {
+            // EASTER EGG: Max Score
+            if ((currentMode === 'bocconi-to-sat' && bScore >= 50) || (currentMode === 'sat-to-bocconi' && sScore >= 1600)) {
+                return `<strong>Top Tier.</strong> Con questo punteggio hai buone possibilità di non farti sospendere per motivi che riguardano cose come escort, pesci, cooltra, e letti in orizzontale.`;
             }
 
-            // Update DOM
-            els.panel.style.borderLeftColor = color;
-            els.badge.className = `badge ${badgeClass}`;
-            els.badge.innerText = status;
-            els.text.innerText = msg;
+            // SOTTO SOGLIA
+            if (bScore < 17 || sScore < 1040) {
+                return `💀 <strong>Presura.</strong> Punteggio sotto la soglia minima. Nel report analizzato, nessun candidato con questo punteggio è risultato ammesso.`;
+            }
             
-            // Update Bars
-            const bPct = (bScore / 50) * 100;
-            const sPct = ((sScore - 400) / 1200) * 100;
+            // FASCIA BASSA (17-29 Bocconi / 1040-1300 SAT)
+            if (bScore < 30) {
+                return `🥵 <strong>Presura.</strong> Zona critica. Solo il <strong>18.3%</strong> degli ammessi nel report rientra nella fascia 25-30/50. Per il SAT, meno del 14% degli ammessi ha totalizzato meno di 1300. In questa fascia, una media scolastica molto alta (spesso >9.0) è determinante per compensare.`;
+            }
             
-            els.bBar.style.width = `${bPct}%`;
-            els.bBar.style.backgroundColor = color;
+            // FASCIA MEDIA (30-35 Bocconi / 1350-1450 SAT)
+            if (bScore < 35) {
+                return `<strong>Competitivo.</strong> Un punteggio solido. Il <strong>31.2%</strong> degli ammessi nel sondaggio Early 2026 si colloca tra 30 e 35 punti. La media voti tipica degli ammessi in questa fascia è circa 8.5.`;
+            }
             
-            els.sBar.style.width = `${sPct}%`;
-            els.sBar.style.backgroundColor = color;
+            // FASCIA ALTA (35-40 Bocconi / 1450-1500 SAT)
+            if (bScore < 40) {
+                return `<strong>Molto Competitivo.</strong> "Sweet Spot". Questa è la fascia più densa di ammessi: ben il <strong>33.3%</strong> dei candidati Bocconi e il <strong>53.3%</strong> dei candidati SAT nel report rientrano in questo range. Con una buona media, le probabilità statistiche sono elevate, nonostante le difficoltà segnalate in Matematica e Ragionamento Numerico.`;
+            }
+            
+            // FASCIA ELITE (40+ Bocconi / 1500+ SAT)
+            return `<strong>Eccellente.</strong> Punteggio Elite. Solo il <strong>17.2%</strong> dei candidati Bocconi e il <strong>13.3%</strong> dei candidati SAT nel report hanno raggiunto questi livelli. Massima competitività per tutti i corsi.`;
         }
 
-        // Event Listeners
-        els.bInput.addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value);
-            if (isNaN(val)) return;
-
-            // Calculate SAT
-            const rawSat = convert(val, 'b', 's');
-            const sat = Math.round(rawSat / 10) * 10; // Round to nearest 10
-
-            // Update SAT input without triggering its event loop
-            els.sInput.value = sat;
+        function validate(val, mode) {
+            if (val === '') return { ok: true };
+            const n = parseFloat(val);
+            if (isNaN(n)) return { ok: false, msg: 'Numero non valido' };
             
-            updateContext(val, sat);
-        });
+            if (mode === 'bocconi-to-sat') {
+                if (n < 17 || n > 50) return { ok: false, msg: 'Range: 17 - 50' };
+            } else {
+                if (n < 1040 || n > 1600) return { ok: false, msg: 'Range: 1040 - 1600' };
+            }
+            return { ok: true };
+        }
 
-        els.sInput.addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value);
-            if (isNaN(val)) return;
+        function updateUI(inVal, outVal) {
+            let bPct, sPct;
+            // Determina i valori da passare all'analisi
+            let valB = currentMode === 'bocconi-to-sat' ? inVal : outVal;
+            let valS = currentMode === 'bocconi-to-sat' ? outVal : inVal;
 
-            // Calculate Bocconi
-            const rawBoc = convert(val, 's', 'b');
-            const boc = Math.round(rawBoc * 10) / 10; // Round to 1 decimal
+            els.contextText.innerHTML = getAnalysis(valB, valS);
 
-            els.bInput.value = boc;
+            if (currentMode === 'bocconi-to-sat') {
+                bPct = ((inVal - 17) / 33) * 100;
+                sPct = ((outVal - 1040) / 560) * 100;
+            } else {
+                sPct = ((inVal - 1040) / 560) * 100;
+                bPct = ((outVal - 17) / 33) * 100;
+            }
+
+            els.inputBar.style.width = `${Math.max(0, Math.min(100, currentMode === 'bocconi-to-sat' ? bPct : sPct))}%`;
+            els.outputBar.style.width = `${Math.max(0, Math.min(100, currentMode === 'bocconi-to-sat' ? sPct : bPct))}%`;
+        }
+
+        function switchMode() {
+            currentMode = currentMode === 'bocconi-to-sat' ? 'sat-to-bocconi' : 'bocconi-to-sat';
+            const isBocconi = currentMode === 'bocconi-to-sat';
+
+            els.toggleContainer.classList.toggle('flipped', !isBocconi);
+            els.btnBocconi.classList.toggle('active', isBocconi);
+            els.btnSat.classList.toggle('active', !isBocconi);
+
+            els.inputLabel.textContent = isBocconi ? 'Inserisci Punteggio Bocconi' : 'Inserisci SAT Score';
+            els.outputLabel.textContent = isBocconi ? 'Equivalente SAT Stimato' : 'Equivalente Bocconi Stimato';
+            els.inputSuffix.textContent = isBocconi ? '/ 50' : '/ 1600';
+            els.outputSuffix.textContent = isBocconi ? '/ 1600' : '/ 50';
+            els.inputRange.textContent = isBocconi ? 'Min: 17 - Max: 50' : 'Min: 1040 - Max: 1600';
             
-            updateContext(boc, val);
-        });
+            els.inputScore.value = '';
+            els.outputScore.value = '';
+            els.inputScore.placeholder = isBocconi ? '35' : '1350';
+            els.inputScore.step = isBocconi ? '0.1' : '10';
+            
+            els.inputBar.style.width = '0%';
+            els.outputBar.style.width = '0%';
+            els.inputCard.classList.remove('invalid');
+            els.contextText.innerHTML = 'Inserisci un punteggio per visualizzare l\'analisi basata sui dati statistici Early 2026.';
+        }
 
+        els.toggleBtn.addEventListener('click', switchMode);
+        els.btnBocconi.addEventListener('click', () => currentMode !== 'bocconi-to-sat' && switchMode());
+        els.btnSat.addEventListener('click', () => currentMode !== 'sat-to-bocconi' && switchMode());
+
+        els.inputScore.addEventListener('input', (e) => {
+            const valStr = e.target.value;
+            const check = validate(valStr, currentMode);
+            
+            if (!check.ok) {
+                els.inputCard.classList.add('invalid');
+                els.errorMsg.textContent = check.msg;
+                els.outputScore.value = '';
+                els.contextText.innerHTML = 'Inserisci un punteggio valido per vedere l\'analisi.';
+                return;
+            }
+            
+            els.inputCard.classList.remove('invalid');
+            if (valStr === '') {
+                els.outputScore.value = '';
+                els.contextText.innerHTML = 'Inserisci un punteggio per visualizzare l\'analisi basata sui dati statistici Early 2026.';
+                els.inputBar.style.width = '0%';
+                els.outputBar.style.width = '0%';
+                return;
+            }
+
+            const val = parseFloat(valStr);
+            let res;
+
+            if (currentMode === 'bocconi-to-sat') {
+                res = Math.round(convert(val, 'b', 's') / 10) * 10;
+            } else {
+                res = Math.round(convert(val, 's', 'b') * 10) / 10;
+            }
+            
+            els.outputScore.value = res;
+            updateUI(val, res);
+        });
     </script>
 </body>
 </html>
