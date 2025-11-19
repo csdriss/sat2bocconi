@@ -1,45 +1,15 @@
-La finalità di questo sito è di convertire agli aspiranti bocconiani, 
-il loro punteggio SAT (Scholastic Assessment Test) al punteggio
-di un test di ingresso dell'Università Bocconi. (e viceversa)
+# [Presurometro] Convertitore Punteggi Bocconi ⇄ SAT
 
-Come funziona?
-Mediante la conoscenza del massimo e minimo punteggio ottenibile
-in entrambi i test, si può rilevare il punteggio bocconi/SAT corrispondente.
+Questo strumento web, realizzato in Vanilla HTML/CSS/JS, offre una conversione rapida tra i punteggi del Test Bocconi e del SAT. L'obiettivo è fornire un'analisi di competitività immediata e visuale.
 
-Minimo
-SAT: 1040 (Math+Language)
-Bocconi: 17
+## Funzionalità
+Permette lo scambio rapido tra le modalità Bocconi → SAT e viceversa, fornendo feedback qualitativo sul punteggio in fasce di competitività.
 
-Massimo
-SAT: 1600 (Math+Language)
-Bocconi: 50
+## Metodologia e Dati
+La logica si basa sull'interpolazione su punti dati storici (Anchor Points) per una stima accurata. [cite_start]La sezione di analisi utilizza dati statistici provenienti dal Report TopSquad Early Session 2026 [cite: 2][cite_start], basato su un campione di 150 candidati [cite: 7][cite_start], con un tasso di ammissione nel campione rilevato del 72%[cite: 19].
 
-Qual'è il fine di ottenere la conversione del proprio punteggio?
-Grazie a funzionalità del sito della realtà di TopSquad di Marco Lecchi,
-è possibile avere un ausilio maggiore sulla probabilità di essere
-ammessi dall'Università Bocconi inserendo il proprio punteggio Bocconi,
-il limite di quest'ultima è quello di non accettare punteggi SAT.
+## Setup
+Il progetto non richiede installazione: è sufficiente aprire il file index.html nel browser.
 
-Come è stato fatto il sito?
-Sito creato utilizzando il large language model Claude di Anthropic.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Crediti
+Ideazione e UI/UX a cura di @drissyakisoba.
