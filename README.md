@@ -1,15 +1,16 @@
 # [Presurometro] Convertitore Punteggi Bocconi ⇄ SAT
 
-Questo strumento web, realizzato in Vanilla HTML/CSS/JS, offre una conversione rapida tra i punteggi del Test Bocconi e del SAT. L'obiettivo è fornire un'analisi di competitività immediata e visuale.
+## Descrizione del Progetto
+Questo strumento web fornisce una conversione rapida tra il punteggio del Test di Selezione Bocconi e il SAT (Total Score). L'obiettivo è offrire un'analisi di competitività immediata basata su dati statistici, con un'interfaccia pulita e minimale.
 
-## Funzionalità
-Permette lo scambio rapido tra le modalità Bocconi → SAT e viceversa, fornendo feedback qualitativo sul punteggio in fasce di competitività.
+## Funzionalità Core
+Il software offre: Conversione Bidirezionale; Analisi Statistica con feedback qualitativo basato sul Report Early Session 2026; Logica Data-Driven con conversione tramite interpolazione su punti dati storici (Anchor Points) per una stima accurata; e Architettura Leggera, essendo interamente in Vanilla HTML/CSS/JS per zero dipendenze e caricamento istantaneo.
 
-## Metodologia e Dati
-La logica si basa sull'interpolazione su punti dati storici (Anchor Points) per una stima accurata. [cite_start]La sezione di analisi utilizza dati statistici provenienti dal Report TopSquad Early Session 2026 [cite: 2][cite_start], basato su un campione di 150 candidati [cite: 7][cite_start], con un tasso di ammissione nel campione rilevato del 72%[cite: 19].
+## Metodologia e Fonte Dati
+La metodologia di conversione è basata sull'Interpolazione lineare su Anchor Points. [cite_start]La Fonte Statistica è il Report TopSquad Early Session 2026[cite: 2]. [cite_start]Il Campione Analizzato è di 150 candidati [cite: 7][cite_start], con un Tasso di Riferimento di ammissione nel campione del sondaggio del 72%[cite: 19].
 
-## Setup
-Il progetto non richiede installazione: è sufficiente aprire il file index.html nel browser.
+## Setup e Utilizzo
+Il progetto non richiede installazione. È sufficiente aprire il file index.html nel browser e utilizzare il pulsante di interscambio (⇄) per selezionare la direzione di conversione.
 
 ## Crediti
-Ideazione e UI/UX a cura di @drissyakisoba.
+Sviluppo & Contenuti: Realizzato con il supporto di Gemini e Claude Anthropic. [cite_start]Dati di Riferimento: Report TopSquad Early Session 2026[cite: 2].
