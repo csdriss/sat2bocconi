@@ -13,4 +13,4 @@ La metodologia di conversione è basata sull'Interpolazione lineare su Anchor Po
 Il progetto non richiede installazione. È sufficiente aprire il file index.html nel browser e utilizzare il pulsante di interscambio (⇄) per selezionare la direzione di conversione.
 
 ## Crediti
-Sviluppo & Contenuti: Realizzato con il supporto di Gemini e Claude Anthropic. [cite_start]Dati di Riferimento: Report TopSquad Early Session 2026[cite: 2].
+Sviluppo & Contenuti: Realizzato con il supporto di Gemini e Claude Anthropic. Dati di Riferimento: Report TopSquad Early Session 2026.
