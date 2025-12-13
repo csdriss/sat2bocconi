@@ -12,14 +12,13 @@
 
     <style>
         :root {
-            --primary: #0051ff; /* Blu moderno */       
+            --primary: #0051ff;      
             --primary-dark: #0030cc;   
             --primary-soft: #eef4ff;  
             --bg-body: #f7f9fc;
             --card-bg: #ffffff;
             --text-main: #111827;
-            --text-muted: #6b7280;
-            --text-placeholder: #d1d5db;
+            --text-muted: #6b7280; /* Grigio condiviso per testi secondari e placeholder */
             --input-bg: #f3f4f6;
             --radius-lg: 28px;
             --radius-md: 16px;
@@ -179,7 +178,12 @@
             box-shadow: 0 0 0 2px var(--primary);
         }
 
-        ::placeholder { color: var(--text-placeholder); opacity: 1; }
+        /* PLACEHOLDER STYLING AGGIORNATO */
+        /* Usa esattamente lo stesso colore di --text-muted */
+        ::placeholder { 
+            color: var(--text-muted); 
+            opacity: 1; /* Importante per Firefox */
+        }
 
         /* Output Box */
         .output-wrapper {
@@ -299,7 +303,7 @@
 
         .hidden-credit {
             font-size: 0.7rem;
-            color: #e5e7eb; /* Quasi invisibile */
+            color: #e5e7eb; 
             text-decoration: none;
             display: block;
             margin-top: 30px;
@@ -327,13 +331,13 @@
                 <div class="menu-icon">️👀</div>
                 <div class="menu-text">
                     <h3>Calcolo Probabilità</h3>
-                    <p>Previsione ammissione Winter Session basata su Media e Test.</p>
+                    <p>Simulazione ammissione Winter basata sui dati statistici della Early Session.</p>
                 </div>
             </div>
 
             <div class="info-section">
                 <div class="footer-note">
-                    <strong>Metodologia:</strong> Le stime si basano sui risultati della Early Session 2026 e sulle conversazioni analizzate nelle chat degli studenti.
+                    Metodologia: Le stime si basano sui risultati della Early Session 2026 e sulle conversazioni analizzate nelle chat degli studenti.
                 </div>
                 <div class="footer-note">
                     Disclaimer: Strumenti non ufficiali. Sito non affiliato con Università Bocconi né TopSquad.
@@ -382,13 +386,13 @@
                     <label>Corso di Laurea</label>
                     <select id="pred-course" class="input-box" onchange="calcPred()">
                         <option value="" disabled selected>Seleziona corso...</option>
-                        <option value="CLEAM">CLEAM (Aziendale)</option>
-                        <option value="BIEM">BIEM (Int. Mgmt)</option>
-                        <option value="BIEF">BIEF (Finance)</option>
-                        <option value="CLEACC">CLEACC (Arte)</option>
-                        <option value="BEMACS">BEMACS (Comp. Sci.)</option>
-                        <option value="CLMG">CLMG (Giurisprudenza)</option>
-                        <option value="BAI">BAI (AI & Math)</option>
+                        <option value="CLEAM">CLEAM</option>
+                        <option value="BIEM">BIEM</option>
+                        <option value="BIEF">BIEF</option>
+                        <option value="CLEACC">CLEACC</option>
+                        <option value="BEMACS">BEMACS</option>
+                        <option value="CLMG">CLMG</option>
+                        <option value="BAI">BAI</option>
                         <option value="" disabled>-- Dati insufficienti per altri --</option>
                     </select>
                 </div>
@@ -423,10 +427,6 @@
 
         // --- DATA & LOGIC ---
         
-        // ANCHORS Aggiornati in base al sentiment della chat:
-        // 30 Bocconi ~ 1360 SAT (Soglia minima per molti corsi)
-        // 35 Bocconi ~ 1450 SAT (Lo "sweet spot" competitivo citato spesso)
-        // 40 Bocconi ~ 1520 SAT (Eccellenza)
         const ANCHORS = [
             {b: 17, s: 1050}, 
             {b: 25, s: 1250}, 
@@ -444,11 +444,9 @@
             document.getElementById('mode-bocconi').className = `toggle-opt ${m==='bocconi'?'active':''}`;
             document.getElementById('mode-sat').className = `toggle-opt ${m==='sat'?'active':''}`;
             
-            // Labels
             document.getElementById('lbl-input').innerText = m==='bocconi' ? 'Punteggio Bocconi' : 'SAT Score';
             document.getElementById('lbl-output').innerText = m==='bocconi' ? 'Stima SAT' : 'Stima Bocconi';
             
-            // Placeholder Dinamico
             const inp = document.getElementById('conv-input');
             inp.value = '';
             inp.placeholder = m === 'bocconi' ? 'Es. 32.5' : 'Es. 1420';
@@ -571,7 +569,6 @@
             if(score > 60) { // Assume SAT
                 isSat = true;
                 if(score > 1600) score = 1600;
-                // Usa la funzione interp() condivisa per consistenza totale
                 effScore = interp(score, 's', 'b');
             } else {
                 if(score > 50) score = 50;
