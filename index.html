@@ -12,14 +12,14 @@
 
     <style>
         :root {
-            --primary: #0051ff; /* Blu elettrico più moderno */       
+            --primary: #0051ff; /* Blu moderno */       
             --primary-dark: #0030cc;   
             --primary-soft: #eef4ff;  
             --bg-body: #f7f9fc;
             --card-bg: #ffffff;
             --text-main: #111827;
             --text-muted: #6b7280;
-            --text-placeholder: #d1d5db; /* Grigio chiarissimo per placeholder */
+            --text-placeholder: #d1d5db;
             --input-bg: #f3f4f6;
             --radius-lg: 28px;
             --radius-md: 16px;
@@ -47,7 +47,7 @@
             position: relative;
         }
 
-        /* --- ANIMAZIONI & VISTE --- */
+        /* --- VISTE --- */
         .view-section {
             display: none;
             animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -104,7 +104,7 @@
             line-height: 1.4; 
         }
 
-        /* --- INTERFACCE TOOLS --- */
+        /* --- TOOLS CONTAINER --- */
         .tool-container {
             background: var(--card-bg);
             border-radius: var(--radius-lg);
@@ -142,7 +142,7 @@
             color: var(--text-main);
         }
 
-        /* --- INPUT STYLING MINIMAL --- */
+        /* --- INPUTS --- */
         .input-group { margin-bottom: 25px; }
 
         label {
@@ -156,10 +156,9 @@
             padding-left: 5px;
         }
 
-        /* Input condiviso per scrittura e lettura */
         .input-box {
             width: 100%;
-            height: 64px; /* Altezza fissa per uguaglianza */
+            height: 64px;
             padding: 0 20px;
             font-size: 1.3rem;
             font-family: 'Outfit', sans-serif;
@@ -180,21 +179,17 @@
             box-shadow: 0 0 0 2px var(--primary);
         }
 
-        /* Styling specifico per il placeholder grigio chiaro */
-        ::placeholder {
-            color: var(--text-placeholder); 
-            opacity: 1; /* Firefox fix */
-        }
+        ::placeholder { color: var(--text-placeholder); opacity: 1; }
 
-        /* Output Box specifico */
+        /* Output Box */
         .output-wrapper {
             position: relative;
-            background: var(--input-bg); /* Stesso sfondo dell'input */
+            background: var(--input-bg);
             border-radius: var(--radius-md);
             height: 64px;
             display: flex;
             align-items: center;
-            overflow: hidden; /* Per la progress bar */
+            overflow: hidden;
         }
 
         .output-value {
@@ -203,14 +198,13 @@
             font-size: 1.3rem;
             font-family: 'Outfit', sans-serif;
             font-weight: 700;
-            color: var(--primary); /* Colore blu per il risultato */
+            color: var(--primary);
             background: transparent;
             border: none;
-            z-index: 2; /* Sopra la barra */
-            pointer-events: none; /* Non cliccabile */
+            z-index: 2;
+            pointer-events: none;
         }
 
-        /* Barra di progresso integrata sotto */
         .progress-fill {
             position: absolute;
             bottom: 0;
@@ -222,7 +216,7 @@
             z-index: 1;
         }
 
-        /* --- TOGGLE SWITCH --- */
+        /* --- TOGGLE --- */
         .toggle-wrapper {
             background: var(--input-bg);
             padding: 5px;
@@ -249,7 +243,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        /* --- PREDICTOR RESULT --- */
+        /* --- RESULT CARD --- */
         .result-card {
             background: var(--primary-soft);
             border-radius: var(--radius-md);
@@ -305,10 +299,10 @@
 
         .hidden-credit {
             font-size: 0.7rem;
-            color: #d1d5db; /* Molto nascosto */
+            color: #e5e7eb; /* Quasi invisibile */
             text-decoration: none;
             display: block;
-            margin-top: 25px;
+            margin-top: 30px;
             transition: color 0.3s;
         }
         .hidden-credit:hover { color: var(--text-muted); }
@@ -325,12 +319,12 @@
                 <div class="menu-icon">⇄</div>
                 <div class="menu-text">
                     <h3>Convertitore</h3>
-                    <p>Confronta i punteggi Bocconi con il SAT basandoti sui dati storici.</p>
+                    <p>Confronta i punteggi Bocconi con il SAT basandoti sui dati della community.</p>
                 </div>
             </div>
 
             <div class="menu-card" onclick="goTo('view-predictor')">
-                <div class="menu-icon">📊</div>
+                <div class="menu-icon">️👀</div>
                 <div class="menu-text">
                     <h3>Calcolo Probabilità</h3>
                     <p>Previsione ammissione Winter Session basata su Media e Test.</p>
@@ -339,7 +333,7 @@
 
             <div class="info-section">
                 <div class="footer-note">
-                    <strong>Metodologia:</strong> Stime basate sull'analisi dati Early Session 2026 e feedback della community.
+                    <strong>Metodologia:</strong> Le stime si basano sui risultati della Early Session 2026 e sulle conversazioni analizzate nelle chat degli studenti.
                 </div>
                 <div class="footer-note">
                     Disclaimer: Strumenti non ufficiali. Sito non affiliato con Università Bocconi né TopSquad.
@@ -427,13 +421,24 @@
             window.scrollTo(0,0);
         }
 
-        // --- CONVERTITORE ---
+        // --- DATA & LOGIC ---
+        
+        // ANCHORS Aggiornati in base al sentiment della chat:
+        // 30 Bocconi ~ 1360 SAT (Soglia minima per molti corsi)
+        // 35 Bocconi ~ 1450 SAT (Lo "sweet spot" competitivo citato spesso)
+        // 40 Bocconi ~ 1520 SAT (Eccellenza)
         const ANCHORS = [
-            {b: 17, s: 1040}, {b: 28, s: 1350}, {b: 35, s: 1460},
-            {b: 40, s: 1500}, {b: 45, s: 1570}, {b: 50, s: 1600}
+            {b: 17, s: 1050}, 
+            {b: 25, s: 1250}, 
+            {b: 30, s: 1360}, 
+            {b: 35, s: 1450}, 
+            {b: 40, s: 1520}, 
+            {b: 50, s: 1600}
         ];
+        
         let cMode = 'bocconi';
 
+        // --- CONVERTITORE ---
         function setMode(m) {
             cMode = m;
             document.getElementById('mode-bocconi').className = `toggle-opt ${m==='bocconi'?'active':''}`;
@@ -482,12 +487,12 @@
                 }
             } else {
                 if(v > 1600) v = 1600; 
-                if(v >= 1040) {
+                if(v >= 1050) {
                     let res = interp(v, 's', 'b');
                     document.getElementById('conv-output').value = res.toFixed(1);
-                    document.getElementById('conv-bar').style.width = ((v-1040)/560)*100 + "%";
+                    document.getElementById('conv-bar').style.width = ((v-1050)/550)*100 + "%";
                 } else {
-                    document.getElementById('conv-output').value = "Minimo 1040";
+                    document.getElementById('conv-output').value = "Minimo 1050";
                     document.getElementById('conv-bar').style.width = "0%";
                 }
             }
@@ -524,7 +529,7 @@
             let title = document.getElementById('res-title');
             let desc = document.getElementById('res-desc');
 
-            // Calcolo target
+            // Calcolo target Bocconi
             let target;
             let riskFactor = 0; 
 
@@ -559,11 +564,15 @@
                 return;
             }
 
-            // Giudizio con Test
+            // Giudizio con Test (Usando la nuova conversione)
             let effScore = score;
+            let isSat = false;
+
             if(score > 60) { // Assume SAT
+                isSat = true;
                 if(score > 1600) score = 1600;
-                effScore = ((score - 1040)/560)*33 + 17; 
+                // Usa la funzione interp() condivisa per consistenza totale
+                effScore = interp(score, 's', 'b');
             } else {
                 if(score > 50) score = 50;
                 effScore = score;
