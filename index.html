@@ -3,606 +3,593 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bocconi ⇄ SAT Converter</title>
-    <meta name="description" content="Strumento di conversione punteggi Bocconi - SAT basato su dati statistici Early Session 2026.">
+    <title>Bocconi Tools</title>
+    <meta name="description" content="Tools ammissione università">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            /* Palette Blu Cobalto & Armonie */
-            --primary: #0047AB;        /* Cobalt Blue */
-            --primary-dark: #002E6D;   /* Darker Cobalt */
-            --primary-light: #E6F0FF;  /* Very light blue */
-            --accent: #0073e6;         /* Bright Blue */
-            
-            --bg-gradient: linear-gradient(135deg, #F5F7FA 0%, #C3CFE2 100%);
-            
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --text-light: #94a3b8;
-            
-            --card-bg: rgba(255, 255, 255, 0.95);
-            
-            --danger: #ef4444;
-            
-            --shadow-soft: 0 15px 35px -5px rgba(0, 71, 171, 0.15);
-            --radius: 24px;
-            --radius-sm: 12px;
-            
-            --font-heading: 'Outfit', sans-serif;
-            --font-body: 'Inter', sans-serif;
+            --primary: #0051ff; /* Blu elettrico più moderno */       
+            --primary-dark: #0030cc;   
+            --primary-soft: #eef4ff;  
+            --bg-body: #f7f9fc;
+            --card-bg: #ffffff;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --text-placeholder: #d1d5db; /* Grigio chiarissimo per placeholder */
+            --input-bg: #f3f4f6;
+            --radius-lg: 28px;
+            --radius-md: 16px;
+            --shadow: 0 10px 40px -10px rgba(0, 81, 255, 0.08);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: var(--font-body);
-            background: var(--bg-gradient);
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-body);
             color: var(--text-main);
+            margin: 0;
+            padding: 20px;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            padding: 20px;
+            justify-content: center;
         }
 
-        /* Layout Principale */
-        .converter-card {
+        .app-container {
+            width: 100%;
+            max-width: 480px; 
+            position: relative;
+        }
+
+        /* --- ANIMAZIONI & VISTE --- */
+        .view-section {
+            display: none;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .view-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); scale: 0.98; }
+            to { opacity: 1; transform: translateY(0); scale: 1; }
+        }
+
+        /* --- HOME MENU --- */
+        .menu-card {
             background: var(--card-bg);
-            width: 100%;
-            max-width: 600px; /* Leggermente più largo per l'insight */
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-soft);
-            border: 1px solid rgba(255,255,255,0.8);
-            backdrop-filter: blur(20px);
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-
-        .card-header {
-            padding: 40px 40px 20px 40px;
-            text-align: center;
-        }
-
-        .header-badge {
-            display: inline-block;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 800;
-            color: white;
-            background: var(--primary);
-            padding: 6px 14px;
-            border-radius: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 12px rgba(0, 71, 171, 0.25);
-        }
-
-        .card-header h1 {
-            font-family: var(--font-heading);
-            font-size: 2rem;
-            color: var(--primary-dark);
-            line-height: 1.1;
-            margin-bottom: 8px;
-        }
-
-        .card-header p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .card-body {
-            padding: 20px 40px 40px 40px;
-        }
-
-        /* Toggle Switch */
-        .mode-toggle-container {
-            background: #f1f5f9;
-            border-radius: 16px;
-            padding: 5px;
-            display: flex;
-            position: relative;
-            margin-bottom: 40px;
-            height: 56px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .mode-toggle-slider {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            width: calc(50% - 5px);
-            height: calc(100% - 10px);
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-            z-index: 1;
-        }
-        
-        .mode-toggle-container.flipped .mode-toggle-slider {
-            transform: translateX(100%);
-        }
-
-        .mode-btn {
-            flex: 1;
-            border: none;
-            background: transparent;
-            z-index: 2;
-            cursor: pointer;
-            font-family: var(--font-body);
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            transition: color 0.3s;
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
-        }
-
-        .mode-btn.active { color: var(--primary); }
-        
-        .toggle-icon-btn {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 3;
-            background: var(--primary);
-            color: white;
-            border: 2px solid white;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-
-        .toggle-icon-btn:hover { 
-            transform: translate(-50%, -50%) scale(1.1) rotate(180deg); 
-            background-color: var(--primary-dark);
-        }
-
-        /* Sezioni Input/Output */
-        .conversion-grid {
-            display: grid;
             gap: 20px;
-            position: relative;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.8);
         }
 
-        .io-card {
-            background: white;
-            border-radius: var(--radius-sm);
-            padding: 25px;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            position: relative;
-        }
+        .menu-card:active { transform: scale(0.97); }
 
-        .io-card.active-input {
-            background: #fff;
-            border-color: var(--primary);
-            box-shadow: 0 8px 30px rgba(0, 71, 171, 0.08);
-        }
-
-        .io-card.read-only {
-            background: #f8fafc;
-            border-color: #e2e8f0;
-        }
-
-        .label-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .label-title {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-        }
-        
-        .active-input .label-title { color: var(--primary); }
-
-        .input-group {
-            position: relative;
-            display: flex;
-            align-items: baseline;
-        }
-
-        input[type="number"] {
-            width: 100%;
-            border: none;
-            background: transparent;
-            font-family: var(--font-heading);
-            font-size: 3.5rem;
-            font-weight: 700;
+        .menu-icon {
+            background: var(--primary-soft);
             color: var(--primary);
-            padding: 0;
-            margin: 0;
-            line-height: 1;
-            -moz-appearance: textfield;
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .menu-text h3 { 
+            margin: 0 0 6px 0; 
+            font-family: 'Outfit', sans-serif; 
+            font-size: 1.3rem; 
+            color: var(--text-main);
+            font-weight: 700;
         }
         
-        input[type="number"]:focus { outline: none; }
-        input[type="number"]::placeholder { color: #cbd5e1; }
-        input[type="number"]:disabled { color: var(--text-muted); -webkit-text-fill-color: var(--text-muted); }
+        .menu-text p { 
+            margin: 0; 
+            font-size: 0.95rem; 
+            color: var(--text-muted); 
+            line-height: 1.4; 
+        }
 
-        .unit-suffix {
+        /* --- INTERFACCE TOOLS --- */
+        .tool-container {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            min-height: 400px;
+        }
+
+        .nav-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .back-btn {
+            background: var(--input-bg);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-light);
-            margin-left: 10px;
-            white-space: nowrap;
-        }
-
-        /* Barra di progresso */
-        .progress-container {
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 3px;
-            margin-top: 20px;
-            overflow: hidden;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: background 0.2s;
         }
         
-        .progress-bar {
-            height: 100%;
+        .page-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* --- INPUT STYLING MINIMAL --- */
+        .input-group { margin-bottom: 25px; }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding-left: 5px;
+        }
+
+        /* Input condiviso per scrittura e lettura */
+        .input-box {
+            width: 100%;
+            height: 64px; /* Altezza fissa per uguaglianza */
+            padding: 0 20px;
+            font-size: 1.3rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-md);
+            background: var(--input-bg);
+            color: var(--text-main);
+            appearance: none;
+            outline: none;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        
+        .input-box:focus {
+            background: #fff;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        /* Styling specifico per il placeholder grigio chiaro */
+        ::placeholder {
+            color: var(--text-placeholder); 
+            opacity: 1; /* Firefox fix */
+        }
+
+        /* Output Box specifico */
+        .output-wrapper {
+            position: relative;
+            background: var(--input-bg); /* Stesso sfondo dell'input */
+            border-radius: var(--radius-md);
+            height: 64px;
+            display: flex;
+            align-items: center;
+            overflow: hidden; /* Per la progress bar */
+        }
+
+        .output-value {
+            width: 100%;
+            padding: 0 20px;
+            font-size: 1.3rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: var(--primary); /* Colore blu per il risultato */
+            background: transparent;
+            border: none;
+            z-index: 2; /* Sopra la barra */
+            pointer-events: none; /* Non cliccabile */
+        }
+
+        /* Barra di progresso integrata sotto */
+        .progress-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
             background: var(--primary);
             width: 0%;
             transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-            border-radius: 3px;
+            z-index: 1;
+        }
+
+        /* --- TOGGLE SWITCH --- */
+        .toggle-wrapper {
+            background: var(--input-bg);
+            padding: 5px;
+            border-radius: 18px;
+            display: flex;
+            margin-bottom: 30px;
         }
         
-        .read-only .progress-bar { background: var(--accent); opacity: 0.7; }
-
-        .range-info {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            margin-top: 8px;
-            text-align: right;
-        }
-
-        .error-toast {
-            position: absolute;
-            bottom: -30px;
-            left: 0;
-            width: 100%;
+        .toggle-opt {
+            flex: 1;
             text-align: center;
-            color: var(--danger);
-            font-size: 0.8rem;
+            padding: 12px;
+            font-size: 0.9rem;
             font-weight: 600;
-            opacity: 0;
-            transform: translateY(-10px);
+            color: var(--text-muted);
+            border-radius: 14px;
+            cursor: pointer;
             transition: all 0.3s;
         }
         
-        .io-card.invalid { border-color: var(--danger); background-color: #fef2f2; }
-        .io-card.invalid .error-toast { opacity: 1; transform: translateY(0); }
+        .toggle-opt.active {
+            background: #fff;
+            color: var(--text-main);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
 
-        /* Context Box - Analisi */
-        .analysis-card {
-            margin-top: 30px;
-            background: linear-gradient(145deg, #ffffff 0%, var(--primary-light) 100%);
-            border-radius: var(--radius-sm);
+        /* --- PREDICTOR RESULT --- */
+        .result-card {
+            background: var(--primary-soft);
+            border-radius: var(--radius-md);
             padding: 25px;
-            border-left: 4px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin-top: 30px;
+            display: none;
+            animation: slideUp 0.4s ease;
         }
+        
+        @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1}}
 
-        .analysis-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .analysis-title {
-            font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--primary);
-        }
-
-        .analysis-badge {
-            background: var(--primary);
-            color: white;
-            font-size: 0.65rem;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-weight: 600;
+        .res-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 800;
             text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: #fff;
+            color: var(--primary);
+            margin-bottom: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
         }
 
-        .analysis-text {
+        .res-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .res-desc {
             font-size: 0.95rem;
             line-height: 1.6;
-            color: var(--text-main);
+            color: var(--text-muted);
         }
 
-        /* Footer Tecnico */
-        footer {
+        /* --- FOOTER --- */
+        .info-section {
             margin-top: 40px;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 20px;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .footer-note {
             font-size: 0.75rem;
             color: var(--text-muted);
-            text-align: justify;
             line-height: 1.6;
+            margin-bottom: 8px;
         }
-        
-        footer strong { color: var(--primary); font-weight: 600; }
-        .disclaimer-note { margin-top: 10px; font-style: italic; color: var(--text-light); }
-        .dev-credits a { color: inherit; text-decoration: none; font-weight: 600; }
-        .dev-credits a:hover { text-decoration: underline; color: var(--primary); }
 
-        /* Responsive */
-        @media (max-width: 500px) {
-            .card-header h1 { font-size: 1.6rem; }
-            input[type="number"] { font-size: 2.8rem; }
-            .card-body { padding: 20px; }
+        .hidden-credit {
+            font-size: 0.7rem;
+            color: #d1d5db; /* Molto nascosto */
+            text-decoration: none;
+            display: block;
+            margin-top: 25px;
+            transition: color 0.3s;
         }
-        
-        .fade-enter { animation: fadeIn 0.4s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .hidden-credit:hover { color: var(--text-muted); }
 
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 <body>
 
-    <main class="converter-card">
-        <header class="card-header">
-            <span class="header-badge">Presurometro</span>
-            <h1>Bocconi ⇄ SAT</h1>
-            <p>Strumento di conversione punteggi</p>
-        </header>
+    <div class="app-container">
 
-        <section class="card-body">
+        <section id="view-home" class="view-section active">
             
-            <div class="mode-toggle-container" id="toggle-container">
-                <div class="mode-toggle-slider"></div>
-                <button class="mode-btn active" id="btn-bocconi">
-                    <span>Bocconi Test</span>
-                </button>
-                <button class="toggle-icon-btn" id="toggle-btn" title="Inverti conversione">⇄</button>
-                <button class="mode-btn" id="btn-sat">
-                    <span>SAT Score</span>
-                </button>
-            </div>
-
-            <div class="conversion-grid">
-                
-                <div class="io-card active-input" id="input-card">
-                    <div class="label-row">
-                        <span class="label-title" id="input-label">Inserisci Punteggio Bocconi</span>
-                    </div>
-                    <div class="input-group">
-                        <input type="number" id="input-score" placeholder="0" min="17" max="50" step="0.1" inputmode="decimal">
-                        <span class="unit-suffix" id="input-suffix">/ 50</span>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="input-bar"></div>
-                    </div>
-                    <div class="range-info" id="input-range">Min: 17 - Max: 50</div>
-                    <div class="error-toast" id="error-msg">Valore fuori dal range consentito</div>
-                </div>
-
-                <div class="io-card read-only" id="output-card">
-                    <div class="label-row">
-                        <span class="label-title" id="output-label">Equivalente SAT Stimato</span>
-                    </div>
-                    <div class="input-group">
-                        <input type="number" id="output-score" placeholder="---" disabled>
-                        <span class="unit-suffix" id="output-suffix">/ 1600</span>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="output-bar"></div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="analysis-card fade-enter">
-                <div class="analysis-header">
-                    <span class="analysis-title">Insight & Analisi</span>
-                    <span class="analysis-badge">Report Early 2026</span>
-                </div>
-                <div class="analysis-text" id="context-text">
-                    Inserisci un punteggio per visualizzare l'analisi basata sui dati statistici Early 2026.
+            <div class="menu-card" onclick="goTo('view-converter')">
+                <div class="menu-icon">⇄</div>
+                <div class="menu-text">
+                    <h3>Convertitore</h3>
+                    <p>Confronta i punteggi Bocconi con il SAT basandoti sui dati storici.</p>
                 </div>
             </div>
 
-            <footer>
-                <strong>Metodologia:</strong> Conversione tramite interpolazione lineare su dati storici.
-                <br><br>
-                <strong>Fonte Dati:</strong> Analisi basata sul <em>Report TopSquad Early Session 2026</em> condotto su 150 candidati. Il report evidenzia un tasso di ammissione nel campione del 72%, con una media scolastica prevalente intorno all'8.5.
-                <br>
-                <div class="disclaimer-note">
-                    Nota: Sito indipendente e non affiliato con l'Università Bocconi.
-                    <span class="dev-credits"> | <a href="https://www.instagram.com/drissyakisoba/" target="_blank">@drissyakisoba</a></span>
+            <div class="menu-card" onclick="goTo('view-predictor')">
+                <div class="menu-icon">📊</div>
+                <div class="menu-text">
+                    <h3>Calcolo Probabilità</h3>
+                    <p>Previsione ammissione Winter Session basata su Media e Test.</p>
                 </div>
-            </footer>
+            </div>
 
+            <div class="info-section">
+                <div class="footer-note">
+                    <strong>Metodologia:</strong> Stime basate sull'analisi dati Early Session 2026 e feedback della community.
+                </div>
+                <div class="footer-note">
+                    Disclaimer: Strumenti non ufficiali. Sito non affiliato con Università Bocconi né TopSquad.
+                </div>
+                <a href="https://www.instagram.com/drissyakisoba/" target="_blank" class="hidden-credit">by @drissyakisoba</a>
+            </div>
         </section>
-    </main>
+
+
+        <section id="view-converter" class="view-section">
+            <div class="tool-container">
+                <div class="nav-header">
+                    <button class="back-btn" onclick="goTo('view-home')">✕</button>
+                    <span class="page-title">Convertitore</span>
+                </div>
+
+                <div class="toggle-wrapper">
+                    <div class="toggle-opt active" id="mode-bocconi" onclick="setMode('bocconi')">Bocconi</div>
+                    <div class="toggle-opt" id="mode-sat" onclick="setMode('sat')">SAT</div>
+                </div>
+
+                <div class="input-group">
+                    <label id="lbl-input">Inserisci Punteggio</label>
+                    <input type="number" id="conv-input" class="input-box" placeholder="Es. 32.5" inputmode="decimal">
+                </div>
+
+                <div class="input-group">
+                    <label id="lbl-output">Stima Equivalente</label>
+                    <div class="output-wrapper">
+                        <input type="text" id="conv-output" class="output-value" placeholder="---" readonly>
+                        <div class="progress-fill" id="conv-bar"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="view-predictor" class="view-section">
+            <div class="tool-container">
+                <div class="nav-header">
+                    <button class="back-btn" onclick="goTo('view-home')">✕</button>
+                    <span class="page-title">Calcolo Probabilità</span>
+                </div>
+
+                <div class="input-group">
+                    <label>Corso di Laurea</label>
+                    <select id="pred-course" class="input-box" onchange="calcPred()">
+                        <option value="" disabled selected>Seleziona corso...</option>
+                        <option value="CLEAM">CLEAM (Aziendale)</option>
+                        <option value="BIEM">BIEM (Int. Mgmt)</option>
+                        <option value="BIEF">BIEF (Finance)</option>
+                        <option value="CLEACC">CLEACC (Arte)</option>
+                        <option value="BEMACS">BEMACS (Comp. Sci.)</option>
+                        <option value="CLMG">CLMG (Giurisprudenza)</option>
+                        <option value="BAI">BAI (AI & Math)</option>
+                        <option value="" disabled>-- Dati insufficienti per altri --</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Media Bocconi</label>
+                    <input type="number" id="pred-gpa" class="input-box" placeholder="Es. 8.5" min="6" max="10" step="0.01" inputmode="decimal" oninput="calcPred()">
+                </div>
+
+                <div class="input-group">
+                    <label>Punteggio Test (Opzionale)</label>
+                    <input type="number" id="pred-score" class="input-box" placeholder="Es. 30.5 o 1450" inputmode="decimal" oninput="calcPred()">
+                </div>
+
+                <div id="pred-res" class="result-card">
+                    <span class="res-badge" id="res-badge">Analisi</span>
+                    <span class="res-title" id="res-title">Risultato</span>
+                    <div class="res-desc" id="res-desc">...</div>
+                </div>
+            </div>
+        </section>
+
+    </div>
 
     <script>
+        // --- NAVIGAZIONE ---
+        function goTo(id) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        // --- CONVERTITORE ---
         const ANCHORS = [
             {b: 17, s: 1040}, {b: 28, s: 1350}, {b: 35, s: 1460},
             {b: 40, s: 1500}, {b: 45, s: 1570}, {b: 50, s: 1600}
         ];
+        let cMode = 'bocconi';
 
-        const els = {
-            inputScore: document.getElementById('input-score'),
-            outputScore: document.getElementById('output-score'),
-            inputBar: document.getElementById('input-bar'),
-            outputBar: document.getElementById('output-bar'),
-            inputLabel: document.getElementById('input-label'),
-            outputLabel: document.getElementById('output-label'),
-            inputSuffix: document.getElementById('input-suffix'),
-            outputSuffix: document.getElementById('output-suffix'),
-            inputRange: document.getElementById('input-range'),
-            inputCard: document.getElementById('input-card'),
-            errorMsg: document.getElementById('error-msg'),
-            toggleContainer: document.getElementById('toggle-container'),
-            toggleBtn: document.getElementById('toggle-btn'),
-            btnBocconi: document.getElementById('btn-bocconi'),
-            btnSat: document.getElementById('btn-sat'),
-            contextText: document.getElementById('context-text')
-        };
+        function setMode(m) {
+            cMode = m;
+            document.getElementById('mode-bocconi').className = `toggle-opt ${m==='bocconi'?'active':''}`;
+            document.getElementById('mode-sat').className = `toggle-opt ${m==='sat'?'active':''}`;
+            
+            // Labels
+            document.getElementById('lbl-input').innerText = m==='bocconi' ? 'Punteggio Bocconi' : 'SAT Score';
+            document.getElementById('lbl-output').innerText = m==='bocconi' ? 'Stima SAT' : 'Stima Bocconi';
+            
+            // Placeholder Dinamico
+            const inp = document.getElementById('conv-input');
+            inp.value = '';
+            inp.placeholder = m === 'bocconi' ? 'Es. 32.5' : 'Es. 1420';
 
-        let currentMode = 'bocconi-to-sat'; 
+            document.getElementById('conv-output').value = '';
+            document.getElementById('conv-bar').style.width = '0%';
+        }
 
-        function convert(val, inKey, outKey) {
-            if (inKey === 'b') val = Math.max(17, Math.min(50, val));
-            if (inKey === 's') val = Math.max(1040, Math.min(1600, val));
-
-            for (let i = 0; i < ANCHORS.length - 1; i++) {
-                const lower = ANCHORS[i];
-                const upper = ANCHORS[i+1];
-                if (val >= lower[inKey] && val <= upper[inKey]) {
-                    const pct = (val - lower[inKey]) / (upper[inKey] - lower[inKey]);
-                    return lower[outKey] + pct * (upper[outKey] - lower[outKey]);
+        function interp(val, inK, outK) {
+            for(let i=0; i<ANCHORS.length-1; i++){
+                let l=ANCHORS[i], u=ANCHORS[i+1];
+                if(val>=l[inK] && val<=u[inK]) {
+                    return l[outK] + (val-l[inK])/(u[inK]-l[inK])*(u[outK]-l[outK]);
                 }
             }
-            return ANCHORS[ANCHORS.length-1][outKey];
+            return 0; 
         }
 
-        function getAnalysis(bScore, sScore) {
-            // EASTER EGG: Max Score
-            if ((currentMode === 'bocconi-to-sat' && bScore >= 50) || (currentMode === 'sat-to-bocconi' && sScore >= 1600)) {
-                return `<strong>Top Tier.</strong> Con questo punteggio hai buone possibilità di non farti sospendere per motivi che riguardano cose come escort, pesci, cooltra, e letti in orizzontale.`;
-            }
-
-            // SOTTO SOGLIA
-            if (bScore < 17 || sScore < 1040) {
-                return `💀 <strong>Presura.</strong> Punteggio sotto la soglia minima. Nel report analizzato, nessun candidato con questo punteggio è risultato ammesso.`;
-            }
-            
-            // FASCIA BASSA (17-29 Bocconi / 1040-1300 SAT)
-            if (bScore < 30) {
-                return `🥵 <strong>Presura.</strong> Zona critica. Solo il <strong>18.3%</strong> degli ammessi nel report rientra nella fascia 25-30/50. Per il SAT, meno del 14% degli ammessi ha totalizzato meno di 1300. In questa fascia, una media scolastica molto alta (spesso >9.0) è determinante per compensare.`;
-            }
-            
-            // FASCIA MEDIA (30-35 Bocconi / 1350-1450 SAT)
-            if (bScore < 35) {
-                return `<strong>Competitivo.</strong> Un punteggio solido. Il <strong>31.2%</strong> degli ammessi nel sondaggio Early 2026 si colloca tra 30 e 35 punti. La media voti tipica degli ammessi in questa fascia è circa 8.5.`;
-            }
-            
-            // FASCIA ALTA (35-40 Bocconi / 1450-1500 SAT)
-            if (bScore < 40) {
-                return `<strong>Molto Competitivo.</strong> "Sweet Spot". Questa è la fascia più densa di ammessi: ben il <strong>33.3%</strong> dei candidati Bocconi e il <strong>53.3%</strong> dei candidati SAT nel report rientrano in questo range. Con una buona media, le probabilità statistiche sono elevate, nonostante le difficoltà segnalate in Matematica e Ragionamento Numerico.`;
-            }
-            
-            // FASCIA ELITE (40+ Bocconi / 1500+ SAT)
-            return `<strong>Eccellente.</strong> Punteggio Elite. Solo il <strong>17.2%</strong> dei candidati Bocconi e il <strong>13.3%</strong> dei candidati SAT nel report hanno raggiunto questi livelli. Massima competitività per tutti i corsi.`;
-        }
-
-        function validate(val, mode) {
-            if (val === '') return { ok: true };
-            const n = parseFloat(val);
-            if (isNaN(n)) return { ok: false, msg: 'Numero non valido' };
-            
-            if (mode === 'bocconi-to-sat') {
-                if (n < 17 || n > 50) return { ok: false, msg: 'Range: 17 - 50' };
-            } else {
-                if (n < 1040 || n > 1600) return { ok: false, msg: 'Range: 1040 - 1600' };
-            }
-            return { ok: true };
-        }
-
-        function updateUI(inVal, outVal) {
-            let bPct, sPct;
-            // Determina i valori da passare all'analisi
-            let valB = currentMode === 'bocconi-to-sat' ? inVal : outVal;
-            let valS = currentMode === 'bocconi-to-sat' ? outVal : inVal;
-
-            els.contextText.innerHTML = getAnalysis(valB, valS);
-
-            if (currentMode === 'bocconi-to-sat') {
-                bPct = ((inVal - 17) / 33) * 100;
-                sPct = ((outVal - 1040) / 560) * 100;
-            } else {
-                sPct = ((inVal - 1040) / 560) * 100;
-                bPct = ((outVal - 17) / 33) * 100;
-            }
-
-            els.inputBar.style.width = `${Math.max(0, Math.min(100, currentMode === 'bocconi-to-sat' ? bPct : sPct))}%`;
-            els.outputBar.style.width = `${Math.max(0, Math.min(100, currentMode === 'bocconi-to-sat' ? sPct : bPct))}%`;
-        }
-
-        function switchMode() {
-            currentMode = currentMode === 'bocconi-to-sat' ? 'sat-to-bocconi' : 'bocconi-to-sat';
-            const isBocconi = currentMode === 'bocconi-to-sat';
-
-            els.toggleContainer.classList.toggle('flipped', !isBocconi);
-            els.btnBocconi.classList.toggle('active', isBocconi);
-            els.btnSat.classList.toggle('active', !isBocconi);
-
-            els.inputLabel.textContent = isBocconi ? 'Inserisci Punteggio Bocconi' : 'Inserisci SAT Score';
-            els.outputLabel.textContent = isBocconi ? 'Equivalente SAT Stimato' : 'Equivalente Bocconi Stimato';
-            els.inputSuffix.textContent = isBocconi ? '/ 50' : '/ 1600';
-            els.outputSuffix.textContent = isBocconi ? '/ 1600' : '/ 50';
-            els.inputRange.textContent = isBocconi ? 'Min: 17 - Max: 50' : 'Min: 1040 - Max: 1600';
-            
-            els.inputScore.value = '';
-            els.outputScore.value = '';
-            els.inputScore.placeholder = isBocconi ? '35' : '1350';
-            els.inputScore.step = isBocconi ? '0.1' : '10';
-            
-            els.inputBar.style.width = '0%';
-            els.outputBar.style.width = '0%';
-            els.inputCard.classList.remove('invalid');
-            els.contextText.innerHTML = 'Inserisci un punteggio per visualizzare l\'analisi basata sui dati statistici Early 2026.';
-        }
-
-        els.toggleBtn.addEventListener('click', switchMode);
-        els.btnBocconi.addEventListener('click', () => currentMode !== 'bocconi-to-sat' && switchMode());
-        els.btnSat.addEventListener('click', () => currentMode !== 'sat-to-bocconi' && switchMode());
-
-        els.inputScore.addEventListener('input', (e) => {
-            const valStr = e.target.value;
-            const check = validate(valStr, currentMode);
-            
-            if (!check.ok) {
-                els.inputCard.classList.add('invalid');
-                els.errorMsg.textContent = check.msg;
-                els.outputScore.value = '';
-                els.contextText.innerHTML = 'Inserisci un punteggio valido per vedere l\'analisi.';
-                return;
-            }
-            
-            els.inputCard.classList.remove('invalid');
-            if (valStr === '') {
-                els.outputScore.value = '';
-                els.contextText.innerHTML = 'Inserisci un punteggio per visualizzare l\'analisi basata sui dati statistici Early 2026.';
-                els.inputBar.style.width = '0%';
-                els.outputBar.style.width = '0%';
+        document.getElementById('conv-input').addEventListener('input', function(e) {
+            let v = parseFloat(e.target.value);
+            if(isNaN(v)) {
+                document.getElementById('conv-output').value = "";
+                document.getElementById('conv-bar').style.width = "0%";
                 return;
             }
 
-            const val = parseFloat(valStr);
-            let res;
-
-            if (currentMode === 'bocconi-to-sat') {
-                res = Math.round(convert(val, 'b', 's') / 10) * 10;
+            if(cMode === 'bocconi') {
+                if(v > 50) v = 50; 
+                if(v >= 17) {
+                    let res = interp(v, 'b', 's');
+                    document.getElementById('conv-output').value = Math.round(res/10)*10;
+                    document.getElementById('conv-bar').style.width = ((v-17)/33)*100 + "%";
+                } else {
+                    document.getElementById('conv-output').value = "Minimo 17";
+                    document.getElementById('conv-bar').style.width = "0%";
+                }
             } else {
-                res = Math.round(convert(val, 's', 'b') * 10) / 10;
+                if(v > 1600) v = 1600; 
+                if(v >= 1040) {
+                    let res = interp(v, 's', 'b');
+                    document.getElementById('conv-output').value = res.toFixed(1);
+                    document.getElementById('conv-bar').style.width = ((v-1040)/560)*100 + "%";
+                } else {
+                    document.getElementById('conv-output').value = "Minimo 1040";
+                    document.getElementById('conv-bar').style.width = "0%";
+                }
             }
-            
-            els.outputScore.value = res;
-            updateUI(val, res);
         });
+
+        // --- PREDICTOR ---
+        const DATA = {
+            "CLEAM": {min: 7.2, safe: 9.0, tL: 38, tH: 28},
+            "BIEM": {min: 8.0, safe: 9.2, tL: 40, tH: 31},
+            "BIEF": {min: 8.4, safe: 9.5, tL: 42, tH: 32},
+            "CLEACC": {min: 7.0, safe: 8.8, tL: 35, tH: 26},
+            "BEMACS": {min: 8.2, safe: 9.3, tL: 39, tH: 33},
+            "BAI": {min: 8.5, safe: 9.4, tL: 40, tH: 34},
+            "CLMG": {min: 7.0, safe: 9.0, tL: 38, tH: 28}
+        };
+
+        function calcPred() {
+            let crs = document.getElementById('pred-course').value;
+            let gpa = parseFloat(document.getElementById('pred-gpa').value);
+            let score = parseFloat(document.getElementById('pred-score').value);
+            let box = document.getElementById('pred-res');
+            
+            if(!crs || isNaN(gpa)) {
+                box.style.display = 'none';
+                return;
+            }
+
+            if(gpa > 10) gpa = 10; 
+            if(gpa < 6) { box.style.display = 'none'; return; }
+
+            box.style.display = 'block';
+            let d = DATA[crs];
+            let badge = document.getElementById('res-badge');
+            let title = document.getElementById('res-title');
+            let desc = document.getElementById('res-desc');
+
+            // Calcolo target
+            let target;
+            let riskFactor = 0; 
+
+            if (gpa < d.min) {
+                let diff = d.min - gpa;
+                target = d.tL + (diff * 3.5);
+                if (target > 50) target = 50; 
+                riskFactor = 2;
+            } else {
+                let pos = Math.max(0, Math.min(1, (gpa - d.min)/(d.safe - d.min)));
+                target = d.tL - (pos * (d.tL - d.tH));
+            }
+
+            // Solo Previsione
+            if(isNaN(score)) {
+                badge.innerText = "OBIETTIVO WINTER";
+                badge.style.color = "var(--primary)";
+                title.innerText = "Punteggio Consigliato";
+                
+                let tInt = Math.round(target);
+                let range = "";
+                
+                if (target >= 49) range = "49 - 50";
+                else if (target >= 45) range = `${tInt} - 50`;
+                else range = `${tInt} - ${tInt+2}`;
+
+                if(riskFactor === 2) {
+                    desc.innerHTML = `La media <b>${gpa}</b> è statisticamente bassa per ${crs}. Per avere chance reali devi puntare all'eccellenza: <b>${range}</b>.`;
+                } else {
+                    desc.innerHTML = `Con media <b>${gpa}</b>, l'obiettivo statistico per stare tranquilli è circa <b>${range}</b>.`;
+                }
+                return;
+            }
+
+            // Giudizio con Test
+            let effScore = score;
+            if(score > 60) { // Assume SAT
+                if(score > 1600) score = 1600;
+                effScore = ((score - 1040)/560)*33 + 17; 
+            } else {
+                if(score > 50) score = 50;
+                effScore = score;
+            }
+
+            let diff = effScore - target;
+
+            if(diff >= 1.5) {
+                badge.innerText = "OTTIMA PROBABILITÀ"; badge.style.color = "#10b981";
+                title.innerText = "Profilo Solido";
+                desc.innerHTML = `Il tuo punteggio supera la soglia stimata (${target.toFixed(1)}) per la tua media.`;
+            } else if(diff >= -2) {
+                badge.innerText = "COMPETITIVO"; badge.style.color = "#f59e0b";
+                title.innerText = "In Bilico";
+                desc.innerHTML = `Sei molto vicino al target (${target.toFixed(1)}). Nella Winter Session l'ammissione si giocherà sui dettagli.`;
+            } else {
+                badge.innerText = "DIFFICILE"; badge.style.color = "#ef4444";
+                title.innerText = "Sotto Soglia";
+                
+                if (riskFactor === 2) {
+                    desc.innerHTML = `Con media <b>${gpa}</b> serve un'impresa (es. <b>${Math.round(target)}</b>). Il tuo punteggio attuale non basta statisticamente.`;
+                } else {
+                    desc.innerHTML = `Per la tua media, i dati suggeriscono un punteggio più alto (stima: <b>${Math.round(target)}</b>).`;
+                }
+            }
+        }
     </script>
 </body>
 </html>
