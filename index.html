@@ -18,7 +18,7 @@
             --bg-body: #f7f9fc;
             --card-bg: #ffffff;
             --text-main: #111827;
-            --text-muted: #6b7280; /* Grigio condiviso per testi secondari e placeholder */
+            --text-muted: #6b7280; 
             --input-bg: #f3f4f6;
             --radius-lg: 28px;
             --radius-md: 16px;
@@ -178,11 +178,9 @@
             box-shadow: 0 0 0 2px var(--primary);
         }
 
-        /* PLACEHOLDER STYLING AGGIORNATO */
-        /* Usa esattamente lo stesso colore di --text-muted */
         ::placeholder { 
             color: var(--text-muted); 
-            opacity: 1; /* Importante per Firefox */
+            opacity: 1;
         }
 
         /* Output Box */
@@ -328,7 +326,7 @@
             </div>
 
             <div class="menu-card" onclick="goTo('view-predictor')">
-                <div class="menu-icon">️👀</div>
+                <div class="menu-icon">📊</div>
                 <div class="menu-text">
                     <h3>Calcolo Probabilità</h3>
                     <p>Simulazione ammissione Winter basata sui dati statistici della Early Session.</p>
@@ -393,7 +391,8 @@
                         <option value="BEMACS">BEMACS</option>
                         <option value="CLMG">CLMG</option>
                         <option value="BAI">BAI</option>
-                        <option value="" disabled>-- Dati insufficienti per altri --</option>
+                        <option value="BIG">BIG</option>
+                        <option value="GLAW">Global Law</option>
                     </select>
                 </div>
 
@@ -497,6 +496,8 @@
         });
 
         // --- PREDICTOR ---
+        // BIG aggiunto con stima (min 7.2, safe 8.9)
+        // GLAW aggiunto con stima (min 7.5, safe 9.1 - competitivo)
         const DATA = {
             "CLEAM": {min: 7.2, safe: 9.0, tL: 38, tH: 28},
             "BIEM": {min: 8.0, safe: 9.2, tL: 40, tH: 31},
@@ -504,7 +505,9 @@
             "CLEACC": {min: 7.0, safe: 8.8, tL: 35, tH: 26},
             "BEMACS": {min: 8.2, safe: 9.3, tL: 39, tH: 33},
             "BAI": {min: 8.5, safe: 9.4, tL: 40, tH: 34},
-            "CLMG": {min: 7.0, safe: 9.0, tL: 38, tH: 28}
+            "CLMG": {min: 7.0, safe: 9.0, tL: 38, tH: 28},
+            "BIG": {min: 7.2, safe: 8.9, tL: 36, tH: 27},
+            "GLAW": {min: 7.5, safe: 9.1, tL: 39, tH: 30}
         };
 
         function calcPred() {
