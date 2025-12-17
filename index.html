@@ -7,7 +7,6 @@
     <title>Probabilità Ammissione</title>
     
     <meta name="description" content="Analisi statistica basata sui dati Early 2025">
-    
     <meta property="og:title" content="Probabilità Ammissione">
     <meta property="og:description" content="Analisi statistica basata sui dati Early 2025">
     <meta property="og:type" content="website">
@@ -88,7 +87,7 @@
             line-height: 1.4;
         }
 
-        /* --- CARDS & MENU --- */
+        /* --- UI ELEMENTS --- */
         .card {
             background: var(--card-bg);
             border-radius: var(--radius-xl);
@@ -139,7 +138,6 @@
             line-height: 1.4;
         }
 
-        /* --- NAV HEADER --- */
         .nav-header {
             display: flex;
             align-items: center;
@@ -169,7 +167,6 @@
             letter-spacing: -0.5px;
         }
 
-        /* --- INPUTS --- */
         .input-group { margin-bottom: 20px; }
 
         label {
@@ -202,7 +199,6 @@
             box-shadow: 0 0 0 2px var(--primary) inset;
             background: #fff;
         }
-        
         select.input-box {
             background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231D1D1F%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
             background-repeat: no-repeat;
@@ -210,7 +206,6 @@
             background-size: 10px auto;
         }
 
-        /* --- RESULTS --- */
         .result-container {
             margin-top: 28px;
             padding-top: 24px;
@@ -229,7 +224,6 @@
             margin-bottom: 6px;
             display: block;
         }
-
         .result-main {
             font-size: 20px;
             font-weight: 600;
@@ -237,14 +231,12 @@
             margin-bottom: 8px;
             color: var(--text-main);
         }
-
         .result-sub {
             font-size: 15px;
             color: var(--text-sec);
             line-height: 1.5;
         }
 
-        /* --- DATA MATCH BOX --- */
         .data-match-box {
             background: #F2F2F7;
             border-radius: 12px;
@@ -252,7 +244,6 @@
             margin-top: 20px;
             display: none;
         }
-        
         .data-match-label {
             font-size: 11px;
             font-weight: 600;
@@ -261,13 +252,11 @@
             margin-bottom: 6px;
             display: block;
         }
-
         .data-match-val {
             font-size: 14px;
             color: var(--text-main);
             font-weight: 500;
         }
-        
         .match-tag {
             display: inline-block;
             padding: 2px 6px;
@@ -280,7 +269,6 @@
         .tag-ok { background: #D1FAE5; color: #065F46; }
         .tag-ko { background: #FEE2E2; color: #991B1B; }
 
-        /* --- FOOTER --- */
         .footer-info {
             margin-top: 40px;
             text-align: center;
@@ -294,7 +282,7 @@
         }
         .footer-link {
             font-size: 12px;
-            color: var(--text-light); /* Colore chiaro richiesto */
+            color: var(--text-light);
             text-decoration: none;
             display: block;
             margin-top: 8px;
@@ -302,7 +290,6 @@
         }
         .footer-link:active { color: var(--text-sec); }
 
-        /* --- TOGGLE --- */
         .segment-control {
             background: #E5E5EA;
             padding: 3px;
@@ -327,7 +314,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
-        /* --- CONVERTER BAR --- */
         .bar-container {
             height: 6px;
             background: #E5E5EA;
@@ -348,10 +334,9 @@
     <div class="app-container">
 
         <section id="view-home" class="view-section active">
-            
             <div class="home-header">
-                <h1 class="home-emoji">🧙‍♂️</h1>
-                <div class="home-subtitle">Calcolo probabilità di ammissione basato su Early 2025</div>
+                <h1 class="home-emoji"></h1>
+
             </div>
             
             <div class="menu-item" onclick="goTo('view-converter')">
@@ -371,11 +356,11 @@
             </div>
 
             <div class="footer-info">
+                <div class="footer-text">Dati aggiornati alla sessione Early 2025.</div>
                 <div class="footer-text">Strumento statistico non ufficiale.</div>
-                <a href="https://www.instagram.com/drissyakisoba/" target="_blank" class="footer-link">@drissyakisoba</a>
+                <a href="https://www.instagram.com/drissyakisoba/" target="_blank" class="footer-link">by @drissyakisoba</a>
             </div>
         </section>
-
 
         <section id="view-converter" class="view-section">
             <div class="nav-header">
@@ -403,7 +388,6 @@
                 </div>
             </div>
         </section>
-
 
         <section id="view-predictor" class="view-section">
             <div class="nav-header">
@@ -461,17 +445,12 @@
         // --- NAVIGATION ---
         function goTo(id) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            setTimeout(() => {
-                document.getElementById(id).classList.add('active');
-            }, 50);
+            setTimeout(() => { document.getElementById(id).classList.add('active'); }, 50);
             window.scrollTo(0,0);
         }
 
         // --- CONVERTER LOGIC ---
-        const ANCHORS = [
-            {b: 17, s: 1050}, {b: 25, s: 1240}, {b: 30, s: 1350}, 
-            {b: 35, s: 1440}, {b: 40, s: 1510}, {b: 50, s: 1600}
-        ];
+        const ANCHORS = [{b:17,s:1050},{b:25,s:1240},{b:30,s:1350},{b:35,s:1440},{b:40,s:1510},{b:50,s:1600}];
         let cMode = 'bocconi';
 
         function setMode(m) {
@@ -488,79 +467,56 @@
         function interp(val, inK, outK) {
             for(let i=0; i<ANCHORS.length-1; i++){
                 let l=ANCHORS[i], u=ANCHORS[i+1];
-                if(val>=l[inK] && val<=u[inK]) {
-                    return l[outK] + (val-l[inK])/(u[inK]-l[inK])*(u[outK]-l[outK]);
-                }
+                if(val>=l[inK] && val<=u[inK]) return l[outK] + (val-l[inK])/(u[inK]-l[inK])*(u[outK]-l[outK]);
             }
             return 0;
         }
 
         document.getElementById('conv-input').addEventListener('input', function(e) {
             let v = parseFloat(e.target.value);
-            if(isNaN(v)) {
-                document.getElementById('conv-output').value = "";
-                document.getElementById('conv-bar').style.width = "0%";
-                return;
-            }
+            if(isNaN(v)) { document.getElementById('conv-output').value=""; document.getElementById('conv-bar').style.width="0%"; return; }
             if(cMode === 'bocconi') {
-                if(v > 50) v = 50; 
-                if(v >= 17) {
-                    let res = interp(v, 'b', 's');
+                if(v>50) v=50;
+                if(v>=17) {
+                    let res = interp(v,'b','s');
                     document.getElementById('conv-output').value = Math.round(res/10)*10;
                     document.getElementById('conv-bar').style.width = ((v-17)/33)*100 + "%";
-                } else {
-                    document.getElementById('conv-output').value = "Min 17";
-                    document.getElementById('conv-bar').style.width = "0%";
-                }
+                } else { document.getElementById('conv-output').value = "Min 17"; document.getElementById('conv-bar').style.width = "0%"; }
             } else {
-                if(v > 1600) v = 1600; 
-                if(v >= 1050) {
-                    let res = interp(v, 's', 'b');
+                if(v>1600) v=1600;
+                if(v>=1050) {
+                    let res = interp(v,'s','b');
                     document.getElementById('conv-output').value = res.toFixed(1);
                     document.getElementById('conv-bar').style.width = ((v-1050)/550)*100 + "%";
-                } else {
-                    document.getElementById('conv-output').value = "Min 1050";
-                    document.getElementById('conv-bar').style.width = "0%";
-                }
+                } else { document.getElementById('conv-output').value = "Min 1050"; document.getElementById('conv-bar').style.width = "0%"; }
             }
         });
 
-        // --- PREDICTOR LOGIC (EARLY 2025) ---
+        // --- PREDICTOR LOGIC (PURE EARLY) ---
         const RECORDS = [
-            { c: 'BIEM', g: 8.9, s: 34.93, res: 1 },
-            { c: 'BIEM', g: 9.41, s: 35.60, res: 1 },
-            { c: 'BIEM', g: 8.2, s: 36.8, res: 1 },
-            { c: 'BIEM', g: 8.1, s: 44.2, res: 1 },
-            { c: 'BIEM', g: 8.3, s: 39.0, res: 1 },
-            { c: 'BIEM', g: 9.5, s: 24.67, res: 1 },
+            { c: 'BIEM', g: 8.9, s: 34.93, res: 1 }, { c: 'BIEM', g: 9.41, s: 35.60, res: 1 },
+            { c: 'BIEM', g: 8.2, s: 36.8, res: 1 }, { c: 'BIEM', g: 8.1, s: 44.2, res: 1 },
+            { c: 'BIEM', g: 8.3, s: 39.0, res: 1 }, { c: 'BIEM', g: 9.5, s: 24.67, res: 1 },
             { c: 'BIEM', g: 7.8, s: 39.0, res: 0 }, 
-            { c: 'BIEF', g: 9.5, s: 24.67, res: 1 },
-            { c: 'BIEF', g: 9.5, s: 29.0, res: 1 },
-            { c: 'BIEF', g: 9.41, s: 33.73, res: 1 },
-            { c: 'BIEF', g: 9.67, s: 38.7, res: 1 },
-            { c: 'BIEF', g: 8.9, s: 36.5, res: 1 },
-            { c: 'BIEF', g: 9.17, s: 36.5, res: 1 },
+            { c: 'BIEF', g: 9.5, s: 24.67, res: 1 }, { c: 'BIEF', g: 9.5, s: 29.0, res: 1 },
+            { c: 'BIEF', g: 9.41, s: 33.73, res: 1 }, { c: 'BIEF', g: 9.67, s: 38.7, res: 1 },
+            { c: 'BIEF', g: 8.9, s: 36.5, res: 1 }, { c: 'BIEF', g: 9.17, s: 36.5, res: 1 },
             { c: 'CLEACC', g: 9.5, s: 24.67, res: 1 },
-            { c: 'CLEAM', g: 7.75, s: 40.5, res: 1 },
-            { c: 'CLEAM', g: 7.5, s: 39.67, res: 1 },
-            { c: 'CLEAM', g: 7.33, s: 38.0, res: 1 },
-            { c: 'CLEAM', g: 7.33, s: 40.6, res: 1 },
-            { c: 'CLEAM', g: 6.91, s: 45.0, res: 0 }, 
-            { c: 'CLEAM', g: 7.08, s: 40.4, res: 0 },
-            { c: 'BEMACS', g: 8.08, s: 37.43, res: 1 },
-            { c: 'BEMACS', g: 9.0, s: 43.0, res: 1 },
-            { c: 'BEMACS', g: 8.88, s: 43.73, res: 1 },
-            { c: 'BEMACS', g: 8.5, s: 47.6, res: 1 },
-            { c: 'BEMACS', g: 8.5, s: 36.0, res: 1 },
-            { c: 'BEMACS', g: 8.25, s: 35.6, res: 1 }
+            { c: 'CLEAM', g: 7.75, s: 40.5, res: 1 }, { c: 'CLEAM', g: 7.5, s: 39.67, res: 1 },
+            { c: 'CLEAM', g: 7.33, s: 38.0, res: 1 }, { c: 'CLEAM', g: 7.33, s: 40.6, res: 1 },
+            { c: 'CLEAM', g: 6.91, s: 45.0, res: 0 }, { c: 'CLEAM', g: 7.08, s: 40.4, res: 0 },
+            { c: 'BEMACS', g: 8.08, s: 37.43, res: 1 }, { c: 'BEMACS', g: 9.0, s: 43.0, res: 1 },
+            { c: 'BEMACS', g: 8.88, s: 43.73, res: 1 }, { c: 'BEMACS', g: 8.5, s: 47.6, res: 1 },
+            { c: 'BEMACS', g: 8.5, s: 36.0, res: 1 }, { c: 'BEMACS', g: 8.25, s: 35.6, res: 1 }
         ];
 
+        // PARAMETRI AGGIORNATI (BIEM, BIEF, BEMACS LOWERED)
         const PARAMS = {
-            "CLEAM":  {min: 7.2, safe: 9.0, tL: 39.5, tH: 27},
-            "BIEM":   {min: 7.9, safe: 9.2, tL: 41.0, tH: 32},
-            "BIEF":   {min: 7.9, safe: 9.2, tL: 39.0, tH: 28},
+            "CLEAM":  {min: 7.2, safe: 9.0, tL: 38.5, tH: 27},
+            "BIEM":   {min: 7.9, safe: 9.2, tL: 39.0, tH: 30}, // Abbassato per riflettere ammessi Early
+            "BIEF":   {min: 7.9, safe: 9.2, tL: 38.5, tH: 28}, // Abbassato drasticamente per Early
             "CLEACC": {min: 7.0, safe: 9.0, tL: 36.0, tH: 25},
-            "BEMACS": {min: 7.8, safe: 9.1, tL: 37.0, tH: 29},
+            "BEMACS": {min: 7.8, safe: 9.1, tL: 36.5, tH: 29}, // Abbassato
             "BAI":    {min: 8.5, safe: 9.5, tL: 41.0, tH: 33},
             "CLMG":   {min: 7.0, safe: 9.0, tL: 38.0, tH: 28},
             "BIG":    {min: 7.8, safe: 9.3, tL: 41.0, tH: 30},
@@ -579,14 +535,9 @@
             const matchBox = document.getElementById('data-match');
             const matchText = document.getElementById('match-text');
 
-            if (!course || isNaN(gpa) || gpa < 6 || gpa > 10) {
-                resArea.style.display = 'none';
-                return;
-            }
-
+            if (!course || isNaN(gpa) || gpa < 6 || gpa > 10) { resArea.style.display = 'none'; return; }
             resArea.style.display = 'block';
 
-            // 1. Logic
             const p = PARAMS[course] || PARAMS["CLEAM"];
             let target;
             let penalità = false;
@@ -601,17 +552,12 @@
                 target = p.tL - (pos * (p.tL - p.tH));
             }
 
-            // 2. Data Match
             let bestRecord = null;
             let minDiff = 100;
-            
             RECORDS.forEach(r => {
                 if(r.c === course) {
                     let diff = Math.abs(r.g - gpa);
-                    if(diff < minDiff) {
-                        minDiff = diff;
-                        bestRecord = r;
-                    }
+                    if(diff < minDiff) { minDiff = diff; bestRecord = r; }
                 }
             });
 
@@ -621,18 +567,13 @@
                     ? '<span class="match-tag tag-ok">Ammesso</span>' 
                     : '<span class="match-tag tag-ko">Rifiutato</span>';
                 matchText.innerHTML = `Media ${bestRecord.g} con Test ${bestRecord.s} ${tagHtml}`;
-            } else {
-                matchBox.style.display = 'none';
-            }
+            } else { matchBox.style.display = 'none'; }
 
-            // 3. Output
             if (isNaN(score)) {
                 badge.innerText = "Target Early 2025";
                 badge.style.color = "var(--primary)";
-                
                 let tInt = Math.round(target);
                 let range = (target >= 49) ? "49-50" : `${tInt} - ${tInt+2}`;
-                
                 if (target > 50) {
                     title.innerText = "Non Competitivo";
                     desc.innerText = "In base ai dati Early 2025, la media attuale risulta troppo bassa per rientrare nei parametri, anche con punteggi massimi.";
@@ -646,9 +587,7 @@
                     if(score > 1600) score = 1600;
                     effScore = interp(score, 's', 'b');
                 }
-
                 let diff = effScore - target;
-
                 if (penalità && effScore < 45) {
                     badge.innerText = "Critico"; badge.style.color = "var(--danger)";
                     title.innerText = "Media sotto soglia";
