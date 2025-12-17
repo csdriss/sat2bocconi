@@ -79,13 +79,6 @@
             margin: 0;
             line-height: 1;
         }
-        .home-subtitle {
-            font-size: 15px;
-            color: var(--text-sec);
-            font-weight: 500;
-            margin-top: 12px;
-            line-height: 1.4;
-        }
 
         /* --- UI ELEMENTS --- */
         .card {
@@ -335,8 +328,6 @@
 
         <section id="view-home" class="view-section active">
             <div class="home-header">
-                <h1 class="home-emoji"></h1>
-
             </div>
             
             <div class="menu-item" onclick="goTo('view-converter')">
@@ -465,58 +456,57 @@
         }
 
         function interp(val, inK, outK) {
+            if(inK === 's' && val > 1600) val = 1600;
+            if(inK === 'b' && val > 50) val = 50;
+
             for(let i=0; i<ANCHORS.length-1; i++){
                 let l=ANCHORS[i], u=ANCHORS[i+1];
                 if(val>=l[inK] && val<=u[inK]) return l[outK] + (val-l[inK])/(u[inK]-l[inK])*(u[outK]-l[outK]);
             }
+            let last = ANCHORS[ANCHORS.length-1];
+            if (val > last[inK]) return last[outK];
             return 0;
         }
 
         document.getElementById('conv-input').addEventListener('input', function(e) {
             let v = parseFloat(e.target.value);
             if(isNaN(v)) { document.getElementById('conv-output').value=""; document.getElementById('conv-bar').style.width="0%"; return; }
+            
             if(cMode === 'bocconi') {
-                if(v>50) v=50;
                 if(v>=17) {
                     let res = interp(v,'b','s');
                     document.getElementById('conv-output').value = Math.round(res/10)*10;
-                    document.getElementById('conv-bar').style.width = ((v-17)/33)*100 + "%";
-                } else { document.getElementById('conv-output').value = "Min 17"; document.getElementById('conv-bar').style.width = "0%"; }
+                    document.getElementById('conv-bar').style.width = Math.min(100, ((v-17)/33)*100) + "%";
+                } else { document.getElementById('conv-output').value = "< 1050"; document.getElementById('conv-bar').style.width = "5%"; }
             } else {
-                if(v>1600) v=1600;
                 if(v>=1050) {
                     let res = interp(v,'s','b');
                     document.getElementById('conv-output').value = res.toFixed(1);
-                    document.getElementById('conv-bar').style.width = ((v-1050)/550)*100 + "%";
-                } else { document.getElementById('conv-output').value = "Min 1050"; document.getElementById('conv-bar').style.width = "0%"; }
+                    document.getElementById('conv-bar').style.width = Math.min(100, ((v-1050)/550)*100) + "%";
+                } else { document.getElementById('conv-output').value = "< 17"; document.getElementById('conv-bar').style.width = "5%"; }
             }
         });
 
-        // --- PREDICTOR LOGIC (PURE EARLY) ---
+        // --- PREDICTOR LOGIC ---
         const RECORDS = [
-            { c: 'BIEM', g: 8.9, s: 34.93, res: 1 }, { c: 'BIEM', g: 9.41, s: 35.60, res: 1 },
-            { c: 'BIEM', g: 8.2, s: 36.8, res: 1 }, { c: 'BIEM', g: 8.1, s: 44.2, res: 1 },
-            { c: 'BIEM', g: 8.3, s: 39.0, res: 1 }, { c: 'BIEM', g: 9.5, s: 24.67, res: 1 },
-            { c: 'BIEM', g: 7.8, s: 39.0, res: 0 }, 
-            { c: 'BIEF', g: 9.5, s: 24.67, res: 1 }, { c: 'BIEF', g: 9.5, s: 29.0, res: 1 },
-            { c: 'BIEF', g: 9.41, s: 33.73, res: 1 }, { c: 'BIEF', g: 9.67, s: 38.7, res: 1 },
-            { c: 'BIEF', g: 8.9, s: 36.5, res: 1 }, { c: 'BIEF', g: 9.17, s: 36.5, res: 1 },
-            { c: 'CLEACC', g: 9.5, s: 24.67, res: 1 },
-            { c: 'CLEAM', g: 7.75, s: 40.5, res: 1 }, { c: 'CLEAM', g: 7.5, s: 39.67, res: 1 },
-            { c: 'CLEAM', g: 7.33, s: 38.0, res: 1 }, { c: 'CLEAM', g: 7.33, s: 40.6, res: 1 },
-            { c: 'CLEAM', g: 6.91, s: 45.0, res: 0 }, { c: 'CLEAM', g: 7.08, s: 40.4, res: 0 },
-            { c: 'BEMACS', g: 8.08, s: 37.43, res: 1 }, { c: 'BEMACS', g: 9.0, s: 43.0, res: 1 },
-            { c: 'BEMACS', g: 8.88, s: 43.73, res: 1 }, { c: 'BEMACS', g: 8.5, s: 47.6, res: 1 },
-            { c: 'BEMACS', g: 8.5, s: 36.0, res: 1 }, { c: 'BEMACS', g: 8.25, s: 35.6, res: 1 }
+            // CLEAM Rejected
+            { c: 'CLEAM', g: 7.08, s: 40.4, res: 0 }, { c: 'CLEAM', g: 7.5, s: 39.7, res: 1 },
+            // BEMACS
+            { c: 'BEMACS', g: 8.08, s: 37.43, res: 1 }, { c: 'BEMACS', g: 8.88, s: 43.73, res: 1 },
+            { c: 'BEMACS', g: 8.50, s: 47.60, res: 1 }, { c: 'BEMACS', g: 9.00, s: 43.00, res: 1 },
+            { c: 'BEMACS', g: 8.50, s: 36.00, res: 1 }, { c: 'BEMACS', g: 8.25, s: 35.60, res: 1 },
+            // Altri
+            { c: 'BIEM', g: 8.9, s: 34.9, res: 1 }, { c: 'BIEM', g: 7.8, s: 39.0, res: 0 },
+            { c: 'BIEF', g: 9.4, s: 33.7, res: 1 }
         ];
 
-        // PARAMETRI AGGIORNATI (BIEM, BIEF, BEMACS LOWERED)
         const PARAMS = {
-            "CLEAM":  {min: 7.2, safe: 9.0, tL: 38.5, tH: 27},
-            "BIEM":   {min: 7.9, safe: 9.2, tL: 39.0, tH: 30}, // Abbassato per riflettere ammessi Early
-            "BIEF":   {min: 7.9, safe: 9.2, tL: 38.5, tH: 28}, // Abbassato drasticamente per Early
+            "BEMACS": {min: 8.1, safe: 9.2, tL: 37.5, tH: 30}, 
+            // Calibrato per CLEAM: con 7.08, target ~40.6. Quindi con 40.4 sei appena sotto.
+            "CLEAM":  {min: 7.5, safe: 9.1, tL: 38.5, tH: 28}, 
+            "BIEM":   {min: 7.9, safe: 9.2, tL: 39.0, tH: 30},
+            "BIEF":   {min: 7.9, safe: 9.2, tL: 38.5, tH: 29},
             "CLEACC": {min: 7.0, safe: 9.0, tL: 36.0, tH: 25},
-            "BEMACS": {min: 7.8, safe: 9.1, tL: 36.5, tH: 29}, // Abbassato
             "BAI":    {min: 8.5, safe: 9.5, tL: 41.0, tH: 33},
             "CLMG":   {min: 7.0, safe: 9.0, tL: 38.0, tH: 28},
             "BIG":    {min: 7.8, safe: 9.3, tL: 41.0, tH: 30},
@@ -540,18 +530,20 @@
 
             const p = PARAMS[course] || PARAMS["CLEAM"];
             let target;
-            let penalità = false;
 
+            // Logica Pendenza
             if (gpa < p.min) {
                 let diff = p.min - gpa;
-                target = p.tL + (diff * 4.0); 
-                if (target > 50) target = 51;
-                penalità = true;
+                // BEMACS/BAI restano punitivi (8.0). CLEAM torna a standard (5.0) perché con 7.08 -> 40.6 è corretto.
+                let multiplier = (course === "BEMACS" || course === "BAI") ? 8.0 : 5.0; 
+                target = p.tL + (diff * multiplier); 
             } else {
                 let pos = Math.max(0, Math.min(1, (gpa - p.min)/(p.safe - p.min)));
                 target = p.tL - (pos * (p.tL - p.tH));
             }
+            if (target > 50.5) target = 51;
 
+            // Record Simile
             let bestRecord = null;
             let minDiff = 100;
             RECORDS.forEach(r => {
@@ -569,41 +561,34 @@
                 matchText.innerHTML = `Media ${bestRecord.g} con Test ${bestRecord.s} ${tagHtml}`;
             } else { matchBox.style.display = 'none'; }
 
+            // Output
             if (isNaN(score)) {
-                badge.innerText = "Target Early 2025";
-                badge.style.color = "var(--primary)";
-                let tInt = Math.round(target);
-                let range = (target >= 49) ? "49-50" : `${tInt} - ${tInt+2}`;
+                badge.innerText = "Target Consigliato"; badge.style.color = "var(--primary)";
                 if (target > 50) {
-                    title.innerText = "Non Competitivo";
-                    desc.innerText = "In base ai dati Early 2025, la media attuale risulta troppo bassa per rientrare nei parametri, anche con punteggi massimi.";
+                    title.innerText = "Sfida Estrema (49-50)";
+                    desc.innerText = `Con media ${gpa} su ${course}, i dati mostrano che serve un punteggio test quasi perfetto per compensare.`;
                 } else {
-                    title.innerText = `Consigliato: ${range}`;
-                    desc.innerText = `Per allinearsi agli ammessi della sessione Early 2025 con media ${gpa}, è indicato un punteggio in questa fascia.`;
+                    // Visualizzazione Range (es. 40 - 42)
+                    let tInt = Math.floor(target); 
+                    title.innerText = `Punta a: ${tInt} - ${tInt + 2}`;
+                    desc.innerText = `Per compensare la media ${gpa} in ${course}, il trend dei dati Early 2025 suggerisce questa fascia di punteggio.`;
                 }
             } else {
-                let effScore = score;
-                if(score > 60) { 
-                    if(score > 1600) score = 1600;
-                    effScore = interp(score, 's', 'b');
-                }
-                let diff = effScore - target;
-                if (penalità && effScore < 45) {
-                    badge.innerText = "Critico"; badge.style.color = "var(--danger)";
-                    title.innerText = "Media sotto soglia";
-                    desc.innerText = `Nonostante il test, la media ${gpa} è inferiore ai valori minimi di ammissione riscontrati nella sessione Early 2025.`;
-                } else if (diff >= 0.5) {
-                    badge.innerText = "Probabilità Alta"; badge.style.color = "var(--success)";
-                    title.innerText = "In Target";
-                    desc.innerText = "Il punteggio è in linea o superiore a quello degli ammessi Early 2025 con media scolastica simile.";
-                } else if (diff >= -1.5) {
+                let effScore = score > 60 ? interp(Math.min(score,1600), 's', 'b') : score;
+                let gap = effScore - target;
+
+                if (gap >= 1.0) {
+                    badge.innerText = "Ottima Probabilità"; badge.style.color = "var(--success)";
+                    title.innerText = "Punteggio Solido";
+                    desc.innerText = `Con ${effScore.toFixed(1)} superi il target calcolato. Sei ben posizionato.`;
+                } else if (gap >= -1.5) {
                     badge.innerText = "Competitivo"; badge.style.color = "var(--warning)";
                     title.innerText = "Fascia Borderline";
-                    desc.innerText = `Il risultato è molto vicino alla soglia di ammissione stimata (${target.toFixed(1)}). Esito incerto.`;
+                    desc.innerText = `Sei vicino alla soglia stimata (${target.toFixed(1)}). È un punteggio giocabile, anche se l'esito non è garantito.`;
                 } else {
-                    badge.innerText = "Basso"; badge.style.color = "var(--danger)";
-                    title.innerText = "Sotto Target";
-                    desc.innerText = `In base ai dati Early 2025, per media ${gpa} è storicamente richiesto un punteggio più alto (ca. ${Math.round(target)}).`;
+                    badge.innerText = "Sotto Target"; badge.style.color = "var(--danger)";
+                    title.innerText = `Servono +${Math.ceil(Math.abs(gap))} punti`;
+                    desc.innerText = `Per ${course} con media ${gpa}, dovresti idealmente alzare il test verso quota ${Math.round(target)}.`;
                 }
             }
         }
