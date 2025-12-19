@@ -6,13 +6,7 @@
     
     <title>Probabilità Ammissione</title>
     
-    <meta name="description" content="Analisi statistica basata sui dati Early 2025">
-    <meta property="og:title" content="Probabilità Ammissione">
-    <meta property="og:description" content="Analisi statistica basata sui dati Early 2025">
-    <meta property="og:type" content="website">
-    
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧙‍♂️</text></svg>">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -56,24 +50,19 @@
             position: relative;
         }
 
-        /* --- VISTE --- */
+        /* --- VISTE (FIX PER I CLICK) --- */
         .view-section {
-            display: none;
-            opacity: 0;
-            transform: scale(0.99);
-            transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            display: none; /* Nascondi completamente */
+            width: 100%;
         }
         .view-section.active {
-            display: block;
-            opacity: 1;
-            transform: scale(1);
+            display: block; /* Mostra */
+            animation: fadeIn 0.3s ease;
+            position: relative;
+            z-index: 100; /* Forza in primo piano */
         }
-
-        /* --- HOME HEADER --- */
-        .home-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+        
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 
         /* --- UI ELEMENTS --- */
         .card {
@@ -83,6 +72,8 @@
             box-shadow: var(--shadow-card);
             margin-bottom: 20px;
             border: 1px solid rgba(0,0,0,0.02);
+            position: relative;
+            z-index: 10;
         }
 
         .menu-item {
@@ -92,10 +83,13 @@
             background: var(--card-bg);
             border-radius: var(--radius-xl);
             margin-bottom: 16px;
-            cursor: pointer;
+            cursor: pointer; /* Cursore manina */
             box-shadow: var(--shadow-card);
-            transition: transform 0.2s ease;
+            transition: transform 0.1s ease;
             border: 1px solid rgba(0,0,0,0.02);
+            user-select: none;
+            position: relative;
+            z-index: 20;
         }
         .menu-item:active { transform: scale(0.97); background: #f2f2f7; }
 
@@ -145,7 +139,6 @@
             color: var(--text-main);
             cursor: pointer;
             margin-right: 16px;
-            transition: background 0.2s;
         }
         .back-btn:active { background: #d1d1d6; }
         
@@ -180,18 +173,15 @@
             border-radius: 14px;
             color: var(--text-main);
             outline: none;
-            transition: box-shadow 0.2s, background 0.2s;
             appearance: none;
+            -webkit-appearance: none;
         }
         .input-box:focus {
             box-shadow: 0 0 0 2px var(--primary) inset;
             background: #fff;
         }
         select.input-box {
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231D1D1F%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 16px top 50%;
-            background-size: 10px auto;
+            background-color: var(--input-bg); /* Fix safari */
         }
 
         .result-container {
@@ -199,9 +189,7 @@
             padding-top: 24px;
             border-top: 1px solid #E5E5EA;
             display: none;
-            animation: fadeIn 0.3s ease;
         }
-        @keyframes fadeIn { from{opacity:0; transform:translateY(5px);} to{opacity:1; transform:translateY(0);} }
 
         .result-badge {
             font-size: 11px;
@@ -274,9 +262,7 @@
             text-decoration: none;
             display: block;
             margin-top: 8px;
-            transition: color 0.2s;
         }
-        .footer-link:active { color: var(--text-sec); }
 
         .segment-control {
             background: #E5E5EA;
@@ -293,7 +279,6 @@
             font-weight: 600;
             border-radius: 9px;
             cursor: pointer;
-            transition: all 0.2s;
             color: var(--text-sec);
         }
         .segment-opt.active {
@@ -322,8 +307,7 @@
     <div class="app-container">
 
         <section id="view-home" class="view-section active">
-            <div class="home-header">
-                </div>
+            <div class="home-header"></div>
             
             <div class="menu-item" onclick="goTo('view-converter')">
                 <div class="menu-icon">🔑</div>
@@ -422,17 +406,29 @@
                     Seleziona un corso per vedere il range di affidabilità.
                 </div>
                 <br>
-                <div class="footer-text">I corsi con dati insufficienti (BAI, BIG, CLMG) sono stati rimossi.</div>
+                <div class="footer-text">Algoritmo calibrato sui candidati non ammessi.</div>
             </div>
         </section>
 
     </div>
 
     <script>
-        // --- NAVIGATION ---
+        // --- NAVIGATION SEMPLIFICATA ---
         function goTo(id) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            setTimeout(() => { document.getElementById(id).classList.add('active'); }, 50);
+            // Nascondi tutto
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active');
+                el.style.display = 'none'; // Sicurezza extra
+            });
+            // Mostra target
+            const target = document.getElementById(id);
+            if(target) {
+                target.style.display = 'block';
+                // Timeout minimo per permettere al browser di renderizzare il display:block prima di aggiungere classi (se necessario)
+                setTimeout(() => {
+                    target.classList.add('active');
+                }, 10);
+            }
             window.scrollTo(0,0);
         }
 
@@ -465,7 +461,8 @@
         }
 
         document.getElementById('conv-input').addEventListener('input', function(e) {
-            let v = parseFloat(e.target.value);
+            let valStr = e.target.value.replace(',','.');
+            let v = parseFloat(valStr);
             if(isNaN(v)) { document.getElementById('conv-output').value=""; document.getElementById('conv-bar').style.width="0%"; return; }
             
             if(cMode === 'bocconi') {
@@ -483,9 +480,7 @@
             }
         });
 
-        // --- NEW LOGIC: FORMULA BASED ---
-        // Formula: 45 * (GPA-6)/4 + 55 * (TEST-17)/33
-        
+        // --- LOGICA FORMULA ---
         function getFormulaScore(gpa, test) {
             if (gpa < 6) gpa = 6;
             if (test < 17) test = 17;
@@ -494,9 +489,9 @@
             return pGPA + pTest;
         }
 
-        // --- DATABASE ---
+        // --- DATABASE SENZA I REJECT 6.91 ---
         const REAL_DB = [
-            // CLEAM
+            // CLEAM ADMITTED
             {c:'CLEAM', g:7.08, s:40.4, r:0}, 
             {c:'CLEAM', g:7.50, s:39.7, r:1},
             {c:'CLEAM', g:7.25, s:39.0, sat:1490, r:1}, 
@@ -509,33 +504,40 @@
             {c:'CLEAM', g:8.40, s:33.1, r:1}, {c:'CLEAM', g:7.60, s:32.0, r:1},
             {c:'CLEAM', g:8.60, s:29.0, r:1}, {c:'CLEAM', g:8.75, s:28.5, r:1},
             {c:'CLEAM', g:7.75, s:40.0, sat:1510, r:1}, 
-            // CLEAM Rejections
-            {c:'CLEAM', g:7.80, s:30.5, sat:1360, r:0},
-            {c:'CLEAM', g:6.91, s:45.2, r:0}, {c:'CLEAM', g:6.91, s:45.0, r:0},
-            {c:'CLEAM', g:6.90, s:45.0, r:0}, {c:'CLEAM', g:7.00, s:40.4, r:0},
-            {c:'CLEAM', g:7.40, s:39.7, r:0}, {c:'CLEAM', g:7.25, s:37.6, r:0},
+            // CLEAM REJECTIONS (Puliti)
+            {c:'CLEAM', g:8.00, s:30.5, sat:1360, r:0},
+            // REMOVED 6.91 cases
+            {c:'CLEAM', g:7.00, s:40.4, r:0},
+            {c:'CLEAM', g:7.40, s:39.7, r:0}, 
+            {c:'CLEAM', g:7.25, s:37.6, r:0},
             {c:'CLEAM', g:8.00, s:33.0, r:0},
+            {c:'CLEAM', g:7.00, s:40.0, r:0},
+            {c:'CLEAM', g:7.00, s:39.67, r:0},
+            {c:'CLEAM', g:7.00, s:37.6, r:0},
 
-            // BIEM
+            // BIEM ADMITTED
             {c:'BIEM', g:7.50, s:35.0, sat:1430, r:1},
             {c:'BIEM', g:8.10, s:44.2, r:1}, {c:'BIEM', g:8.33, s:40.7, r:1}, 
             {c:'BIEM', g:8.75, s:38.0, r:1}, {c:'BIEM', g:8.00, s:33.0, r:1}, 
             {c:'BIEM', g:8.90, s:31.6, r:1}, {c:'BIEM', g:8.90, s:34.9, r:1}, 
             {c:'BIEM', g:8.20, s:36.8, r:1}, {c:'BIEM', g:8.83, s:35.8, r:1}, 
             {c:'BIEM', g:9.50, s:29.0, r:1},
-            // BIEM Rejections
-            {c:'BIEM', g:7.80, s:39.0, sat:1490, r:0},
-            {c:'BIEM', g:7.50, s:35.0, sat:1430, r:0},
-            {c:'BIEM', g:7.75, s:40.0, sat:1510, r:0},
-            {c:'BIEM', g:8.10, s:44.0, r:0}, {c:'BIEM', g:7.85, s:39.4, r:0},
-            {c:'BIEM', g:7.75, s:39.0, r:0}, {c:'BIEM', g:8.80, s:32.0, r:0},
+            // BIEM REJECTIONS
+            {c:'BIEM', g:8.00, s:39.0, sat:1490, r:0},
+            {c:'BIEM', g:8.00, s:35.0, sat:1430, r:0},
+            {c:'BIEM', g:8.00, s:40.0, sat:1510, r:0}, 
+            {c:'BIEM', g:8.00, s:44.0, r:0}, 
+            {c:'BIEM', g:8.00, s:39.4, r:0},
+            {c:'BIEM', g:8.00, s:39.0, r:0}, 
+            {c:'BIEM', g:9.00, s:32.0, r:0},
 
             // BIEF
             {c:'BIEF', g:9.17, s:36.5, r:1}, {c:'BIEF', g:8.90, s:36.5, r:1},
             {c:'BIEF', g:8.71, s:35.7, r:1}, {c:'BIEF', g:9.58, s:29.0, r:1},
             {c:'BIEF', g:9.67, s:38.7, r:1},
             // BIEF Rejections
-            {c:'BIEF', g:8.70, s:41.0, r:0}, {c:'BIEF', g:7.86, s:38.6, r:0},
+            {c:'BIEF', g:9.00, s:41.0, r:0}, 
+            {c:'BIEF', g:8.00, s:38.6, r:0},
 
             // CLEACC
             {c:'CLEACC', g:8.08, s:30.0, r:1}, {c:'CLEACC', g:9.50, s:25.0, r:1},
@@ -549,7 +551,7 @@
             {c:'GLAW', g:7.30, s:37.2, r:1}, {c:'GLAW', g:7.33, s:34.7, r:1}
         ];
 
-        // Reliability ranges (Media)
+        // Reliability ranges
         const RELIABILITY = {
             "CLEAM": "7.0 - 8.8",
             "BIEM":  "7.5 - 9.5",
@@ -559,8 +561,7 @@
             "GLAW":  "7.3 - 7.5"
         };
 
-        // Estimated CUTOFF Scores (Total / 100) based on DB analysis using the formula
-        // These are heuristic baselines derived from the provided admitted students
+        // Thresholds
         const SCORE_THRESHOLDS = {
             "CLEAM":  52.0, 
             "BIEM":   55.0,
@@ -572,8 +573,11 @@
 
         function calcPred() {
             const course = document.getElementById('pred-course').value;
-            let gpa = parseFloat(document.getElementById('pred-gpa').value);
-            let rawScore = parseFloat(document.getElementById('pred-score').value);
+            let gpaVal = document.getElementById('pred-gpa').value.replace(',','.');
+            let gpa = parseFloat(gpaVal);
+            
+            let rawScoreVal = document.getElementById('pred-score').value.replace(',','.');
+            let rawScore = parseFloat(rawScoreVal);
             
             const resArea = document.getElementById('result-area');
             const badge = document.getElementById('res-badge');
@@ -583,16 +587,15 @@
             const matchText = document.getElementById('match-text');
             const noteEl = document.getElementById('dynamic-range-note');
 
-            // UPDATE FOOTER NOTE
             if(course && RELIABILITY[course]) {
-                noteEl.innerHTML = `<strong>Nota:</strong> Per ${course}, la stima è più accurata se la tua media è compresa tra <strong>${RELIABILITY[course]}</strong> (dove si concentrano i dati). Al di fuori, la previsione è meno certa.`;
+                noteEl.innerHTML = `<strong>Nota:</strong> Per ${course}, la stima è più accurata se la tua media è compresa tra <strong>${RELIABILITY[course]}</strong>.`;
             }
 
             if (!course || isNaN(gpa) || gpa < 6 || gpa > 10) { resArea.style.display = 'none'; return; }
             resArea.style.display = 'block';
 
-            // 1. INPUT VALIDATION & CONVERSION
-            let searchScore; // Bocconi score used for calculation
+            // 1. CONVERSIONE
+            let searchScore; 
             let effScore = null;
             let invalidInput = false;
 
@@ -608,39 +611,47 @@
                 }
             }
 
-            // 2. CALCULATE TARGET TEST SCORE using formula
-            // We need Total Score > Threshold
-            // Total = 45*(GPA-6)/4 + 55*(Test-17)/33
-            // Let GPA_Part = 45*(GPA-6)/4
-            // Threshold = GPA_Part + 55*(Test-17)/33
-            // Test_Part_Needed = Threshold - GPA_Part
-            // Test_Needed = 17 + (Test_Part_Needed * 33 / 55)
-
+            // 2. TARGET CALC
             const THRESHOLD = SCORE_THRESHOLDS[course];
             let gpaPart = 45 * ((gpa - 6) / 4);
             let neededTestPart = THRESHOLD - gpaPart;
             
             let target;
             if (neededTestPart <= 0) {
-                target = 17.0; // Minimal score theoretically enough
+                target = 17.0; 
             } else {
                 target = 17 + (neededTestPart * 33 / 55);
             }
-
-            // Clamp Target
             if (target < 17) target = 17;
 
-            // If user has no score, use target for search
+            // 3. LOGICA PAVIMENTO (SENZA I 6.91 RIMOSSI)
+            let minSafeScore = 0;
+            let rejectionConstraintFound = false;
+
+            REAL_DB.forEach(r => {
+                if (r.c === course && r.r === 0) {
+                    if (r.g >= (gpa - 0.05)) {
+                        if (r.s > minSafeScore) {
+                            minSafeScore = r.s;
+                            rejectionConstraintFound = true;
+                        }
+                    }
+                }
+            });
+
+            if (rejectionConstraintFound && target <= minSafeScore) {
+                target = minSafeScore + 0.6; 
+            }
+
             if (isNaN(rawScore)) { searchScore = target > 50 ? 50 : target; }
 
-            // 3. FIND NEAREST NEIGHBOR IN DB
+            // 4. RICERCA DB
             let bestRecord = null;
             let minDist = Infinity;
             
             if (!invalidInput) {
                 REAL_DB.forEach(r => {
                     if(r.c === course || (course === 'BEMACS' && r.c === 'BAI')) { 
-                        // Weighted Euclidean Distance: GPA has more weight in "similarity" perception
                         let dG = (r.g - gpa) * 10; 
                         let dS = (r.s - searchScore);
                         let dist = Math.sqrt(dG*dG + dS*dS);
@@ -649,7 +660,7 @@
                 });
             }
 
-            // 4. UI OUTPUT
+            // 5. OUTPUT
             if (invalidInput) {
                 matchBox.style.display = 'none';
                 badge.innerText = "Errore Input"; badge.style.color = "var(--danger)";
@@ -658,7 +669,7 @@
                 return;
             }
 
-            // SHOW MATCH
+            // MATCH VISUALIZATION
             if (bestRecord && minDist < 15) { 
                 matchBox.style.display = 'block';
                 let tagHtml = bestRecord.r === 1 
@@ -676,27 +687,36 @@
                 matchBox.style.display = 'none';
             }
 
-            // SHOW ADVICE
+            // ADVICE LOGIC
             if (effScore === null) {
                 // MODE: PREDICTION
                 if (target > 45) {
-                    badge.innerText = "Difficile"; badge.style.color = "var(--danger)";
+                    badge.innerText = "Molto Difficile"; badge.style.color = "var(--danger)";
                     title.innerText = "Obiettivo: > 45";
-                    desc.innerText = `Con media ${gpa}, la formula di selezione richiede un punteggio test estremamente alto per competere.`;
+                    desc.innerText = `Attenzione: ci sono candidati con media ${gpa} (o superiore) rifiutati anche con punteggi alti. Serve un test eccellente.`;
                 } else {
                     badge.innerText = "Target Consigliato"; badge.style.color = "var(--primary)";
-                    title.innerText = `Punta a: ${Math.round(target)}+`;
-                    desc.innerText = `Per ${course} con media ${gpa}, questo punteggio ti porterebbe a un totale competitivo.`;
+                    title.innerText = `Punta a: ${Math.round(target * 10) / 10}+`;
+                    if(rejectionConstraintFound) {
+                        desc.innerText = `Target calcolato tenendo conto dei candidati rifiutati con media simile alla tua.`;
+                    } else {
+                        desc.innerText = `Per ${course} con media ${gpa}, questo punteggio ti porterebbe a un totale competitivo.`;
+                    }
                 }
             } else {
                 // MODE: EVALUATION
+                let risky = false;
+                if (rejectionConstraintFound && effScore <= minSafeScore) {
+                    risky = true;
+                }
+
                 let userTotal = getFormulaScore(gpa, effScore);
                 let gap = userTotal - THRESHOLD;
 
-                if (target > 45 && effScore < 45) {
-                     badge.innerText = "Difficile"; badge.style.color = "var(--danger)";
-                     title.innerText = "Obiettivo: > 45";
-                     desc.innerText = `La media penalizza il punteggio totale. Serve un test sopra i 45 punti per rientrare nei parametri storici.`;
+                if (risky) {
+                      badge.innerText = "A Rischio"; badge.style.color = "var(--danger)";
+                      title.innerText = "Punteggio Pericoloso";
+                      desc.innerText = `Attenzione: esistono candidati rifiutati in ${course} con media e test simili o superiori ai tuoi.`;
                 } else if (gap >= 2) {
                     badge.innerText = "Buone Probabilità"; badge.style.color = "var(--success)";
                     title.innerText = "Posizionamento Solido";
