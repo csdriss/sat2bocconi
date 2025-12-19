@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <title>Probabilità Ammissione</title>
+    <title>Probabilità Ammissione Bocconi</title>
     
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧙‍♂️</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦅</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -50,21 +50,18 @@
             position: relative;
         }
 
-        /* --- VISTE (FIX PER I CLICK) --- */
+        /* VISTE */
         .view-section {
-            display: none; /* Nascondi completamente */
+            display: none;
             width: 100%;
         }
         .view-section.active {
-            display: block; /* Mostra */
-            animation: fadeIn 0.3s ease;
+            display: block;
             position: relative;
-            z-index: 100; /* Forza in primo piano */
+            z-index: 100;
         }
-        
-        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 
-        /* --- UI ELEMENTS --- */
+        /* UI ELEMENTS */
         .card {
             background: var(--card-bg);
             border-radius: var(--radius-xl);
@@ -83,15 +80,16 @@
             background: var(--card-bg);
             border-radius: var(--radius-xl);
             margin-bottom: 16px;
-            cursor: pointer; /* Cursore manina */
+            cursor: pointer;
             box-shadow: var(--shadow-card);
             transition: transform 0.1s ease;
             border: 1px solid rgba(0,0,0,0.02);
             user-select: none;
             position: relative;
             z-index: 20;
+            -webkit-tap-highlight-color: rgba(0,0,0,0.05);
         }
-        .menu-item:active { transform: scale(0.97); background: #f2f2f7; }
+        .menu-item:active { transform: scale(0.98); background: #f9f9f9; }
 
         .menu-icon {
             font-size: 24px;
@@ -181,7 +179,7 @@
             background: #fff;
         }
         select.input-box {
-            background-color: var(--input-bg); /* Fix safari */
+            background-color: var(--input-bg);
         }
 
         .result-container {
@@ -213,37 +211,58 @@
             line-height: 1.5;
         }
 
-        .data-match-box {
+        .data-match-container {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .data-match-row {
             background: #F2F2F7;
             border-radius: 12px;
-            padding: 16px;
-            margin-top: 20px;
-            display: none;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
         }
+        
+        .data-match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
         .data-match-label {
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 10px;
+            font-weight: 700;
             text-transform: uppercase;
             color: var(--text-sec);
-            margin-bottom: 6px;
-            display: block;
+            letter-spacing: 0.5px;
         }
+
         .data-match-val {
             font-size: 14px;
             color: var(--text-main);
             font-weight: 500;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
         }
+
         .match-tag {
             display: inline-block;
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 10px;
             font-weight: 700;
-            margin-left: 6px;
             text-transform: uppercase;
+            white-space: nowrap;
         }
         .tag-ok { background: #D1FAE5; color: #065F46; }
         .tag-ko { background: #FEE2E2; color: #991B1B; }
+        .tag-tier { background: #DBEAFE; color: #1E40AF; }
 
         .footer-info {
             margin-top: 40px;
@@ -326,8 +345,8 @@
             </div>
 
             <div class="footer-info">
-                <div class="footer-text">Dati aggiornati alla sessione Early 2025.</div>
-                <div class="footer-text">Strumento statistico non ufficiale.</div>
+                <div class="footer-text">Dati aggiornati (PDF 19 Dic 2024).</div>
+                <div class="footer-text">Rimossi outlier statistici (es. CLEAM 45.0 Rifiutato).</div>
                 <a href="https://www.instagram.com/drissyakisoba/" target="_blank" class="footer-link">by @drissyakisoba</a>
             </div>
         </section>
@@ -370,11 +389,12 @@
                     <label>Corso</label>
                     <select id="pred-course" class="input-box" onchange="calcPred()">
                         <option value="" disabled selected>Seleziona...</option>
-                        <option value="CLEAM">CLEAM</option>
-                        <option value="BIEM">BIEM</option>
-                        <option value="BIEF">BIEF</option>
+                        <option value="BAI">BAI</option>
                         <option value="BEMACS">BEMACS</option>
+                        <option value="BIEF">BIEF</option>
+                        <option value="BIEM">BIEM</option>
                         <option value="CLEACC">CLEACC</option>
+                        <option value="CLEAM">CLEAM</option>
                         <option value="GLAW">Global Law</option>
                     </select>
                 </div>
@@ -394,10 +414,8 @@
                     <div class="result-main" id="res-title"></div>
                     <div class="result-sub" id="res-desc"></div>
 
-                    <div id="data-match" class="data-match-box">
-                        <span class="data-match-label">Candidato Simile (Early '25)</span>
-                        <div class="data-match-val" id="match-text"></div>
-                    </div>
+                    <div id="data-match-container" class="data-match-container">
+                        </div>
                 </div>
             </div>
             
@@ -406,33 +424,29 @@
                     Seleziona un corso per vedere il range di affidabilità.
                 </div>
                 <br>
-                <div class="footer-text">Algoritmo calibrato sui candidati non ammessi.</div>
+                <div class="footer-text">L'analisi incrocia i dati, propagando i rifiuti dalle fasce inferiori (es. Rifiutato BIEM = Rifiutato BIEF).</div>
             </div>
         </section>
 
     </div>
 
     <script>
-        // --- NAVIGATION SEMPLIFICATA ---
+        // --- NAVIGATION ---
         function goTo(id) {
-            // Nascondi tutto
             document.querySelectorAll('.view-section').forEach(el => {
                 el.classList.remove('active');
-                el.style.display = 'none'; // Sicurezza extra
+                el.style.display = 'none';
             });
-            // Mostra target
             const target = document.getElementById(id);
             if(target) {
                 target.style.display = 'block';
-                // Timeout minimo per permettere al browser di renderizzare il display:block prima di aggiungere classi (se necessario)
-                setTimeout(() => {
-                    target.classList.add('active');
-                }, 10);
+                setTimeout(() => { target.classList.add('active'); }, 10);
             }
             window.scrollTo(0,0);
         }
 
         // --- CONVERTER LOGIC ---
+        // Interpolazione SAT aggiornata
         const ANCHORS = [{b:17,s:1050},{b:25,s:1240},{b:30,s:1350},{b:35,s:1440},{b:40,s:1510},{b:50,s:1600}];
         let cMode = 'bocconi';
 
@@ -480,7 +494,7 @@
             }
         });
 
-        // --- LOGICA FORMULA ---
+        // --- FORMULA ---
         function getFormulaScore(gpa, test) {
             if (gpa < 6) gpa = 6;
             if (test < 17) test = 17;
@@ -489,86 +503,159 @@
             return pGPA + pTest;
         }
 
-        // --- DATABASE SENZA I REJECT 6.91 ---
-        const REAL_DB = [
-            // CLEAM ADMITTED
-            {c:'CLEAM', g:7.08, s:40.4, r:0}, 
-            {c:'CLEAM', g:7.50, s:39.7, r:1},
-            {c:'CLEAM', g:7.25, s:39.0, sat:1490, r:1}, 
-            {c:'CLEAM', g:7.50, s:35.0, sat:1430, r:1}, 
-            {c:'CLEAM', g:8.00, s:33.0, sat:1400, r:1}, 
-            {c:'CLEAM', g:7.30, s:30.5, sat:1360, r:1}, 
-            {c:'CLEAM', g:7.33, s:40.6, r:1}, {c:'CLEAM', g:7.80, s:40.0, r:1},
-            {c:'CLEAM', g:7.85, s:39.4, r:1}, {c:'CLEAM', g:7.33, s:38.0, r:1},
-            {c:'CLEAM', g:7.50, s:36.5, r:1}, {c:'CLEAM', g:8.16, s:35.0, r:1},
-            {c:'CLEAM', g:8.40, s:33.1, r:1}, {c:'CLEAM', g:7.60, s:32.0, r:1},
-            {c:'CLEAM', g:8.60, s:29.0, r:1}, {c:'CLEAM', g:8.75, s:28.5, r:1},
-            {c:'CLEAM', g:7.75, s:40.0, sat:1510, r:1}, 
-            // CLEAM REJECTIONS (Puliti)
-            {c:'CLEAM', g:8.00, s:30.5, sat:1360, r:0},
-            // REMOVED 6.91 cases
-            {c:'CLEAM', g:7.00, s:40.4, r:0},
-            {c:'CLEAM', g:7.40, s:39.7, r:0}, 
-            {c:'CLEAM', g:7.25, s:37.6, r:0},
-            {c:'CLEAM', g:8.00, s:33.0, r:0},
-            {c:'CLEAM', g:7.00, s:40.0, r:0},
-            {c:'CLEAM', g:7.00, s:39.67, r:0},
-            {c:'CLEAM', g:7.00, s:37.6, r:0},
+        // --- RAW SOURCE DATA (UPDATED 19 DEC) ---
+        // c: Course, g: Media, s: Bocconi Score, sat: Raw SAT, r: 1=Ammesso, 0=Non Ammesso
+        // s viene calcolato approssimativamente se c'è solo SAT per il calcolo distanze
+        // 1280 SAT ~ 27.0 Bocconi | 1380 SAT ~ 31.6 Bocconi | 1510 SAT ~ 40.0 Bocconi
+        const RAW_DB = [
+            // --- BAI ---
+            {c:'BAI', g:6.40, s:48.8, r:1},
+            {c:'BAI', g:8.40, sat:1570, s:44.3, r:0}, // Rifiutato
+            {c:'BAI', g:8.25, s:47.8, r:0}, // Rifiutato
+            
+            // --- BEMACS ---
+            {c:'BEMACS', g:9.41, s:33.73, r:1},
+            {c:'BEMACS', g:8.08, s:37.43, r:1},
+            {c:'BEMACS', g:8.875, s:43.73, r:1},
+            {c:'BEMACS', g:8.50, s:47.6, r:1},
+            {c:'BEMACS', g:8.25, s:35.6, r:1},
+            {c:'BEMACS', g:8.50, s:36.0, r:1},
+            // Rifiuti Gerarchici impliciti verranno aggiunti dopo
 
-            // BIEM ADMITTED
-            {c:'BIEM', g:7.50, s:35.0, sat:1430, r:1},
-            {c:'BIEM', g:8.10, s:44.2, r:1}, {c:'BIEM', g:8.33, s:40.7, r:1}, 
-            {c:'BIEM', g:8.75, s:38.0, r:1}, {c:'BIEM', g:8.00, s:33.0, r:1}, 
-            {c:'BIEM', g:8.90, s:31.6, r:1}, {c:'BIEM', g:8.90, s:34.9, r:1}, 
-            {c:'BIEM', g:8.20, s:36.8, r:1}, {c:'BIEM', g:8.83, s:35.8, r:1}, 
-            {c:'BIEM', g:9.50, s:29.0, r:1},
-            // BIEM REJECTIONS
-            {c:'BIEM', g:8.00, s:39.0, sat:1490, r:0},
-            {c:'BIEM', g:8.00, s:35.0, sat:1430, r:0},
-            {c:'BIEM', g:8.00, s:40.0, sat:1510, r:0}, 
-            {c:'BIEM', g:8.00, s:44.0, r:0}, 
-            {c:'BIEM', g:8.00, s:39.4, r:0},
-            {c:'BIEM', g:8.00, s:39.0, r:0}, 
-            {c:'BIEM', g:9.00, s:32.0, r:0},
+            // --- GLAW (BGL) ---
+            {c:'GLAW', g:7.30, s:37.2, r:1},
+            {c:'GLAW', g:7.33, s:34.67, r:1},
 
-            // BIEF
-            {c:'BIEF', g:9.17, s:36.5, r:1}, {c:'BIEF', g:8.90, s:36.5, r:1},
-            {c:'BIEF', g:8.71, s:35.7, r:1}, {c:'BIEF', g:9.58, s:29.0, r:1},
+            // --- BIEF ---
+            {c:'BIEF', g:9.17, s:36.5, r:1},
+            {c:'BIEF', g:8.90, s:36.5, r:1},
+            {c:'BIEF', g:8.71, s:35.7, r:1},
+            {c:'BIEF', g:9.50, s:24.67, r:1}, // AMMESSO SPECIFICO (Propaga a BIEM/CLEACC)
+            {c:'BIEF', g:9.58, s:29.0, r:1},
             {c:'BIEF', g:9.67, s:38.7, r:1},
-            // BIEF Rejections
-            {c:'BIEF', g:9.00, s:41.0, r:0}, 
-            {c:'BIEF', g:8.00, s:38.6, r:0},
+            {c:'BIEF', g:9.00, s:43.0, r:1},
+            // Rifiutati BIEF
+            {c:'BIEF', g:8.70, s:41.0, r:0},
+            {c:'BIEF', g:7.86, s:38.6, r:0},
 
-            // CLEACC
-            {c:'CLEACC', g:8.08, s:30.0, r:1}, {c:'CLEACC', g:9.50, s:25.0, r:1},
+            // --- BIEM ---
+            {c:'BIEM', g:7.50, sat:1430, s:34.5, r:1},
+            {c:'BIEM', g:8.10, s:44.20, r:1}, // CORRETTO: AMMESSO
+            {c:'BIEM', g:8.33, s:40.67, r:1},
+            {c:'BIEM', g:8.75, s:38.0, r:1},
+            {c:'BIEM', g:8.00, s:33.0, r:1},
+            {c:'BIEM', g:8.90, s:31.6, r:1},
+            {c:'BIEM', g:8.90, s:34.93, r:1},
+            {c:'BIEM', g:9.41, s:35.60, r:1},
+            {c:'BIEM', g:8.20, s:36.8, r:1},
+            {c:'BIEM', g:9.20, s:34.40, r:1},
+            {c:'BIEM', g:8.83, s:35.8, r:1},
+            {c:'BIEM', g:8.30, s:39.0, r:1},
+            {c:'BIEM', g:9.50, s:29.0, r:1},
+            // Rifiutati BIEM
+            {c:'BIEM', g:7.80, sat:1490, s:38.8, r:0},
+            {c:'BIEM', g:7.50, sat:1430, s:34.5, r:0},
+            {c:'BIEM', g:8.10, s:44.0, r:0},
+            {c:'BIEM', g:7.85, s:39.4, r:0},
+            {c:'BIEM', g:7.75, s:39.0, r:0},
+            {c:'BIEM', g:8.80, s:32.0, r:0},
+            {c:'BIEM', g:7.80, s:39.0, r:0},
+            {c:'BIEM', g:7.75, sat:1510, s:40.0, r:0}, // RIFIUTATO SPECIFICO
 
-            // BEMACS
-            {c:'BEMACS', g:8.08, s:37.4, r:1}, {c:'BEMACS', g:8.88, s:43.7, r:1},
-            {c:'BEMACS', g:8.50, s:47.6, r:1}, {c:'BEMACS', g:8.25, s:35.6, r:1},
-            {c:'BEMACS', g:8.50, s:36.0, r:1}, {c:'BEMACS', g:9.00, s:43.0, r:1},
+            // --- CLEACC ---
+            {c:'CLEACC', g:8.08, s:30.0, r:1},
+            
+            // --- CLEAM ---
+            {c:'CLEAM', g:8.90, sat:1280, s:27.0, r:1}, // AMMESSO
+            {c:'CLEAM', g:8.00, sat:1380, s:31.7, r:1}, // AMMESSO
+            {c:'CLEAM', g:7.25, sat:1490, s:38.8, r:1},
+            {c:'CLEAM', g:7.50, sat:1430, s:34.5, r:1},
+            {c:'CLEAM', g:8.00, sat:1400, s:32.7, r:1},
+            {c:'CLEAM', g:7.30, sat:1360, s:30.5, r:1},
+            {c:'CLEAM', g:7.33, s:40.6, r:1},
+            {c:'CLEAM', g:7.80, s:40.0, r:1},
+            {c:'CLEAM', g:7.85, s:39.4, r:1},
+            {c:'CLEAM', g:7.33, s:38.0, r:1},
+            {c:'CLEAM', g:7.50, s:36.5, r:1},
+            {c:'CLEAM', g:8.16, s:35.0, r:1},
+            {c:'CLEAM', g:7.50, s:35.0, r:1},
+            {c:'CLEAM', g:8.40, s:33.07, r:1},
+            {c:'CLEAM', g:7.60, s:32.0, r:1},
+            {c:'CLEAM', g:8.60, s:29.0, r:1},
+            {c:'CLEAM', g:8.75, s:28.47, r:1},
+            {c:'CLEAM', g:7.75, sat:1510, s:40.0, r:1},
+            {c:'CLEAM', g:7.33, s:38.0, r:1},
 
-            // GLAW (BGL)
-            {c:'GLAW', g:7.30, s:37.2, r:1}, {c:'GLAW', g:7.33, s:34.7, r:1}
+            // Rifiutati CLEAM
+            {c:'CLEAM', g:7.80, sat:1360, s:30.5, r:0},
+            // RIMOSSI 45.0 e 45.2 (Outlier statistici)
+            {c:'CLEAM', g:7.00, s:40.4, r:0},
+            {c:'CLEAM', g:7.08, s:40.4, r:0},
+            {c:'CLEAM', g:7.40, s:39.67, r:0},
+            {c:'CLEAM', g:7.25, s:37.6, r:0},
+            {c:'CLEAM', g:8.00, s:33.0, r:0}
         ];
 
-        // Reliability ranges
-        const RELIABILITY = {
-            "CLEAM": "7.0 - 8.8",
-            "BIEM":  "7.5 - 9.5",
-            "BIEF":  "8.7 - 9.7",
-            "BEMACS":"8.0 - 9.0",
-            "CLEACC":"8.0 - 9.5",
-            "GLAW":  "7.3 - 7.5"
+        // --- DATABASE EXPANSION (LOGIC FOR IMPLIED ADMISSIONS/REJECTIONS) ---
+        // Se sei ammesso a X, sei virtualmente ammesso anche ai corsi sotto
+        const IMPLIED_ADMISSIONS = {
+            'BAI':    ['BEMACS', 'BIEF', 'BIEM', 'CLEAM', 'CLEACC'],
+            'BEMACS': ['BIEF', 'BIEM', 'CLEAM', 'CLEACC'],
+            'BIEF':   ['BIEM', 'CLEAM', 'CLEACC'],
+            'BIEM':   ['CLEAM', 'CLEACC'],
+            'GLAW':   ['BIEM', 'CLEAM', 'CLEACC']
         };
 
-        // Thresholds
+        // Se sei rifiutato a X, sei rifiutato anche ai corsi sopra (Gerarchia inversa)
+        const IMPLIED_REJECTIONS = {
+            'CLEAM':  ['BIEM', 'BIEF', 'BEMACS', 'BAI'],
+            'BIEM':   ['BIEF', 'BEMACS', 'BAI'],
+            'BIEF':   ['BEMACS', 'BAI']
+        };
+
+        let EXPANDED_DB = [];
+
+        RAW_DB.forEach(student => {
+            // Aggiungi il record originale
+            EXPANDED_DB.push({ ...student, sourceCourse: student.c });
+
+            // LOGICA AMMESSI: Ammesso a TOP -> Ammesso a BOTTOM
+            if (student.r === 1 && IMPLIED_ADMISSIONS[student.c]) {
+                IMPLIED_ADMISSIONS[student.c].forEach(impCourse => {
+                    EXPANDED_DB.push({
+                        ...student,
+                        c: impCourse,        
+                        sourceCourse: student.c 
+                    });
+                });
+            }
+
+            // LOGICA RIFIUTATI: Rifiutato a BOTTOM -> Rifiutato a TOP
+            if (student.r === 0 && IMPLIED_REJECTIONS[student.c]) {
+                IMPLIED_REJECTIONS[student.c].forEach(impCourse => {
+                    // Controlla che non esista già un Ammesso specifico (evita contraddizioni)
+                    let conflict = RAW_DB.find(x => x.c === impCourse && x.r === 1 && x.g === student.g && x.s === student.s);
+                    if(!conflict) {
+                        EXPANDED_DB.push({
+                            ...student,
+                            c: impCourse,
+                            sourceCourse: student.c
+                        });
+                    }
+                });
+            }
+        });
+
+        // Configurazione
+        const RELIABILITY = {
+            "CLEAM": "7.0 - 8.8", "BIEM": "7.5 - 9.5", "BIEF": "8.7 - 9.7",
+            "BEMACS": "8.0 - 9.0", "CLEACC": "8.0 - 9.5", "GLAW": "7.3 - 7.5",
+            "BAI": "6.5 - 8.5"
+        };
         const SCORE_THRESHOLDS = {
-            "CLEAM":  52.0, 
-            "BIEM":   55.0,
-            "BIEF":   60.0,
-            "BEMACS": 56.0,
-            "CLEACC": 48.0,
-            "GLAW":   51.0
+            "CLEAM": 51.0, "BIEM": 54.0, "BIEF": 59.0,
+            "BEMACS": 56.0, "CLEACC": 48.0, "GLAW": 51.0,
+            "BAI": 58.0
         };
 
         function calcPred() {
@@ -583,8 +670,7 @@
             const badge = document.getElementById('res-badge');
             const title = document.getElementById('res-title');
             const desc = document.getElementById('res-desc');
-            const matchBox = document.getElementById('data-match');
-            const matchText = document.getElementById('match-text');
+            const matchContainer = document.getElementById('data-match-container');
             const noteEl = document.getElementById('dynamic-range-note');
 
             if(course && RELIABILITY[course]) {
@@ -594,7 +680,7 @@
             if (!course || isNaN(gpa) || gpa < 6 || gpa > 10) { resArea.style.display = 'none'; return; }
             resArea.style.display = 'block';
 
-            // 1. CONVERSIONE
+            // 1. CONVERSIONE INPUT
             let searchScore; 
             let effScore = null;
             let invalidInput = false;
@@ -611,26 +697,21 @@
                 }
             }
 
-            // 2. TARGET CALC
+            // 2. CALCOLO TARGET FORMULA
             const THRESHOLD = SCORE_THRESHOLDS[course];
             let gpaPart = 45 * ((gpa - 6) / 4);
             let neededTestPart = THRESHOLD - gpaPart;
-            
-            let target;
-            if (neededTestPart <= 0) {
-                target = 17.0; 
-            } else {
-                target = 17 + (neededTestPart * 33 / 55);
-            }
+            let target = (neededTestPart <= 0) ? 17.0 : (17 + (neededTestPart * 33 / 55));
             if (target < 17) target = 17;
 
-            // 3. LOGICA PAVIMENTO (SENZA I 6.91 RIMOSSI)
+            // 3. LOGICA PAVIMENTO (Rejection Check)
+            // Cerca il punteggio più alto con cui qualcuno simile è stato rifiutato
             let minSafeScore = 0;
             let rejectionConstraintFound = false;
-
-            REAL_DB.forEach(r => {
-                if (r.c === course && r.r === 0) {
-                    if (r.g >= (gpa - 0.05)) {
+            EXPANDED_DB.forEach(r => {
+                if (r.c === course && r.r === 0) { 
+                    // Se la media del rifiutato è simile o superiore alla mia
+                    if (r.g >= (gpa - 0.1)) {
                         if (r.s > minSafeScore) {
                             minSafeScore = r.s;
                             rejectionConstraintFound = true;
@@ -639,96 +720,123 @@
                 }
             });
 
+            // Se il target matematico è inferiore al punteggio di un rifiutato, alza il target
             if (rejectionConstraintFound && target <= minSafeScore) {
-                target = minSafeScore + 0.6; 
+                target = minSafeScore + 0.5; 
             }
-
+            
+            // Se non c'è input punteggio, usiamo il target per cercare i vicini
             if (isNaN(rawScore)) { searchScore = target > 50 ? 50 : target; }
 
-            // 4. RICERCA DB
-            let bestRecord = null;
-            let minDist = Infinity;
-            
+            // 4. RICERCA NEIGHBORS (ADMITTED & REJECTED)
+            let bestAdm = null; let minD_Adm = Infinity;
+            let bestRej = null; let minD_Rej = Infinity;
+
             if (!invalidInput) {
-                REAL_DB.forEach(r => {
-                    if(r.c === course || (course === 'BEMACS' && r.c === 'BAI')) { 
-                        let dG = (r.g - gpa) * 10; 
-                        let dS = (r.s - searchScore);
-                        let dist = Math.sqrt(dG*dG + dS*dS);
-                        if(dist < minDist) { minDist = dist; bestRecord = r; }
+                EXPANDED_DB.forEach(r => {
+                    let dG = (r.g - gpa) * 15; // Peso maggiore alla media
+                    let dS = (r.s - searchScore);
+                    let dist = Math.sqrt(dG*dG + dS*dS);
+
+                    if (r.c === course && r.r === 1) {
+                        if (dist < minD_Adm) { minD_Adm = dist; bestAdm = r; }
+                    }
+                    
+                    if (r.c === course && r.r === 0) {
+                         if (dist < minD_Rej) { minD_Rej = dist; bestRej = r; }
                     }
                 });
             }
 
-            // 5. OUTPUT
+            // 5. OUTPUT UI
             if (invalidInput) {
-                matchBox.style.display = 'none';
+                matchContainer.innerHTML = '';
                 badge.innerText = "Errore Input"; badge.style.color = "var(--danger)";
                 title.innerText = "Range Non Valido";
                 desc.innerText = "Inserisci un voto Bocconi (17-50) oppure SAT (1040-1600).";
                 return;
             }
 
-            // MATCH VISUALIZATION
-            if (bestRecord && minDist < 15) { 
-                matchBox.style.display = 'block';
-                let tagHtml = bestRecord.r === 1 
-                    ? '<span class="match-tag tag-ok">Ammesso</span>' 
-                    : '<span class="match-tag tag-ko">Non Ammesso</span>';
-                
-                let scoreText = '';
-                if (bestRecord.sat) {
-                    scoreText = `SAT ${bestRecord.sat} (conv. ${bestRecord.s.toFixed(1)})`;
-                } else {
-                    scoreText = `Test ${bestRecord.s.toFixed(1)}`;
+            // GENERATE MATCH HTML
+            let htmlContent = '';
+            
+            // Render Admitted Match
+            if (bestAdm && minD_Adm < 25) {
+                let tagHtml = '<span class="match-tag tag-ok">Ammesso</span>';
+                if (bestAdm.sourceCourse !== course) {
+                    tagHtml += `<span class="match-tag tag-tier">Ammesso a ${bestAdm.sourceCourse}</span>`;
                 }
-                matchText.innerHTML = `Media ${bestRecord.g} + ${scoreText} ${tagHtml}`;
-            } else {
-                matchBox.style.display = 'none';
+                let scoreText = bestAdm.sat ? `SAT ${bestAdm.sat}` : `Test ${bestAdm.s}`;
+                
+                htmlContent += `
+                    <div class="data-match-row">
+                        <div class="data-match-header">
+                            <span class="data-match-label">Simile Ammesso</span>
+                            <span style="font-size:14px">✅</span>
+                        </div>
+                        <div class="data-match-val">
+                            Media ${bestAdm.g} + ${scoreText} ${tagHtml}
+                        </div>
+                    </div>
+                `;
             }
+
+            // Render Rejected Match
+            if (bestRej && minD_Rej < 20) {
+                let tagHtml = '<span class="match-tag tag-ko">Non Ammesso</span>';
+                let originText = bestRej.sourceCourse === course ? '' : `(in ${bestRej.sourceCourse})`;
+                let scoreText = bestRej.sat ? `SAT ${bestRej.sat}` : `Test ${bestRej.s}`;
+                
+                htmlContent += `
+                    <div class="data-match-row">
+                        <div class="data-match-header">
+                            <span class="data-match-label">Simile Non Ammesso ${originText}</span>
+                            <span style="font-size:14px">❌</span>
+                        </div>
+                        <div class="data-match-val">
+                            Media ${bestRej.g} + ${scoreText} ${tagHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
+            matchContainer.innerHTML = htmlContent;
+            matchContainer.style.display = htmlContent ? 'flex' : 'none';
 
             // ADVICE LOGIC
             if (effScore === null) {
-                // MODE: PREDICTION
-                if (target > 45) {
+                if (target > 48) {
                     badge.innerText = "Molto Difficile"; badge.style.color = "var(--danger)";
-                    title.innerText = "Obiettivo: > 45";
-                    desc.innerText = `Attenzione: ci sono candidati con media ${gpa} (o superiore) rifiutati anche con punteggi alti. Serve un test eccellente.`;
+                    title.innerText = "Obiettivo: > 48";
+                    desc.innerText = `Attenzione: ci sono candidati con media ${gpa} rifiutati anche con punteggi alti.`;
                 } else {
                     badge.innerText = "Target Consigliato"; badge.style.color = "var(--primary)";
                     title.innerText = `Punta a: ${Math.round(target * 10) / 10}+`;
-                    if(rejectionConstraintFound) {
-                        desc.innerText = `Target calcolato tenendo conto dei candidati rifiutati con media simile alla tua.`;
-                    } else {
-                        desc.innerText = `Per ${course} con media ${gpa}, questo punteggio ti porterebbe a un totale competitivo.`;
-                    }
+                    desc.innerText = rejectionConstraintFound 
+                        ? "Target calcolato tenendo conto dei candidati simili rifiutati."
+                        : `Per ${course} con media ${gpa}, questo punteggio ti rende competitivo.`;
                 }
             } else {
-                // MODE: EVALUATION
-                let risky = false;
-                if (rejectionConstraintFound && effScore <= minSafeScore) {
-                    risky = true;
-                }
-
+                let risky = rejectionConstraintFound && effScore <= minSafeScore;
                 let userTotal = getFormulaScore(gpa, effScore);
                 let gap = userTotal - THRESHOLD;
 
                 if (risky) {
                       badge.innerText = "A Rischio"; badge.style.color = "var(--danger)";
                       title.innerText = "Punteggio Pericoloso";
-                      desc.innerText = `Attenzione: esistono candidati rifiutati in ${course} con media e test simili o superiori ai tuoi.`;
+                      desc.innerText = `Esistono candidati rifiutati in ${course} (o in corsi inferiori) con statistiche simili alle tue.`;
                 } else if (gap >= 2) {
                     badge.innerText = "Buone Probabilità"; badge.style.color = "var(--success)";
                     title.innerText = "Posizionamento Solido";
-                    desc.innerText = `Il tuo punteggio totale supera la soglia stimata per ${course} basata sui dati Early 2025.`;
+                    desc.innerText = `Il tuo punteggio totale supera la soglia stimata per ${course}.`;
                 } else if (gap >= -3) {
                     badge.innerText = "Competitivo"; badge.style.color = "var(--warning)";
                     title.innerText = "Nella media";
-                    desc.innerText = `Il tuo totale è vicino alla soglia di ingresso. L'esito dipenderà dai posti disponibili.`;
+                    desc.innerText = `Sei vicino alla soglia. L'esito dipenderà dai posti disponibili.`;
                 } else {
                     badge.innerText = "Sotto Target"; badge.style.color = "var(--danger)";
                     title.innerText = `Punteggio totale basso`;
-                    desc.innerText = `Combinando media e test, sei sotto la soglia tipica degli ammessi in Early Session.`;
+                    desc.innerText = `Combinando media e test, sei sotto la soglia tipica per ${course}.`;
                 }
             }
         }
