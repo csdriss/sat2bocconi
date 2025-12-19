@@ -74,11 +74,6 @@
             text-align: center;
             margin-bottom: 40px;
         }
-        .home-emoji {
-            font-size: 64px;
-            margin: 0;
-            line-height: 1;
-        }
 
         /* --- UI ELEMENTS --- */
         .card {
@@ -328,7 +323,7 @@
 
         <section id="view-home" class="view-section active">
             <div class="home-header">
-            </div>
+                </div>
             
             <div class="menu-item" onclick="goTo('view-converter')">
                 <div class="menu-icon">🔑</div>
@@ -394,12 +389,9 @@
                         <option value="CLEAM">CLEAM</option>
                         <option value="BIEM">BIEM</option>
                         <option value="BIEF">BIEF</option>
-                        <option value="CLEACC">CLEACC</option>
                         <option value="BEMACS">BEMACS</option>
-                        <option value="BAI">BAI</option>
-                        <option value="BIG">BIG</option>
-                        <option value="CLMG">CLMG</option>
-                        <option value="GLAW">GLAW</option>
+                        <option value="CLEACC">CLEACC</option>
+                        <option value="GLAW">Global Law</option>
                     </select>
                 </div>
 
@@ -410,7 +402,7 @@
 
                 <div class="input-group">
                     <label>Punteggio Test (Opzionale)</label>
-                    <input type="number" id="pred-score" class="input-box" placeholder="Es. 36.5" inputmode="decimal" oninput="calcPred()">
+                    <input type="number" id="pred-score" class="input-box" placeholder="Es. 36.5 o 1450" inputmode="decimal" oninput="calcPred()">
                 </div>
 
                 <div id="result-area" class="result-container">
@@ -419,14 +411,18 @@
                     <div class="result-sub" id="res-desc"></div>
 
                     <div id="data-match" class="data-match-box">
-                        <span class="data-match-label">Dato reale simile (Early '25)</span>
+                        <span class="data-match-label">Candidato Simile (Early '25)</span>
                         <div class="data-match-val" id="match-text"></div>
                     </div>
                 </div>
             </div>
             
             <div class="footer-info">
-                <div class="footer-text">Nota: Analisi basata esclusivamente sugli esiti della sessione Early 2025. La sessione Winter potrebbe presentare variabili differenti.</div>
+                <div class="footer-text" id="dynamic-range-note" style="max-width:320px; margin:0 auto; color:var(--text-main);">
+                    Seleziona un corso per vedere il range di affidabilità.
+                </div>
+                <br>
+                <div class="footer-text">I corsi con dati insufficienti (BAI, BIG, CLMG) sono stati rimossi.</div>
             </div>
         </section>
 
@@ -487,36 +483,97 @@
             }
         });
 
-        // --- PREDICTOR LOGIC ---
-        const RECORDS = [
-            // CLEAM Rejected
-            { c: 'CLEAM', g: 7.08, s: 40.4, res: 0 }, { c: 'CLEAM', g: 7.5, s: 39.7, res: 1 },
+        // --- NEW LOGIC: FORMULA BASED ---
+        // Formula: 45 * (GPA-6)/4 + 55 * (TEST-17)/33
+        
+        function getFormulaScore(gpa, test) {
+            if (gpa < 6) gpa = 6;
+            if (test < 17) test = 17;
+            let pGPA = 45 * ((gpa - 6) / 4);
+            let pTest = 55 * ((test - 17) / 33);
+            return pGPA + pTest;
+        }
+
+        // --- DATABASE ---
+        const REAL_DB = [
+            // CLEAM
+            {c:'CLEAM', g:7.08, s:40.4, r:0}, 
+            {c:'CLEAM', g:7.50, s:39.7, r:1},
+            {c:'CLEAM', g:7.25, s:39.0, sat:1490, r:1}, 
+            {c:'CLEAM', g:7.50, s:35.0, sat:1430, r:1}, 
+            {c:'CLEAM', g:8.00, s:33.0, sat:1400, r:1}, 
+            {c:'CLEAM', g:7.30, s:30.5, sat:1360, r:1}, 
+            {c:'CLEAM', g:7.33, s:40.6, r:1}, {c:'CLEAM', g:7.80, s:40.0, r:1},
+            {c:'CLEAM', g:7.85, s:39.4, r:1}, {c:'CLEAM', g:7.33, s:38.0, r:1},
+            {c:'CLEAM', g:7.50, s:36.5, r:1}, {c:'CLEAM', g:8.16, s:35.0, r:1},
+            {c:'CLEAM', g:8.40, s:33.1, r:1}, {c:'CLEAM', g:7.60, s:32.0, r:1},
+            {c:'CLEAM', g:8.60, s:29.0, r:1}, {c:'CLEAM', g:8.75, s:28.5, r:1},
+            {c:'CLEAM', g:7.75, s:40.0, sat:1510, r:1}, 
+            // CLEAM Rejections
+            {c:'CLEAM', g:7.80, s:30.5, sat:1360, r:0},
+            {c:'CLEAM', g:6.91, s:45.2, r:0}, {c:'CLEAM', g:6.91, s:45.0, r:0},
+            {c:'CLEAM', g:6.90, s:45.0, r:0}, {c:'CLEAM', g:7.00, s:40.4, r:0},
+            {c:'CLEAM', g:7.40, s:39.7, r:0}, {c:'CLEAM', g:7.25, s:37.6, r:0},
+            {c:'CLEAM', g:8.00, s:33.0, r:0},
+
+            // BIEM
+            {c:'BIEM', g:7.50, s:35.0, sat:1430, r:1},
+            {c:'BIEM', g:8.10, s:44.2, r:1}, {c:'BIEM', g:8.33, s:40.7, r:1}, 
+            {c:'BIEM', g:8.75, s:38.0, r:1}, {c:'BIEM', g:8.00, s:33.0, r:1}, 
+            {c:'BIEM', g:8.90, s:31.6, r:1}, {c:'BIEM', g:8.90, s:34.9, r:1}, 
+            {c:'BIEM', g:8.20, s:36.8, r:1}, {c:'BIEM', g:8.83, s:35.8, r:1}, 
+            {c:'BIEM', g:9.50, s:29.0, r:1},
+            // BIEM Rejections
+            {c:'BIEM', g:7.80, s:39.0, sat:1490, r:0},
+            {c:'BIEM', g:7.50, s:35.0, sat:1430, r:0},
+            {c:'BIEM', g:7.75, s:40.0, sat:1510, r:0},
+            {c:'BIEM', g:8.10, s:44.0, r:0}, {c:'BIEM', g:7.85, s:39.4, r:0},
+            {c:'BIEM', g:7.75, s:39.0, r:0}, {c:'BIEM', g:8.80, s:32.0, r:0},
+
+            // BIEF
+            {c:'BIEF', g:9.17, s:36.5, r:1}, {c:'BIEF', g:8.90, s:36.5, r:1},
+            {c:'BIEF', g:8.71, s:35.7, r:1}, {c:'BIEF', g:9.58, s:29.0, r:1},
+            {c:'BIEF', g:9.67, s:38.7, r:1},
+            // BIEF Rejections
+            {c:'BIEF', g:8.70, s:41.0, r:0}, {c:'BIEF', g:7.86, s:38.6, r:0},
+
+            // CLEACC
+            {c:'CLEACC', g:8.08, s:30.0, r:1}, {c:'CLEACC', g:9.50, s:25.0, r:1},
+
             // BEMACS
-            { c: 'BEMACS', g: 8.08, s: 37.43, res: 1 }, { c: 'BEMACS', g: 8.88, s: 43.73, res: 1 },
-            { c: 'BEMACS', g: 8.50, s: 47.60, res: 1 }, { c: 'BEMACS', g: 9.00, s: 43.00, res: 1 },
-            { c: 'BEMACS', g: 8.50, s: 36.00, res: 1 }, { c: 'BEMACS', g: 8.25, s: 35.60, res: 1 },
-            // Altri
-            { c: 'BIEM', g: 8.9, s: 34.9, res: 1 }, { c: 'BIEM', g: 7.8, s: 39.0, res: 0 },
-            { c: 'BIEF', g: 9.4, s: 33.7, res: 1 }
+            {c:'BEMACS', g:8.08, s:37.4, r:1}, {c:'BEMACS', g:8.88, s:43.7, r:1},
+            {c:'BEMACS', g:8.50, s:47.6, r:1}, {c:'BEMACS', g:8.25, s:35.6, r:1},
+            {c:'BEMACS', g:8.50, s:36.0, r:1}, {c:'BEMACS', g:9.00, s:43.0, r:1},
+
+            // GLAW (BGL)
+            {c:'GLAW', g:7.30, s:37.2, r:1}, {c:'GLAW', g:7.33, s:34.7, r:1}
         ];
 
-        const PARAMS = {
-            "BEMACS": {min: 8.1, safe: 9.2, tL: 37.5, tH: 30}, 
-            // Calibrato per CLEAM: con 7.08, target ~40.6. Quindi con 40.4 sei appena sotto.
-            "CLEAM":  {min: 7.5, safe: 9.1, tL: 38.5, tH: 28}, 
-            "BIEM":   {min: 7.9, safe: 9.2, tL: 39.0, tH: 30},
-            "BIEF":   {min: 7.9, safe: 9.2, tL: 38.5, tH: 29},
-            "CLEACC": {min: 7.0, safe: 9.0, tL: 36.0, tH: 25},
-            "BAI":    {min: 8.5, safe: 9.5, tL: 41.0, tH: 33},
-            "CLMG":   {min: 7.0, safe: 9.0, tL: 38.0, tH: 28},
-            "BIG":    {min: 7.8, safe: 9.3, tL: 41.0, tH: 30},
-            "GLAW":   {min: 7.5, safe: 9.1, tL: 39.0, tH: 30}
+        // Reliability ranges (Media)
+        const RELIABILITY = {
+            "CLEAM": "7.0 - 8.8",
+            "BIEM":  "7.5 - 9.5",
+            "BIEF":  "8.7 - 9.7",
+            "BEMACS":"8.0 - 9.0",
+            "CLEACC":"8.0 - 9.5",
+            "GLAW":  "7.3 - 7.5"
+        };
+
+        // Estimated CUTOFF Scores (Total / 100) based on DB analysis using the formula
+        // These are heuristic baselines derived from the provided admitted students
+        const SCORE_THRESHOLDS = {
+            "CLEAM":  52.0, 
+            "BIEM":   55.0,
+            "BIEF":   60.0,
+            "BEMACS": 56.0,
+            "CLEACC": 48.0,
+            "GLAW":   51.0
         };
 
         function calcPred() {
             const course = document.getElementById('pred-course').value;
             let gpa = parseFloat(document.getElementById('pred-gpa').value);
-            let score = parseFloat(document.getElementById('pred-score').value);
+            let rawScore = parseFloat(document.getElementById('pred-score').value);
             
             const resArea = document.getElementById('result-area');
             const badge = document.getElementById('res-badge');
@@ -524,71 +581,134 @@
             const desc = document.getElementById('res-desc');
             const matchBox = document.getElementById('data-match');
             const matchText = document.getElementById('match-text');
+            const noteEl = document.getElementById('dynamic-range-note');
+
+            // UPDATE FOOTER NOTE
+            if(course && RELIABILITY[course]) {
+                noteEl.innerHTML = `<strong>Nota:</strong> Per ${course}, la stima è più accurata se la tua media è compresa tra <strong>${RELIABILITY[course]}</strong> (dove si concentrano i dati). Al di fuori, la previsione è meno certa.`;
+            }
 
             if (!course || isNaN(gpa) || gpa < 6 || gpa > 10) { resArea.style.display = 'none'; return; }
             resArea.style.display = 'block';
 
-            const p = PARAMS[course] || PARAMS["CLEAM"];
-            let target;
+            // 1. INPUT VALIDATION & CONVERSION
+            let searchScore; // Bocconi score used for calculation
+            let effScore = null;
+            let invalidInput = false;
 
-            // Logica Pendenza
-            if (gpa < p.min) {
-                let diff = p.min - gpa;
-                // BEMACS/BAI restano punitivi (8.0). CLEAM torna a standard (5.0) perché con 7.08 -> 40.6 è corretto.
-                let multiplier = (course === "BEMACS" || course === "BAI") ? 8.0 : 5.0; 
-                target = p.tL + (diff * multiplier); 
-            } else {
-                let pos = Math.max(0, Math.min(1, (gpa - p.min)/(p.safe - p.min)));
-                target = p.tL - (pos * (p.tL - p.tH));
-            }
-            if (target > 50.5) target = 51;
-
-            // Record Simile
-            let bestRecord = null;
-            let minDiff = 100;
-            RECORDS.forEach(r => {
-                if(r.c === course) {
-                    let diff = Math.abs(r.g - gpa);
-                    if(diff < minDiff) { minDiff = diff; bestRecord = r; }
-                }
-            });
-
-            if (bestRecord && minDiff <= 0.35) {
-                matchBox.style.display = 'block';
-                let tagHtml = bestRecord.res === 1 
-                    ? '<span class="match-tag tag-ok">Ammesso</span>' 
-                    : '<span class="match-tag tag-ko">Rifiutato</span>';
-                matchText.innerHTML = `Media ${bestRecord.g} con Test ${bestRecord.s} ${tagHtml}`;
-            } else { matchBox.style.display = 'none'; }
-
-            // Output
-            if (isNaN(score)) {
-                badge.innerText = "Target Consigliato"; badge.style.color = "var(--primary)";
-                if (target > 50) {
-                    title.innerText = "Sfida Estrema (49-50)";
-                    desc.innerText = `Con media ${gpa} su ${course}, i dati mostrano che serve un punteggio test quasi perfetto per compensare.`;
+            if (!isNaN(rawScore)) {
+                if (rawScore >= 17 && rawScore <= 50) {
+                    effScore = rawScore;
+                    searchScore = rawScore;
+                } else if (rawScore >= 1040 && rawScore <= 1600) {
+                    effScore = interp(rawScore, 's', 'b');
+                    searchScore = effScore;
                 } else {
-                    // Visualizzazione Range (es. 40 - 42)
-                    let tInt = Math.floor(target); 
-                    title.innerText = `Punta a: ${tInt} - ${tInt + 2}`;
-                    desc.innerText = `Per compensare la media ${gpa} in ${course}, il trend dei dati Early 2025 suggerisce questa fascia di punteggio.`;
+                    invalidInput = true;
+                }
+            }
+
+            // 2. CALCULATE TARGET TEST SCORE using formula
+            // We need Total Score > Threshold
+            // Total = 45*(GPA-6)/4 + 55*(Test-17)/33
+            // Let GPA_Part = 45*(GPA-6)/4
+            // Threshold = GPA_Part + 55*(Test-17)/33
+            // Test_Part_Needed = Threshold - GPA_Part
+            // Test_Needed = 17 + (Test_Part_Needed * 33 / 55)
+
+            const THRESHOLD = SCORE_THRESHOLDS[course];
+            let gpaPart = 45 * ((gpa - 6) / 4);
+            let neededTestPart = THRESHOLD - gpaPart;
+            
+            let target;
+            if (neededTestPart <= 0) {
+                target = 17.0; // Minimal score theoretically enough
+            } else {
+                target = 17 + (neededTestPart * 33 / 55);
+            }
+
+            // Clamp Target
+            if (target < 17) target = 17;
+
+            // If user has no score, use target for search
+            if (isNaN(rawScore)) { searchScore = target > 50 ? 50 : target; }
+
+            // 3. FIND NEAREST NEIGHBOR IN DB
+            let bestRecord = null;
+            let minDist = Infinity;
+            
+            if (!invalidInput) {
+                REAL_DB.forEach(r => {
+                    if(r.c === course || (course === 'BEMACS' && r.c === 'BAI')) { 
+                        // Weighted Euclidean Distance: GPA has more weight in "similarity" perception
+                        let dG = (r.g - gpa) * 10; 
+                        let dS = (r.s - searchScore);
+                        let dist = Math.sqrt(dG*dG + dS*dS);
+                        if(dist < minDist) { minDist = dist; bestRecord = r; }
+                    }
+                });
+            }
+
+            // 4. UI OUTPUT
+            if (invalidInput) {
+                matchBox.style.display = 'none';
+                badge.innerText = "Errore Input"; badge.style.color = "var(--danger)";
+                title.innerText = "Range Non Valido";
+                desc.innerText = "Inserisci un voto Bocconi (17-50) oppure SAT (1040-1600).";
+                return;
+            }
+
+            // SHOW MATCH
+            if (bestRecord && minDist < 15) { 
+                matchBox.style.display = 'block';
+                let tagHtml = bestRecord.r === 1 
+                    ? '<span class="match-tag tag-ok">Ammesso</span>' 
+                    : '<span class="match-tag tag-ko">Non Ammesso</span>';
+                
+                let scoreText = '';
+                if (bestRecord.sat) {
+                    scoreText = `SAT ${bestRecord.sat} (conv. ${bestRecord.s.toFixed(1)})`;
+                } else {
+                    scoreText = `Test ${bestRecord.s.toFixed(1)}`;
+                }
+                matchText.innerHTML = `Media ${bestRecord.g} + ${scoreText} ${tagHtml}`;
+            } else {
+                matchBox.style.display = 'none';
+            }
+
+            // SHOW ADVICE
+            if (effScore === null) {
+                // MODE: PREDICTION
+                if (target > 45) {
+                    badge.innerText = "Difficile"; badge.style.color = "var(--danger)";
+                    title.innerText = "Obiettivo: > 45";
+                    desc.innerText = `Con media ${gpa}, la formula di selezione richiede un punteggio test estremamente alto per competere.`;
+                } else {
+                    badge.innerText = "Target Consigliato"; badge.style.color = "var(--primary)";
+                    title.innerText = `Punta a: ${Math.round(target)}+`;
+                    desc.innerText = `Per ${course} con media ${gpa}, questo punteggio ti porterebbe a un totale competitivo.`;
                 }
             } else {
-                let effScore = score > 60 ? interp(Math.min(score,1600), 's', 'b') : score;
-                let gap = effScore - target;
+                // MODE: EVALUATION
+                let userTotal = getFormulaScore(gpa, effScore);
+                let gap = userTotal - THRESHOLD;
 
-                if (gap >= 1.0) {
-                    badge.innerText = "Ottima Probabilità"; badge.style.color = "var(--success)";
-                    title.innerText = "Punteggio Solido";
-                    desc.innerText = `Con ${effScore.toFixed(1)} superi il target calcolato. Sei ben posizionato.`;
-                } else if (gap >= -1.5) {
+                if (target > 45 && effScore < 45) {
+                     badge.innerText = "Difficile"; badge.style.color = "var(--danger)";
+                     title.innerText = "Obiettivo: > 45";
+                     desc.innerText = `La media penalizza il punteggio totale. Serve un test sopra i 45 punti per rientrare nei parametri storici.`;
+                } else if (gap >= 2) {
+                    badge.innerText = "Buone Probabilità"; badge.style.color = "var(--success)";
+                    title.innerText = "Posizionamento Solido";
+                    desc.innerText = `Il tuo punteggio totale supera la soglia stimata per ${course} basata sui dati Early 2025.`;
+                } else if (gap >= -3) {
                     badge.innerText = "Competitivo"; badge.style.color = "var(--warning)";
-                    title.innerText = "Fascia Borderline";
-                    desc.innerText = `Sei vicino alla soglia stimata (${target.toFixed(1)}). È un punteggio giocabile, anche se l'esito non è garantito.`;
+                    title.innerText = "Nella media";
+                    desc.innerText = `Il tuo totale è vicino alla soglia di ingresso. L'esito dipenderà dai posti disponibili.`;
                 } else {
                     badge.innerText = "Sotto Target"; badge.style.color = "var(--danger)";
-                    title.innerText = `Servono +${Math.ceil(Math.abs(gap))} punti`;
-                    desc.innerText = `Per ${course} con media ${gpa}, dovresti idealmente alzare il test verso quota ${Math.round(target)}.`;
+                    title.innerText = `Punteggio totale basso`;
+                    desc.innerText = `Combinando media e test, sei sotto la soglia tipica degli ammessi in Early Session.`;
                 }
             }
         }
