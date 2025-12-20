@@ -50,16 +50,16 @@
             position: relative;
         }
 
-        /* --- VISTE (FIX PER I CLICK) --- */
+        /* --- VISTE --- */
         .view-section {
-            display: none; /* Nascondi completamente */
+            display: none;
             width: 100%;
         }
         .view-section.active {
-            display: block; /* Mostra */
+            display: block;
             animation: fadeIn 0.3s ease;
             position: relative;
-            z-index: 100; /* Forza in primo piano */
+            z-index: 100;
         }
         
         @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
@@ -83,7 +83,7 @@
             background: var(--card-bg);
             border-radius: var(--radius-xl);
             margin-bottom: 16px;
-            cursor: pointer; /* Cursore manina */
+            cursor: pointer;
             box-shadow: var(--shadow-card);
             transition: transform 0.1s ease;
             border: 1px solid rgba(0,0,0,0.02);
@@ -180,9 +180,7 @@
             box-shadow: 0 0 0 2px var(--primary) inset;
             background: #fff;
         }
-        select.input-box {
-            background-color: var(--input-bg); /* Fix safari */
-        }
+        select.input-box { background-color: var(--input-bg); }
 
         .result-container {
             margin-top: 28px;
@@ -211,6 +209,7 @@
             font-size: 15px;
             color: var(--text-sec);
             line-height: 1.5;
+            margin-bottom: 16px;
         }
 
         .data-match-box {
@@ -413,21 +412,16 @@
     </div>
 
     <script>
-        // --- NAVIGATION SEMPLIFICATA ---
+        // --- NAVIGATION ---
         function goTo(id) {
-            // Nascondi tutto
             document.querySelectorAll('.view-section').forEach(el => {
                 el.classList.remove('active');
-                el.style.display = 'none'; // Sicurezza extra
+                el.style.display = 'none';
             });
-            // Mostra target
             const target = document.getElementById(id);
             if(target) {
                 target.style.display = 'block';
-                // Timeout minimo per permettere al browser di renderizzare il display:block prima di aggiungere classi (se necessario)
-                setTimeout(() => {
-                    target.classList.add('active');
-                }, 10);
+                setTimeout(() => { target.classList.add('active'); }, 10);
             }
             window.scrollTo(0,0);
         }
@@ -480,96 +474,33 @@
             }
         });
 
-        // --- LOGICA FORMULA ---
-        function getFormulaScore(gpa, test) {
-            if (gpa < 6) gpa = 6;
-            if (test < 17) test = 17;
-            let pGPA = 45 * ((gpa - 6) / 4);
-            let pTest = 55 * ((test - 17) / 33);
-            return pGPA + pTest;
-        }
-
-        // --- DATABASE SENZA I REJECT 6.91 ---
+        // --- DATABASE & LOGIC ---
         const REAL_DB = [
-            // CLEAM ADMITTED
-            {c:'CLEAM', g:7.08, s:40.4, r:0}, 
-            {c:'CLEAM', g:7.50, s:39.7, r:1},
-            {c:'CLEAM', g:7.25, s:39.0, sat:1490, r:1}, 
-            {c:'CLEAM', g:7.50, s:35.0, sat:1430, r:1}, 
-            {c:'CLEAM', g:8.00, s:33.0, sat:1400, r:1}, 
-            {c:'CLEAM', g:7.30, s:30.5, sat:1360, r:1}, 
+            {c:'CLEAM', g:7.08, s:40.4, r:0}, {c:'CLEAM', g:7.50, s:39.7, r:1},
+            {c:'CLEAM', g:7.25, s:39.0, sat:1490, r:1}, {c:'CLEAM', g:7.50, s:35.0, sat:1430, r:1},
+            {c:'CLEAM', g:8.00, s:33.0, sat:1400, r:1}, {c:'CLEAM', g:7.30, s:30.5, sat:1360, r:1},
             {c:'CLEAM', g:7.33, s:40.6, r:1}, {c:'CLEAM', g:7.80, s:40.0, r:1},
             {c:'CLEAM', g:7.85, s:39.4, r:1}, {c:'CLEAM', g:7.33, s:38.0, r:1},
             {c:'CLEAM', g:7.50, s:36.5, r:1}, {c:'CLEAM', g:8.16, s:35.0, r:1},
             {c:'CLEAM', g:8.40, s:33.1, r:1}, {c:'CLEAM', g:7.60, s:32.0, r:1},
             {c:'CLEAM', g:8.60, s:29.0, r:1}, {c:'CLEAM', g:8.75, s:28.5, r:1},
             {c:'CLEAM', g:7.75, s:40.0, sat:1510, r:1}, 
-            // CLEAM REJECTIONS (Puliti)
-            {c:'CLEAM', g:8.00, s:30.5, sat:1360, r:0},
-            // REMOVED 6.91 cases
-            {c:'CLEAM', g:7.00, s:40.4, r:0},
-            {c:'CLEAM', g:7.40, s:39.7, r:0}, 
-            {c:'CLEAM', g:7.25, s:37.6, r:0},
-            {c:'CLEAM', g:8.00, s:33.0, r:0},
-            {c:'CLEAM', g:7.00, s:40.0, r:0},
-            {c:'CLEAM', g:7.00, s:39.67, r:0},
-            {c:'CLEAM', g:7.00, s:37.6, r:0},
-
-            // BIEM ADMITTED
-            {c:'BIEM', g:7.50, s:35.0, sat:1430, r:1},
-            {c:'BIEM', g:8.10, s:44.2, r:1}, {c:'BIEM', g:8.33, s:40.7, r:1}, 
-            {c:'BIEM', g:8.75, s:38.0, r:1}, {c:'BIEM', g:8.00, s:33.0, r:1}, 
-            {c:'BIEM', g:8.90, s:31.6, r:1}, {c:'BIEM', g:8.90, s:34.9, r:1}, 
-            {c:'BIEM', g:8.20, s:36.8, r:1}, {c:'BIEM', g:8.83, s:35.8, r:1}, 
-            {c:'BIEM', g:9.50, s:29.0, r:1},
-            // BIEM REJECTIONS
-            {c:'BIEM', g:8.00, s:39.0, sat:1490, r:0},
-            {c:'BIEM', g:8.00, s:35.0, sat:1430, r:0},
-            {c:'BIEM', g:8.00, s:40.0, sat:1510, r:0}, 
-            {c:'BIEM', g:8.00, s:44.0, r:0}, 
-            {c:'BIEM', g:8.00, s:39.4, r:0},
-            {c:'BIEM', g:8.00, s:39.0, r:0}, 
-            {c:'BIEM', g:9.00, s:32.0, r:0},
-
-            // BIEF
+            {c:'CLEAM', g:8.00, s:30.5, sat:1360, r:0}, {c:'CLEAM', g:7.00, s:40.4, r:0},
+            {c:'CLEAM', g:7.40, s:39.7, r:0}, {c:'CLEAM', g:7.25, s:37.6, r:0},
+            {c:'BIEM', g:7.50, s:35.0, sat:1430, r:1}, {c:'BIEM', g:8.10, s:44.2, r:1},
+            {c:'BIEM', g:8.33, s:40.7, r:1}, {c:'BIEM', g:8.75, s:38.0, r:1},
+            {c:'BIEM', g:8.00, s:33.0, r:1}, {c:'BIEM', g:8.90, s:31.6, r:1},
+            {c:'BIEM', g:8.00, s:39.0, sat:1490, r:0}, {c:'BIEM', g:8.00, s:35.0, sat:1430, r:0},
+            {c:'BIEM', g:8.00, s:40.0, sat:1510, r:0}, {c:'BIEM', g:8.00, s:44.0, r:0},
             {c:'BIEF', g:9.17, s:36.5, r:1}, {c:'BIEF', g:8.90, s:36.5, r:1},
-            {c:'BIEF', g:8.71, s:35.7, r:1}, {c:'BIEF', g:9.58, s:29.0, r:1},
-            {c:'BIEF', g:9.67, s:38.7, r:1},
-            // BIEF Rejections
-            {c:'BIEF', g:9.00, s:41.0, r:0}, 
-            {c:'BIEF', g:8.00, s:38.6, r:0},
-
-            // CLEACC
-            {c:'CLEACC', g:8.08, s:30.0, r:1}, {c:'CLEACC', g:9.50, s:25.0, r:1},
-
-            // BEMACS
+            {c:'BIEF', g:8.71, s:35.7, r:1}, {c:'BIEF', g:9.00, s:41.0, r:0},
             {c:'BEMACS', g:8.08, s:37.4, r:1}, {c:'BEMACS', g:8.88, s:43.7, r:1},
-            {c:'BEMACS', g:8.50, s:47.6, r:1}, {c:'BEMACS', g:8.25, s:35.6, r:1},
-            {c:'BEMACS', g:8.50, s:36.0, r:1}, {c:'BEMACS', g:9.00, s:43.0, r:1},
-
-            // GLAW (BGL)
-            {c:'GLAW', g:7.30, s:37.2, r:1}, {c:'GLAW', g:7.33, s:34.7, r:1}
+            {c:'BEMACS', g:8.50, s:47.6, r:1}, {c:'CLEACC', g:8.08, s:30.0, r:1},
+            {c:'GLAW', g:7.30, s:37.2, r:1}
         ];
 
-        // Reliability ranges
-        const RELIABILITY = {
-            "CLEAM": "7.0 - 8.8",
-            "BIEM":  "7.5 - 9.5",
-            "BIEF":  "8.7 - 9.7",
-            "BEMACS":"8.0 - 9.0",
-            "CLEACC":"8.0 - 9.5",
-            "GLAW":  "7.3 - 7.5"
-        };
-
-        // Thresholds
-        const SCORE_THRESHOLDS = {
-            "CLEAM":  52.0, 
-            "BIEM":   55.0,
-            "BIEF":   60.0,
-            "BEMACS": 56.0,
-            "CLEACC": 48.0,
-            "GLAW":   51.0
-        };
+        const RELIABILITY = { "CLEAM": "7.0 - 8.8", "BIEM": "7.5 - 9.5", "BIEF": "8.7 - 9.7", "BEMACS":"8.0 - 9.0", "CLEACC":"8.0 - 9.5", "GLAW": "7.3 - 7.5" };
+        const SCORE_THRESHOLDS = { "CLEAM": 52.0, "BIEM": 55.0, "BIEF": 60.0, "BEMACS": 56.0, "CLEACC": 48.0, "GLAW": 51.0 };
 
         function calcPred() {
             const course = document.getElementById('pred-course').value;
@@ -594,142 +525,131 @@
             if (!course || isNaN(gpa) || gpa < 6 || gpa > 10) { resArea.style.display = 'none'; return; }
             resArea.style.display = 'block';
 
-            // 1. CONVERSIONE
-            let searchScore; 
-            let effScore = null;
-            let invalidInput = false;
-
-            if (!isNaN(rawScore)) {
-                if (rawScore >= 17 && rawScore <= 50) {
-                    effScore = rawScore;
-                    searchScore = rawScore;
-                } else if (rawScore >= 1040 && rawScore <= 1600) {
-                    effScore = interp(rawScore, 's', 'b');
-                    searchScore = effScore;
-                } else {
-                    invalidInput = true;
-                }
-            }
-
-            // 2. TARGET CALC
-            const THRESHOLD = SCORE_THRESHOLDS[course];
-            let gpaPart = 45 * ((gpa - 6) / 4);
-            let neededTestPart = THRESHOLD - gpaPart;
+            // --- CALCOLO MATEMATICO "DIETRO LE QUINTE" ---
             
-            let target;
-            if (neededTestPart <= 0) {
-                target = 17.0; 
-            } else {
-                target = 17 + (neededTestPart * 33 / 55);
+            // 1. Calcolo Punti GPA (Max 45)
+            // (La variabile pointsGPA è usata per determinare la difficoltà, anche se non la mostriamo più)
+            let pointsGPA = 45 * ((gpa - 6) / 4);
+
+            // 2. Soglia Target del corso
+            const THRESHOLD = SCORE_THRESHOLDS[course];
+
+            // 3. Gestione Punteggio Test
+            let effScore = null;
+            let searchScore; 
+
+            if(!isNaN(rawScore)) {
+                if (rawScore >= 17 && rawScore <= 50) effScore = rawScore;
+                else if (rawScore >= 1040 && rawScore <= 1600) effScore = interp(rawScore, 's', 'b');
+                searchScore = effScore || 30; 
             }
-            if (target < 17) target = 17;
 
-            // 3. LOGICA PAVIMENTO (SENZA I 6.91 RIMOSSI)
-            let minSafeScore = 0;
-            let rejectionConstraintFound = false;
+            // --- SCENARIO A: PREVISIONE (Utente NON ha messo il test) ---
+            if(effScore === null) {
+                // Calcoliamo quanti punti mancano per arrivare alla soglia
+                let pointsNeeded = THRESHOLD - pointsGPA;
+                
+                if(pointsNeeded <= 0) {
+                    // Media talmente alta che non serve test (o basta il minimo)
+                    badge.innerText = "Ammissione Sicura"; badge.style.color = "var(--success)";
+                    title.innerText = "Media Eccellente";
+                    desc.innerText = `La tua media (${gpa}) è talmente alta che hai già i punti necessari per superare la soglia stimata.`;
+                    searchScore = 17;
+                } else {
+                    // Convertiamo i punti necessari in Voto Test (scala 17-50)
+                    // Formula inversa: Voto = (PuntiNecessari * 33 / 55) + 17
+                    let targetVote = (pointsNeeded * 33 / 55) + 17;
+                    searchScore = targetVote;
 
-            REAL_DB.forEach(r => {
-                if (r.c === course && r.r === 0) {
-                    if (r.g >= (gpa - 0.05)) {
-                        if (r.s > minSafeScore) {
-                            minSafeScore = r.s;
-                            rejectionConstraintFound = true;
-                        }
+                    // Qui applichiamo la logica "intelligente":
+                    // Se la media è bassa (pointsGPA basso), targetVote sarà alto -> Messaggio allarmante.
+                    // Se la media è alta (pointsGPA alto), targetVote sarà basso -> Messaggio rassicurante.
+
+                    if(targetVote > 50) {
+                        badge.innerText = "Matematicamente Impossibile"; badge.style.color = "var(--text-sec)";
+                        title.innerText = "Media Insufficiente";
+                        desc.innerText = `Con media ${gpa}, neanche un punteggio perfetto (50/50) al test basterebbe per raggiungere la soglia di ${THRESHOLD}.`;
+                    } else if(targetVote > 42) {
+                        badge.innerText = "Sfida Estrema"; badge.style.color = "var(--danger)";
+                        title.innerText = `Serve Test: ${targetVote.toFixed(1)}+`;
+                        desc.innerText = `La media ${gpa} ti penalizza molto nel calcolo totale. Ti serve un test quasi perfetto per compensare.`;
+                    } else if(targetVote > 36) {
+                        badge.innerText = "Difficile"; badge.style.color = "var(--warning)";
+                        title.innerText = `Serve Test: ${targetVote.toFixed(1)}+`;
+                        desc.innerText = `Sei penalizzato dalla media. Devi ottenere un punteggio test nettamente sopra la media.`;
+                    } else if(targetVote > 28) {
+                        badge.innerText = "Standard"; badge.style.color = "var(--primary)";
+                        title.innerText = `Serve Test: ${targetVote.toFixed(1)}+`;
+                        desc.innerText = `Situazione bilanciata. Ti serve un test solido intorno al ${Math.round(targetVote)} per entrare.`;
+                    } else {
+                        badge.innerText = "Vantaggioso"; badge.style.color = "var(--success)";
+                        title.innerText = `Serve Test: ${targetVote.toFixed(1)}+`;
+                        desc.innerText = `Hai un'ottima media. Ti basta un punteggio test base per raggiungere l'obiettivo.`;
                     }
                 }
-            });
+            } 
+            // --- SCENARIO B: VALUTAZIONE (Utente HA messo il test) ---
+            else {
+                let pointsTest = 55 * ((effScore - 17) / 33);
+                let totalScore = pointsGPA + pointsTest;
+                searchScore = effScore;
 
-            if (rejectionConstraintFound && target <= minSafeScore) {
-                target = minSafeScore + 0.6; 
+                let gap = totalScore - THRESHOLD;
+                
+                // Controllo rejection nel DB
+                let rejectionFound = false;
+                let minSafeScore = 0;
+                REAL_DB.forEach(r => {
+                    if (r.c === course && r.r === 0 && r.g >= (gpa - 0.1)) {
+                        if (r.s > minSafeScore) { minSafeScore = r.s; rejectionFound = true; }
+                    }
+                });
+                
+                if (rejectionFound && effScore <= minSafeScore) {
+                    badge.innerText = "A Rischio (Storico)"; badge.style.color = "var(--danger)";
+                    title.innerText = "Punteggio Pericoloso";
+                    desc.innerText = "Attenzione: ci sono candidati con punteggi simili al tuo che sono stati rifiutati in passato.";
+                } else if (gap >= 2) {
+                    badge.innerText = "Probabile"; badge.style.color = "var(--success)";
+                    title.innerText = "Posizionamento Forte";
+                    desc.innerText = `Il tuo calcolo totale (${totalScore.toFixed(1)}) supera la soglia stimata per ${course}.`;
+                } else if (gap >= 0) {
+                    badge.innerText = "Competitivo"; badge.style.color = "var(--warning)";
+                    title.innerText = "Sulla Soglia";
+                    desc.innerText = "Sei tecnicamente dentro la soglia, ma il margine è minimo. L'esito è incerto.";
+                } else {
+                    badge.innerText = "Insufficiente"; badge.style.color = "var(--danger)";
+                    title.innerText = "Sotto Target";
+                    desc.innerText = `Il tuo punteggio totale combinato non raggiunge la soglia stimata di ${THRESHOLD}.`;
+                }
             }
 
-            if (isNaN(rawScore)) { searchScore = target > 50 ? 50 : target; }
-
-            // 4. RICERCA DB
+            // --- DATABASE MATCH VISUALIZATION ---
             let bestRecord = null;
             let minDist = Infinity;
             
-            if (!invalidInput) {
-                REAL_DB.forEach(r => {
-                    if(r.c === course || (course === 'BEMACS' && r.c === 'BAI')) { 
-                        let dG = (r.g - gpa) * 10; 
-                        let dS = (r.s - searchScore);
-                        let dist = Math.sqrt(dG*dG + dS*dS);
-                        if(dist < minDist) { minDist = dist; bestRecord = r; }
-                    }
-                });
-            }
+            REAL_DB.forEach(r => {
+                if(r.c === course || (course === 'BEMACS' && r.c === 'BAI')) { 
+                    let dG = (r.g - gpa) * 10; 
+                    let dS = (r.s - searchScore);
+                    let dist = Math.sqrt(dG*dG + dS*dS);
+                    if(dist < minDist) { minDist = dist; bestRecord = r; }
+                }
+            });
 
-            // 5. OUTPUT
-            if (invalidInput) {
-                matchBox.style.display = 'none';
-                badge.innerText = "Errore Input"; badge.style.color = "var(--danger)";
-                title.innerText = "Range Non Valido";
-                desc.innerText = "Inserisci un voto Bocconi (17-50) oppure SAT (1040-1600).";
-                return;
-            }
-
-            // MATCH VISUALIZATION
             if (bestRecord && minDist < 15) { 
                 matchBox.style.display = 'block';
                 let tagHtml = bestRecord.r === 1 
                     ? '<span class="match-tag tag-ok">Ammesso</span>' 
                     : '<span class="match-tag tag-ko">Non Ammesso</span>';
                 
-                let scoreText = '';
-                if (bestRecord.sat) {
-                    scoreText = `SAT ${bestRecord.sat} (conv. ${bestRecord.s.toFixed(1)})`;
-                } else {
-                    scoreText = `Test ${bestRecord.s.toFixed(1)}`;
-                }
+                let scoreText = bestRecord.sat 
+                    ? `SAT ${bestRecord.sat}` 
+                    : `Test ${bestRecord.s.toFixed(1)}`;
+                    
                 matchText.innerHTML = `Media ${bestRecord.g} + ${scoreText} ${tagHtml}`;
             } else {
                 matchBox.style.display = 'none';
-            }
-
-            // ADVICE LOGIC
-            if (effScore === null) {
-                // MODE: PREDICTION
-                if (target > 45) {
-                    badge.innerText = "Molto Difficile"; badge.style.color = "var(--danger)";
-                    title.innerText = "Obiettivo: > 45";
-                    desc.innerText = `Attenzione: ci sono candidati con media ${gpa} (o superiore) rifiutati anche con punteggi alti. Serve un test eccellente.`;
-                } else {
-                    badge.innerText = "Target Consigliato"; badge.style.color = "var(--primary)";
-                    title.innerText = `Punta a: ${Math.round(target * 10) / 10}+`;
-                    if(rejectionConstraintFound) {
-                        desc.innerText = `Target calcolato tenendo conto dei candidati rifiutati con media simile alla tua.`;
-                    } else {
-                        desc.innerText = `Per ${course} con media ${gpa}, questo punteggio ti porterebbe a un totale competitivo.`;
-                    }
-                }
-            } else {
-                // MODE: EVALUATION
-                let risky = false;
-                if (rejectionConstraintFound && effScore <= minSafeScore) {
-                    risky = true;
-                }
-
-                let userTotal = getFormulaScore(gpa, effScore);
-                let gap = userTotal - THRESHOLD;
-
-                if (risky) {
-                      badge.innerText = "A Rischio"; badge.style.color = "var(--danger)";
-                      title.innerText = "Punteggio Pericoloso";
-                      desc.innerText = `Attenzione: esistono candidati rifiutati in ${course} con media e test simili o superiori ai tuoi.`;
-                } else if (gap >= 2) {
-                    badge.innerText = "Buone Probabilità"; badge.style.color = "var(--success)";
-                    title.innerText = "Posizionamento Solido";
-                    desc.innerText = `Il tuo punteggio totale supera la soglia stimata per ${course} basata sui dati Early 2025.`;
-                } else if (gap >= -3) {
-                    badge.innerText = "Competitivo"; badge.style.color = "var(--warning)";
-                    title.innerText = "Nella media";
-                    desc.innerText = `Il tuo totale è vicino alla soglia di ingresso. L'esito dipenderà dai posti disponibili.`;
-                } else {
-                    badge.innerText = "Sotto Target"; badge.style.color = "var(--danger)";
-                    title.innerText = `Punteggio totale basso`;
-                    desc.innerText = `Combinando media e test, sei sotto la soglia tipica degli ammessi in Early Session.`;
-                }
             }
         }
     </script>
