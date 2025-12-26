@@ -28,6 +28,7 @@
             --warning: #FF9F0A;
             --danger: #FF3B30;
             --orange: #FF9500;
+            --blue: #0077ED;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -55,11 +56,11 @@
         .view-section {
             display: none;
             width: 100%;
-            will-change: opacity, transform; /* Ottimizzazione rendering */
+            will-change: opacity, transform;
         }
         .view-section.active {
             display: block;
-            animation: fadeIn 0.25s ease-out forwards; /* Velocizzato */
+            animation: fadeIn 0.25s ease-out forwards;
         }
         
         @keyframes fadeIn { from{opacity:0; transform: translateY(4px);} to{opacity:1; transform: translateY(0);} }
@@ -90,7 +91,7 @@
             position: relative;
             z-index: 20;
             transform: scale(1);
-            transition: transform 0.1s ease-out; /* Solo transform per performance */
+            transition: transform 0.1s ease-out;
         }
         .menu-item:active { transform: scale(0.97); background: #f9f9f9; }
 
@@ -183,13 +184,13 @@
         }
         select.input-box { background-color: var(--input-bg); }
 
+        /* --- PREDICTOR RESULTS --- */
         .result-container {
             margin-top: 28px;
             padding-top: 24px;
             border-top: 1px solid #E5E5EA;
             display: none;
         }
-
         .result-badge {
             font-size: 11px;
             font-weight: 700;
@@ -212,7 +213,6 @@
             line-height: 1.5;
             margin-bottom: 16px;
         }
-
         .data-match-box {
             background: #F2F2F7;
             border-radius: 12px;
@@ -245,6 +245,7 @@
         .tag-ok { background: #D1FAE5; color: #065F46; }
         .tag-ko { background: #FEE2E2; color: #991B1B; }
 
+        /* --- FOOTER --- */
         .footer-info {
             margin-top: 40px;
             text-align: center;
@@ -264,6 +265,7 @@
             margin-top: 10px;
         }
 
+        /* --- SEGMENT CONTROL --- */
         .segment-control {
             background: #E5E5EA;
             padding: 3px;
@@ -287,6 +289,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
+        /* --- CONVERTER BAR --- */
         .bar-container {
             height: 6px;
             background: #E5E5EA;
@@ -301,7 +304,7 @@
             transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        /* --- STILI STRESSOMETRO --- */
+        /* --- STRESSOMETRO --- */
         .stress-question {
             font-size: 18px;
             font-weight: 600;
@@ -323,10 +326,7 @@
             align-items: center;
             border: 1px solid transparent;
         }
-        .stress-opt-btn:active {
-            background: #E5E5EA;
-            transform: scale(0.98);
-        }
+        .stress-opt-btn:active { background: #E5E5EA; transform: scale(0.98); }
         .stress-marker {
             width: 24px; height: 24px;
             border-radius: 50%;
@@ -337,21 +337,35 @@
             margin-right: 12px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
-        .stress-progress {
-            height: 4px; background: #E5E5EA; border-radius: 2px; margin-bottom: 20px; overflow: hidden;
-        }
+        .stress-progress { height: 4px; background: #E5E5EA; border-radius: 2px; margin-bottom: 20px; overflow: hidden; }
         .stress-progress-bar { height: 100%; background: var(--warning); width: 0%; transition: width 0.3s; }
-        
         .zen-score-circle {
-            width: 120px; height: 120px;
-            border-radius: 50%;
-            background: var(--bg-body);
-            margin: 0 auto 20px auto;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            border: 6px solid var(--success);
+            width: 120px; height: 120px; border-radius: 50%; background: var(--bg-body); margin: 0 auto 20px auto;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; border: 6px solid var(--success);
         }
         .zen-val { font-size: 32px; font-weight: 700; color: var(--text-main); }
         .zen-label { font-size: 11px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; }
+
+        /* --- DATABASE VIEW --- */
+        .db-controls { margin-bottom: 20px; }
+        .sort-bar { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 4px; }
+        .sort-chip {
+            padding: 6px 12px; background: var(--input-bg); border-radius: 18px; font-size: 12px; font-weight: 600;
+            color: var(--text-sec); cursor: pointer; white-space: nowrap; transition: 0.2s;
+        }
+        .sort-chip.active { background: #E1F2FF; color: var(--blue); }
+        
+        .db-list { display: flex; flex-direction: column; gap: 10px; }
+        .db-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px; background: #FFFFFF; border-radius: 12px; border: 1px solid rgba(0,0,0,0.03);
+        }
+        .db-row-left { display: flex; flex-direction: column; }
+        .db-course { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
+        .db-details { font-size: 12px; color: var(--text-sec); }
+        .db-status { font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
+        .status-ok { background: #D1FAE5; color: #065F46; }
+        .status-ko { background: #FEE2E2; color: #991B1B; }
 
     </style>
 </head>
@@ -375,6 +389,14 @@
                 <div class="menu-content">
                     <h3>Probabilità Ammissione</h3>
                     <p>Analisi dati Early Session 2025</p>
+                </div>
+            </div>
+            
+            <div class="menu-item" onclick="initDatabase()">
+                <div class="menu-icon" style="color: #0077ED; background: #E1F2FF;">📊</div>
+                <div class="menu-content">
+                    <h3>Database Storico</h3>
+                    <p>Esplora tutti i dati Early '25</p>
                 </div>
             </div>
 
@@ -467,10 +489,51 @@
                     ⚠️ Disclaimer Importante
                 </div>
                 <div class="footer-text" style="max-width: 320px; margin: 0 auto;">
-                    Questa stima si basa sui dati della Early Session. La Winter Session potrebbe essere più o meno competitiva. Il tool non è ufficiale e serve solo come riferimento statistico.
+                    Questa stima si basa sui dati della Early Session. La Winter Session potrebbe essere più o meno competitiva.
                 </div>
                 <div class="footer-text" style="margin-top: 12px; font-weight: 600; color: var(--primary);">
-                    In caso di anomalie nei risultati, segnalalo sul gruppo WhatsApp per aiutarci a migliorare.
+                    Segnala anomalie sul gruppo WhatsApp.
+                </div>
+            </div>
+        </section>
+
+        <section id="view-database" class="view-section">
+            <div class="nav-header">
+                <button class="back-btn" onclick="goTo('view-home')">←</button>
+                <span class="page-title">Database</span>
+            </div>
+
+            <div class="card" style="padding: 20px;">
+                <div class="db-controls">
+                    <label>Filtra Corso</label>
+                    <select id="db-filter-course" class="input-box" style="height: 44px; margin-bottom:12px;" onchange="renderDatabase()">
+                        <option value="ALL">Tutti i Corsi</option>
+                        <option value="CLEAM">CLEAM</option>
+                        <option value="BIEM">BIEM</option>
+                        <option value="BIEF">BIEF</option>
+                        <option value="BEMACS">BEMACS</option>
+                        <option value="CLEACC">CLEACC</option>
+                        <option value="GLAW">Global Law</option>
+                    </select>
+
+                    <div class="segment-control" style="margin-bottom:12px;">
+                        <div class="segment-opt active" id="db-seg-all" onclick="setDbFilter('ALL')">Tutti</div>
+                        <div class="segment-opt" id="db-seg-ok" onclick="setDbFilter(1)">Ammessi</div>
+                        <div class="segment-opt" id="db-seg-ko" onclick="setDbFilter(0)">Rifiutati</div>
+                    </div>
+
+                    <div class="sort-bar">
+                        <div style="font-size:11px; color:var(--text-sec); display:flex; align-items:center; margin-right:4px;">ORDINA:</div>
+                        <div class="sort-chip active" id="sort-gpa" onclick="toggleDbSort('gpa')">Media ↓</div>
+                        <div class="sort-chip" id="sort-score" onclick="toggleDbSort('score')">Test ↓</div>
+                    </div>
+                </div>
+
+                <div id="db-list-container" class="db-list">
+                    </div>
+                
+                <div id="db-empty" style="text-align:center; padding:20px; color:var(--text-sec); display:none; font-size:13px;">
+                    Nessun dato trovato con questi filtri.
                 </div>
             </div>
         </section>
@@ -488,8 +551,7 @@
                 
                 <div id="q-text" class="stress-question">Caricamento...</div>
                 
-                <div id="q-options">
-                    </div>
+                <div id="q-options"></div>
             </div>
 
             <div id="stress-result" class="card" style="display:none; text-align:center;">
@@ -519,10 +581,7 @@
             const target = document.getElementById(id);
             if(target) {
                 target.style.display = 'block';
-                // Piccola latenza per permettere al browser di renderizzare il display:block prima dell'animazione
-                requestAnimationFrame(() => {
-                    target.classList.add('active');
-                });
+                requestAnimationFrame(() => { target.classList.add('active'); });
             }
             window.scrollTo(0,0);
         }
@@ -545,7 +604,6 @@
         function interp(val, inK, outK) {
             if(inK === 's' && val > 1600) val = 1600;
             if(inK === 'b' && val > 50) val = 50;
-
             for(let i=0; i<ANCHORS.length-1; i++){
                 let l=ANCHORS[i], u=ANCHORS[i+1];
                 if(val>=l[inK] && val<=u[inK]) return l[outK] + (val-l[inK])/(u[inK]-l[inK])*(u[outK]-l[outK]);
@@ -575,7 +633,7 @@
             }
         });
 
-        // --- PREDICTOR LOGIC ---
+        // --- DATABASE & PREDICTOR DATA ---
         const REAL_DB = [
             {c:'CLEAM', g:7.08, s:40.4, r:0}, {c:'CLEAM', g:7.50, s:39.7, r:1},
             {c:'CLEAM', g:7.25, s:39.0, sat:1490, r:1}, {c:'CLEAM', g:7.50, s:35.0, sat:1430, r:1},
@@ -600,13 +658,13 @@
             {c:'GLAW', g:7.30, s:37.2, r:1}
         ];
 
+        // --- PREDICTOR LOGIC ---
         const SCORE_THRESHOLDS = { "CLEAM": 52.5, "BIEM": 55.0, "BIEF": 60.0, "BEMACS": 56.0, "CLEACC": 47.5, "GLAW": 51.0 };
 
         function calcPred() {
             const course = document.getElementById('pred-course').value;
             let gpaVal = document.getElementById('pred-gpa').value.replace(',','.');
             let gpa = parseFloat(gpaVal);
-            
             let rawScoreVal = document.getElementById('pred-score').value.replace(',','.');
             let rawScore = parseFloat(rawScoreVal);
             
@@ -622,7 +680,6 @@
 
             let pointsGPA = 45 * ((gpa - 6) / 4);
             const THRESHOLD = SCORE_THRESHOLDS[course];
-
             let effScore = null;
             let searchScore; 
 
@@ -633,9 +690,7 @@
             }
 
             if(effScore === null) {
-                // MODALITA' PREVISIONE GAP
                 let pointsNeeded = THRESHOLD - pointsGPA;
-                
                 if(pointsNeeded <= 0) {
                     badge.innerText = "Ammissione Probabile"; badge.style.color = "var(--success)";
                     title.innerText = "Media Eccellente";
@@ -644,11 +699,8 @@
                 } else {
                     let targetVote = (pointsNeeded * 33 / 55) + 17;
                     searchScore = targetVote;
-                    
                     let minRange = Math.floor(targetVote);
                     let maxRange = Math.ceil(targetVote);
-                    
-                    // CORREZIONE RICHIESTA: Se min == max, mostra solo un numero
                     let rangeString = (minRange === maxRange) ? `${minRange}` : `${minRange} - ${maxRange}`;
                     
                     if(targetVote > 50) { rangeString = "Impossibile"; } else if (targetVote > 44) { rangeString = "> 45"; }
@@ -656,15 +708,15 @@
                     if(targetVote > 50) {
                         badge.innerText = "Matematicamente Difficile"; badge.style.color = "var(--text-sec)";
                         title.innerText = "Media Insufficiente";
-                        desc.innerText = `Anche con un test perfetto, la media ${gpa} penalizza troppo il punteggio totale per gli standard di ${course}.`;
+                        desc.innerText = `Anche con un test perfetto, la media ${gpa} penalizza troppo il punteggio totale.`;
                     } else if(targetVote > 44) {
                         badge.innerText = "Sfida Estrema"; badge.style.color = "var(--danger)";
                         title.innerText = `Serve Test: ${rangeString}`;
-                        desc.innerText = `Serve un punteggio eccezionale, quasi perfetto, per compensare la media. È statisticamente molto difficile.`;
+                        desc.innerText = `Serve un punteggio eccezionale per compensare la media.`;
                     } else if(targetVote > 36) {
                         badge.innerText = "Difficile"; badge.style.color = "var(--warning)";
                         title.innerText = `Serve Test: ${rangeString}`;
-                        desc.innerText = `Obiettivo alto. Dovrai superare nettamente la media dei candidati al test.`;
+                        desc.innerText = `Obiettivo alto. Dovrai superare nettamente la media dei candidati.`;
                     } else if(targetVote > 28) {
                         badge.innerText = "Competitivo"; badge.style.color = "var(--primary)";
                         title.innerText = `Serve Test: ${rangeString}`;
@@ -672,59 +724,49 @@
                     } else {
                         badge.innerText = "Posizione Forte"; badge.style.color = "var(--success)";
                         title.innerText = `Serve Test: ${rangeString}`;
-                        desc.innerText = `Hai un'ottima media. Ti basta un punteggio test standard per raggiungere l'obiettivo.`;
+                        desc.innerText = `Hai un'ottima media. Ti basta un punteggio test standard per l'obiettivo.`;
                     }
                 }
             } else {
-                // MODALITA' CALCOLO TOTALE
                 let pointsTest = 55 * ((effScore - 17) / 33);
                 let totalScore = pointsGPA + pointsTest;
                 searchScore = effScore;
-
                 let gap = totalScore - THRESHOLD;
                 let rejectionFound = false;
                 let minSafeScore = 0;
-                REAL_DB.forEach(r => {
-                    if (r.c === course && r.r === 0 && r.g >= (gpa - 0.1)) {
-                        if (r.s > minSafeScore) { minSafeScore = r.s; rejectionFound = true; }
-                    }
-                });
-
                 let coveredByAdmitted = false;
+
                 REAL_DB.forEach(r => {
-                    if (r.c === course && r.r === 1) {
-                        if (gpa >= r.g && effScore >= r.s) { coveredByAdmitted = true; }
-                    }
+                    if (r.c === course && r.r === 0 && r.g >= (gpa - 0.1) && r.s > minSafeScore) { minSafeScore = r.s; rejectionFound = true; }
+                    if (r.c === course && r.r === 1 && gpa >= r.g && effScore >= r.s) { coveredByAdmitted = true; }
                 });
                 
                 if (rejectionFound && effScore <= minSafeScore && !coveredByAdmitted) {
                     badge.innerText = "A Rischio (Storico)"; badge.style.color = "var(--danger)";
                     title.innerText = "Punteggio Critico";
-                    desc.innerText = "Attenzione: candidati con profili simili al tuo sono stati rifiutati in passato.";
+                    desc.innerText = "Candidati con profili simili al tuo sono stati rifiutati in passato.";
                 } else if (gap >= 2) {
                     badge.innerText = "Probabile"; badge.style.color = "var(--success)";
                     title.innerText = "Posizionamento Solido";
-                    desc.innerText = `Il tuo punteggio combinato risulta superiore alla soglia stimata per ${course}. Buone possibilità.`;
+                    desc.innerText = `Il tuo punteggio combinato risulta superiore alla soglia stimata. Buone possibilità.`;
                 } else if (gap >= 0) {
                     badge.innerText = "Competitivo"; badge.style.color = "var(--warning)";
                     title.innerText = "Sulla Soglia";
-                    desc.innerText = "Sei tecnicamente dentro la soglia, ma il margine è minimo. L'esito dipende dalla competizione.";
+                    desc.innerText = "Sei tecnicamente dentro la soglia, ma il margine è minimo.";
                 } else {
                     if (coveredByAdmitted) {
                         badge.innerText = "Competitivo (Storico Favorevole)"; badge.style.color = "var(--warning)";
                         title.innerText = "Sotto Media ma Possibile";
-                        desc.innerText = "Sebbene il punteggio sia basso, in passato candidati con profili simili sono stati ammessi. Non è garantito, ma possibile.";
+                        desc.innerText = "Punteggio basso, ma in passato casi simili sono stati ammessi.";
                     } else {
                         badge.innerText = "Insufficiente"; badge.style.color = "var(--danger)";
                         title.innerText = "Sotto Target";
-                        desc.innerText = `La combinazione di media e test risulta inferiore alla soglia statistica necessaria per l'ammissione a ${course}.`;
+                        desc.innerText = `Combinazione inferiore alla soglia statistica necessaria.`;
                     }
                 }
             }
-
             let bestRecord = null;
             let minDist = Infinity;
-            
             REAL_DB.forEach(r => {
                 if(r.c === course || (course === 'BEMACS' && r.c === 'BAI')) { 
                     let dG = (r.g - gpa) * 10; 
@@ -733,85 +775,112 @@
                     if(dist < minDist) { minDist = dist; bestRecord = r; }
                 }
             });
-
             if (bestRecord && minDist < 15) { 
                 matchBox.style.display = 'block';
                 let tagHtml = bestRecord.r === 1 ? '<span class="match-tag tag-ok">Ammesso</span>' : '<span class="match-tag tag-ko">Non Ammesso</span>';
                 let scoreText = bestRecord.sat ? `SAT ${bestRecord.sat}` : `Test ${bestRecord.s.toFixed(1)}`;
                 matchText.innerHTML = `Media ${bestRecord.g} + ${scoreText} ${tagHtml}`;
-            } else {
-                matchBox.style.display = 'none';
-            }
+            } else { matchBox.style.display = 'none'; }
         }
 
-        // --- STRESSOMETRO INTELLIGENTE ---
-        // Aggiunta la proprietà 'tip' per consigli personalizzati
-        const STRESS_DB = [
-            { 
-                q: "Quante ore dormi in media in questo periodo?", 
-                tip: "Il sonno consolida la memoria. Cerca di dormire almeno 7 ore: studiare stanchi è controproducente.",
-                opts: [{t:"8+ ore", v:5}, {t:"7-8 ore", v:4}, {t:"6 ore", v:3}, {t:"5 ore", v:2}, {t:"Meno di 4", v:1}] 
-            },
-            { 
-                q: "Sogni mai il giorno del test?", 
-                tip: "Sognare il test indica ansia subconscia. Fai esercizi di respirazione prima di dormire.",
-                opts: [{t:"Mai", v:5}, {t:"Raramente", v:4}, {t:"Qualche volta", v:3}, {t:"Spesso", v:2}, {t:"Ogni notte", v:1}] 
-            },
-            { 
-                q: "Come va l'appetito?", 
-                tip: "Lo stomaco chiuso toglie energie al cervello. Fai spuntini leggeri ma frequenti (frutta secca, cioccolato fondente).",
-                opts: [{t:"Regolare", v:5}, {t:"Un po' altalenante", v:4}, {t:"Mangio per noia", v:3}, {t:"Stomaco chiuso", v:2}, {t:"Ho nausea", v:1}] 
-            },
-            { 
-                q: "Riesci a concentrarti nello studio?", 
-                tip: "Se la testa è vuota, stacca. Usa la tecnica del Pomodoro: 25 min studio, 5 min pausa assoluta.",
-                opts: [{t:"Perfettamente", v:5}, {t:"Abbastanza", v:4}, {t:"Mi distraggo", v:3}, {t:"Fatico molto", v:2}, {t:"Testa vuota", v:1}] 
-            },
-            { 
-                q: "Quanto spesso controlli i forum/gruppi?", 
-                tip: "Leggere le ansie altrui sui gruppi aumenta solo la tua. Limitati a controllarli una volta al giorno.",
-                opts: [{t:"Mai", v:5}, {t:"1 volta al giorno", v:4}, {t:"Poche volte", v:3}, {t:"Ogni ora", v:2}, {t:"Ossessivamente", v:1}] 
-            },
-            { 
-                q: "Ti senti in colpa se non studi?", 
-                tip: "Il riposo è parte dello studio. Il senso di colpa è un nemico: pianifica le pause e goditele senza rimorsi.",
-                opts: [{t:"No, riposo serve", v:5}, {t:"Raramente", v:4}, {t:"A volte", v:3}, {t:"Spesso", v:2}, {t:"Sempre", v:1}] 
-            },
-            { 
-                q: "Ti confronti con gli altri candidati?", 
-                tip: "Ognuno ha il suo percorso. Il confronto costante con i punteggi altrui distrugge la tua autostima.",
-                opts: [{t:"Vado per la mia strada", v:5}, {t:"Raramente", v:4}, {t:"A volte", v:3}, {t:"Spesso", v:2}, {t:"Vivo di confronti", v:1}] 
-            },
-            { 
-                q: "Hai rinunciato allo sport/hobby?", 
-                tip: "L'attività fisica ossigena il cervello. Anche solo 20 minuti di camminata valgono più di un'ora sui libri a vuoto.",
-                opts: [{t:"No, continuo tutto", v:5}, {t:"Ridotto un po'", v:4}, {t:"Ridotto molto", v:3}, {t:"Quasi del tutto", v:2}, {t:"Sì, faccio solo test", v:1}] 
+        // --- DATABASE VIEW LOGIC ---
+        let dbStatusFilter = 'ALL'; // 'ALL', 1 (OK), 0 (KO)
+        let dbSortBy = 'gpa'; // 'gpa', 'score'
+        let dbSortDesc = true;
+
+        function initDatabase() {
+            goTo('view-database');
+            renderDatabase();
+        }
+
+        function setDbFilter(val) {
+            dbStatusFilter = val;
+            document.getElementById('db-seg-all').className = `segment-opt ${val==='ALL'?'active':''}`;
+            document.getElementById('db-seg-ok').className = `segment-opt ${val===1?'active':''}`;
+            document.getElementById('db-seg-ko').className = `segment-opt ${val===0?'active':''}`;
+            renderDatabase();
+        }
+
+        function toggleDbSort(key) {
+            if (dbSortBy === key) {
+                dbSortDesc = !dbSortDesc; // Inverti ordine
+            } else {
+                dbSortBy = key;
+                dbSortDesc = true; // Reset a discendente per nuova chiave
             }
-        ];
+            // Update UI Chips
+            document.getElementById('sort-gpa').className = `sort-chip ${key==='gpa'?'active':''}`;
+            document.getElementById('sort-score').className = `sort-chip ${key==='score'?'active':''}`;
+            document.getElementById('sort-gpa').innerText = `Media ${key==='gpa' && !dbSortDesc ? '↑' : '↓'}`;
+            document.getElementById('sort-score').innerText = `Test ${key==='score' && !dbSortDesc ? '↑' : '↓'}`;
+            
+            renderDatabase();
+        }
 
-        // Aggiungiamo domande generiche per varietà, senza tip specifici
-        const GENERIC_FREQ = [{t:"Mai", v:5}, {t:"Raramente", v:4}, {t:"A volte", v:3}, {t:"Spesso", v:2}, {t:"Sempre", v:1}];
-        const EXTRA_QS = [
-            "Ti senti irritabile con gli amici?",
-            "Hai paura di deludere le aspettative?",
-            "Hai vuoti di memoria improvvisi?",
-            "Procrastini per paura di fallire?"
-        ];
-        EXTRA_QS.forEach(text => STRESS_DB.push({q: text, opts: GENERIC_FREQ}));
+        function renderDatabase() {
+            const courseFilter = document.getElementById('db-filter-course').value;
+            const container = document.getElementById('db-list-container');
+            const emptyState = document.getElementById('db-empty');
+            
+            // 1. Filter
+            let filtered = REAL_DB.filter(item => {
+                const cMatch = (courseFilter === 'ALL' || item.c === courseFilter);
+                const sMatch = (dbStatusFilter === 'ALL' || item.r === dbStatusFilter);
+                return cMatch && sMatch;
+            });
 
-        let quizQuestions = [];
-        let currentQIndex = 0;
-        let totalScore = 0;
-        let adviceList = []; // Raccoglie i consigli basati sulle risposte negative
+            // 2. Sort
+            filtered.sort((a,b) => {
+                let valA = (dbSortBy === 'gpa') ? a.g : a.s;
+                let valB = (dbSortBy === 'gpa') ? b.g : b.s;
+                return dbSortDesc ? (valB - valA) : (valA - valB);
+            });
+
+            // 3. Render
+            container.innerHTML = '';
+            if (filtered.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+            emptyState.style.display = 'none';
+
+            filtered.forEach(item => {
+                let statusClass = item.r === 1 ? 'status-ok' : 'status-ko';
+                let statusText = item.r === 1 ? 'AMMESSO' : 'NO';
+                let scoreDisplay = item.sat ? `SAT ${item.sat}` : `Test ${item.s.toFixed(1)}`;
+                
+                let html = `
+                <div class="db-row">
+                    <div class="db-row-left">
+                        <div class="db-course">${item.c}</div>
+                        <div class="db-details">Media: <strong>${item.g}</strong> • ${scoreDisplay}</div>
+                    </div>
+                    <div class="db-status ${statusClass}">${statusText}</div>
+                </div>`;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        // --- STRESSOMETRO LOGIC ---
+        const STRESS_DB = [
+            { q: "Quante ore dormi in media in questo periodo?", tip: "Il sonno consolida la memoria. Cerca di dormire almeno 7 ore.", opts: [{t:"8+ ore", v:5}, {t:"7-8 ore", v:4}, {t:"6 ore", v:3}, {t:"5 ore", v:2}, {t:"Meno di 4", v:1}] },
+            { q: "Sogni mai il giorno del test?", tip: "Sognare il test indica ansia subconscia. Fai respirazione prima di dormire.", opts: [{t:"Mai", v:5}, {t:"Raramente", v:4}, {t:"Qualche volta", v:3}, {t:"Spesso", v:2}, {t:"Ogni notte", v:1}] },
+            { q: "Come va l'appetito?", tip: "Lo stomaco chiuso toglie energie. Fai spuntini leggeri (frutta secca).", opts: [{t:"Regolare", v:5}, {t:"Un po' altalenante", v:4}, {t:"Mangio per noia", v:3}, {t:"Stomaco chiuso", v:2}, {t:"Ho nausea", v:1}] },
+            { q: "Riesci a concentrarti nello studio?", tip: "Usa la tecnica del Pomodoro: 25 min studio, 5 min pausa.", opts: [{t:"Perfettamente", v:5}, {t:"Abbastanza", v:4}, {t:"Mi distraggo", v:3}, {t:"Fatico molto", v:2}, {t:"Testa vuota", v:1}] },
+            { q: "Quanto spesso controlli i forum?", tip: "Leggere le ansie altrui aumenta la tua. Limitati a 1 volta al dì.", opts: [{t:"Mai", v:5}, {t:"1 volta al giorno", v:4}, {t:"Poche volte", v:3}, {t:"Ogni ora", v:2}, {t:"Ossessivamente", v:1}] },
+            { q: "Ti senti in colpa se non studi?", tip: "Il riposo è parte dello studio. Pianifica le pause senza rimorsi.", opts: [{t:"No, riposo serve", v:5}, {t:"Raramente", v:4}, {t:"A volte", v:3}, {t:"Spesso", v:2}, {t:"Sempre", v:1}] },
+            { q: "Ti confronti con gli altri candidati?", tip: "Ognuno ha il suo percorso. Il confronto distrugge l'autostima.", opts: [{t:"Vado per la mia strada", v:5}, {t:"Raramente", v:4}, {t:"A volte", v:3}, {t:"Spesso", v:2}, {t:"Vivo di confronti", v:1}] },
+            { q: "Hai rinunciato allo sport/hobby?", tip: "L'attività fisica ossigena il cervello. Bastano 20 minuti.", opts: [{t:"No, continuo tutto", v:5}, {t:"Ridotto un po'", v:4}, {t:"Ridotto molto", v:3}, {t:"Quasi del tutto", v:2}, {t:"Sì, faccio solo test", v:1}] }
+        ];
+        const EXTRA_QS = ["Ti senti irritabile con gli amici?", "Hai paura di deludere le aspettative?", "Hai vuoti di memoria improvvisi?", "Procrastini per paura di fallire?"];
+        EXTRA_QS.forEach(text => STRESS_DB.push({q: text, opts: [{t:"Mai", v:5}, {t:"Raramente", v:4}, {t:"A volte", v:3}, {t:"Spesso", v:2}, {t:"Sempre", v:1}]}));
+
+        let quizQuestions = [], currentQIndex = 0, totalScore = 0, adviceList = [];
 
         function startStressTest() {
             goTo('view-stress');
-            // Shuffle and pick 5
             quizQuestions = [...STRESS_DB].sort(() => 0.5 - Math.random()).slice(0, 5);
-            currentQIndex = 0;
-            totalScore = 0;
-            adviceList = [];
-            
+            currentQIndex = 0; totalScore = 0; adviceList = [];
             document.getElementById('quiz-container').style.display = 'block';
             document.getElementById('stress-result').style.display = 'none';
             renderQuestion();
@@ -821,20 +890,13 @@
             let qData = quizQuestions[currentQIndex];
             document.getElementById('q-idx').innerText = currentQIndex + 1;
             document.getElementById('q-text').innerText = qData.q;
-            
-            // Progress Bar
-            let pct = (currentQIndex / 5) * 100;
-            document.getElementById('stress-bar').style.width = pct + "%";
-
+            document.getElementById('stress-bar').style.width = ((currentQIndex / 5) * 100) + "%";
             let optsContainer = document.getElementById('q-options');
             optsContainer.innerHTML = '';
-            
             qData.opts.forEach((opt, idx) => {
                 let btn = document.createElement('div');
                 btn.className = 'stress-opt-btn';
-                // Passiamo anche l'oggetto qData per recuperare il tip
                 btn.onclick = () => handleAnswer(opt.v, qData);
-                
                 let markerLetters = ["A","B","C","D","E"];
                 btn.innerHTML = `<div class="stress-marker">${markerLetters[idx]}</div><div>${opt.t}</div>`;
                 optsContainer.appendChild(btn);
@@ -843,63 +905,36 @@
 
         function handleAnswer(val, questionData) {
             totalScore += val;
-            
-            // Logica Consigli Personalizzati: se il voto è basso (1 o 2) e c'è un tip specifico
-            if (val <= 2 && questionData.tip) {
-                adviceList.push(questionData.tip);
-            }
-
+            if (val <= 2 && questionData.tip) adviceList.push(questionData.tip);
             currentQIndex++;
-            if(currentQIndex < 5) {
-                renderQuestion();
-            } else {
-                showStressResult();
-            }
+            if(currentQIndex < 5) renderQuestion();
+            else showStressResult();
         }
 
         function showStressResult() {
             document.getElementById('quiz-container').style.display = 'none';
             document.getElementById('stress-result').style.display = 'block';
             document.getElementById('stress-bar').style.width = '100%';
-
             let zenPct = Math.round(((totalScore - 5) / 20) * 100);
-            
             let circle = document.getElementById('zen-circle');
             let scoreTxt = document.getElementById('zen-score');
             let title = document.getElementById('stress-title');
             let msg = document.getElementById('stress-msg');
-
             scoreTxt.innerText = zenPct + "%";
             
-            // Logica del messaggio
             if(zenPct > 75) {
-                circle.style.borderColor = "#34C759"; // Green
-                title.innerText = "Mentalità Vincente";
+                circle.style.borderColor = "#34C759"; title.innerText = "Mentalità Vincente";
                 msg.innerText = "Hai nervi d'acciaio. Continua così, la lucidità è la tua arma migliore.";
             } else if (zenPct > 40) {
-                circle.style.borderColor = "#FF9F0A"; // Orange
-                title.innerText = "Tensione Gestibile";
-                // Se abbiamo raccolto un consiglio specifico, mostriamolo, altrimenti generico
-                if (adviceList.length > 0) {
-                    // Prendi un consiglio a caso tra quelli raccolti
-                    let randomTip = adviceList[Math.floor(Math.random() * adviceList.length)];
-                    msg.innerHTML = `Sei un po' sotto pressione. Un consiglio per te:<br><strong>${randomTip}</strong>`;
-                } else {
-                    msg.innerText = "Sei un po' sotto pressione, ma è normale. Ricorda di fare pause regolari.";
-                }
+                circle.style.borderColor = "#FF9F0A"; title.innerText = "Tensione Gestibile";
+                if (adviceList.length > 0) msg.innerHTML = `Sei un po' sotto pressione. Un consiglio per te:<br><strong>${adviceList[Math.floor(Math.random() * adviceList.length)]}</strong>`;
+                else msg.innerText = "Sei un po' sotto pressione, ma è normale. Ricorda di fare pause regolari.";
             } else {
-                circle.style.borderColor = "#FF3B30"; // Red
-                title.innerText = "Allarme Stress";
-                
-                if (adviceList.length > 0) {
-                    let randomTip = adviceList[Math.floor(Math.random() * adviceList.length)];
-                    msg.innerHTML = `Stai rischiando il burnout. Fermati un attimo.<br>Ecco cosa devi fare ora: <strong>${randomTip}</strong>`;
-                } else {
-                    msg.innerHTML = "Stai rischiando il burnout. Chiudi i libri adesso.<br>La tua salute mentale vale più del test.";
-                }
+                circle.style.borderColor = "#FF3B30"; title.innerText = "Allarme Stress";
+                if (adviceList.length > 0) msg.innerHTML = `Stai rischiando il burnout. Fermati un attimo.<br>Ecco cosa devi fare ora: <strong>${adviceList[Math.floor(Math.random() * adviceList.length)]}</strong>`;
+                else msg.innerHTML = "Stai rischiando il burnout. Chiudi i libri adesso.<br>La tua salute mentale vale più del test.";
             }
         }
-
     </script>
 </body>
 </html>
