@@ -346,27 +346,6 @@
         .zen-val { font-size: 32px; font-weight: 700; color: var(--text-main); }
         .zen-label { font-size: 11px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; }
 
-        /* --- DATABASE VIEW --- */
-        .db-controls { margin-bottom: 20px; }
-        .sort-bar { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 4px; }
-        .sort-chip {
-            padding: 6px 12px; background: var(--input-bg); border-radius: 18px; font-size: 12px; font-weight: 600;
-            color: var(--text-sec); cursor: pointer; white-space: nowrap; transition: 0.2s;
-        }
-        .sort-chip.active { background: #E1F2FF; color: var(--blue); }
-        
-        .db-list { display: flex; flex-direction: column; gap: 10px; }
-        .db-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 14px; background: #FFFFFF; border-radius: 12px; border: 1px solid rgba(0,0,0,0.03);
-        }
-        .db-row-left { display: flex; flex-direction: column; }
-        .db-course { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
-        .db-details { font-size: 12px; color: var(--text-sec); }
-        .db-status { font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
-        .status-ok { background: #D1FAE5; color: #065F46; }
-        .status-ko { background: #FEE2E2; color: #991B1B; }
-
     </style>
 </head>
 <body>
@@ -392,14 +371,6 @@
                 </div>
             </div>
             
-            <div class="menu-item" onclick="initDatabase()">
-                <div class="menu-icon" style="color: #0077ED; background: #E1F2FF;">📊</div>
-                <div class="menu-content">
-                    <h3>Database Storico</h3>
-                    <p>Esplora tutti i dati Early '25</p>
-                </div>
-            </div>
-
             <div class="menu-item" onclick="startStressTest()">
                 <div class="menu-icon" style="color: #FF3B30; background: #FFF0F0;">❤️</div>
                 <div class="menu-content">
@@ -493,47 +464,6 @@
                 </div>
                 <div class="footer-text" style="margin-top: 12px; font-weight: 600; color: var(--primary);">
                     Segnala anomalie sul gruppo WhatsApp.
-                </div>
-            </div>
-        </section>
-
-        <section id="view-database" class="view-section">
-            <div class="nav-header">
-                <button class="back-btn" onclick="goTo('view-home')">←</button>
-                <span class="page-title">Database</span>
-            </div>
-
-            <div class="card" style="padding: 20px;">
-                <div class="db-controls">
-                    <label>Filtra Corso</label>
-                    <select id="db-filter-course" class="input-box" style="height: 44px; margin-bottom:12px;" onchange="renderDatabase()">
-                        <option value="ALL">Tutti i Corsi</option>
-                        <option value="CLEAM">CLEAM</option>
-                        <option value="BIEM">BIEM</option>
-                        <option value="BIEF">BIEF</option>
-                        <option value="BEMACS">BEMACS</option>
-                        <option value="CLEACC">CLEACC</option>
-                        <option value="GLAW">Global Law</option>
-                    </select>
-
-                    <div class="segment-control" style="margin-bottom:12px;">
-                        <div class="segment-opt active" id="db-seg-all" onclick="setDbFilter('ALL')">Tutti</div>
-                        <div class="segment-opt" id="db-seg-ok" onclick="setDbFilter(1)">Ammessi</div>
-                        <div class="segment-opt" id="db-seg-ko" onclick="setDbFilter(0)">Rifiutati</div>
-                    </div>
-
-                    <div class="sort-bar">
-                        <div style="font-size:11px; color:var(--text-sec); display:flex; align-items:center; margin-right:4px;">ORDINA:</div>
-                        <div class="sort-chip active" id="sort-gpa" onclick="toggleDbSort('gpa')">Media ↓</div>
-                        <div class="sort-chip" id="sort-score" onclick="toggleDbSort('score')">Test ↓</div>
-                    </div>
-                </div>
-
-                <div id="db-list-container" class="db-list">
-                    </div>
-                
-                <div id="db-empty" style="text-align:center; padding:20px; color:var(--text-sec); display:none; font-size:13px;">
-                    Nessun dato trovato con questi filtri.
                 </div>
             </div>
         </section>
@@ -633,7 +563,9 @@
             }
         });
 
-        // --- DATABASE & PREDICTOR DATA ---
+        // --- PREDICTOR DATA (DATABASE) ---
+        // UPDATED: CLEAM 7.6/32 -> Rejected (0)
+        // UPDATED: CLEAM 7.5/39.7 -> Admitted (1)
         const REAL_DB = [
             {c:'CLEAM', g:7.08, s:40.4, r:0}, {c:'CLEAM', g:7.50, s:39.7, r:1},
             {c:'CLEAM', g:7.25, s:39.0, sat:1490, r:1}, {c:'CLEAM', g:7.50, s:35.0, sat:1430, r:1},
@@ -641,11 +573,11 @@
             {c:'CLEAM', g:7.33, s:40.6, r:1}, {c:'CLEAM', g:7.80, s:40.0, r:1},
             {c:'CLEAM', g:7.85, s:39.4, r:1}, {c:'CLEAM', g:7.33, s:38.0, r:1},
             {c:'CLEAM', g:7.50, s:36.5, r:1}, {c:'CLEAM', g:8.16, s:35.0, r:1},
-            {c:'CLEAM', g:8.40, s:33.1, r:1}, {c:'CLEAM', g:7.60, s:32.0, r:1},
+            {c:'CLEAM', g:8.40, s:33.1, r:1}, {c:'CLEAM', g:7.50, s:39.7, r:1},
             {c:'CLEAM', g:8.60, s:29.0, r:1}, {c:'CLEAM', g:8.75, s:28.5, r:1},
             {c:'CLEAM', g:7.75, s:40.0, sat:1510, r:1}, 
             {c:'CLEAM', g:8.00, s:30.5, sat:1360, r:0}, {c:'CLEAM', g:7.00, s:40.4, r:0},
-            {c:'CLEAM', g:7.40, s:39.7, r:0}, {c:'CLEAM', g:7.25, s:37.6, r:0},
+            {c:'CLEAM', g:7.60, s:32.0, r:0}, {c:'CLEAM', g:7.25, s:37.6, r:0},
             {c:'BIEM', g:8.10, s:44.2, r:1},
             {c:'BIEM', g:8.33, s:40.7, r:1}, {c:'BIEM', g:8.75, s:38.0, r:1},
             {c:'BIEM', g:8.00, s:33.0, r:1}, {c:'BIEM', g:8.90, s:31.6, r:1},
@@ -781,84 +713,6 @@
                 let scoreText = bestRecord.sat ? `SAT ${bestRecord.sat}` : `Test ${bestRecord.s.toFixed(1)}`;
                 matchText.innerHTML = `Media ${bestRecord.g} + ${scoreText} ${tagHtml}`;
             } else { matchBox.style.display = 'none'; }
-        }
-
-        // --- DATABASE VIEW LOGIC ---
-        let dbStatusFilter = 'ALL'; // 'ALL', 1 (OK), 0 (KO)
-        let dbSortBy = 'gpa'; // 'gpa', 'score'
-        let dbSortDesc = true;
-
-        function initDatabase() {
-            goTo('view-database');
-            renderDatabase();
-        }
-
-        function setDbFilter(val) {
-            dbStatusFilter = val;
-            document.getElementById('db-seg-all').className = `segment-opt ${val==='ALL'?'active':''}`;
-            document.getElementById('db-seg-ok').className = `segment-opt ${val===1?'active':''}`;
-            document.getElementById('db-seg-ko').className = `segment-opt ${val===0?'active':''}`;
-            renderDatabase();
-        }
-
-        function toggleDbSort(key) {
-            if (dbSortBy === key) {
-                dbSortDesc = !dbSortDesc; // Inverti ordine
-            } else {
-                dbSortBy = key;
-                dbSortDesc = true; // Reset a discendente per nuova chiave
-            }
-            // Update UI Chips
-            document.getElementById('sort-gpa').className = `sort-chip ${key==='gpa'?'active':''}`;
-            document.getElementById('sort-score').className = `sort-chip ${key==='score'?'active':''}`;
-            document.getElementById('sort-gpa').innerText = `Media ${key==='gpa' && !dbSortDesc ? '↑' : '↓'}`;
-            document.getElementById('sort-score').innerText = `Test ${key==='score' && !dbSortDesc ? '↑' : '↓'}`;
-            
-            renderDatabase();
-        }
-
-        function renderDatabase() {
-            const courseFilter = document.getElementById('db-filter-course').value;
-            const container = document.getElementById('db-list-container');
-            const emptyState = document.getElementById('db-empty');
-            
-            // 1. Filter
-            let filtered = REAL_DB.filter(item => {
-                const cMatch = (courseFilter === 'ALL' || item.c === courseFilter);
-                const sMatch = (dbStatusFilter === 'ALL' || item.r === dbStatusFilter);
-                return cMatch && sMatch;
-            });
-
-            // 2. Sort
-            filtered.sort((a,b) => {
-                let valA = (dbSortBy === 'gpa') ? a.g : a.s;
-                let valB = (dbSortBy === 'gpa') ? b.g : b.s;
-                return dbSortDesc ? (valB - valA) : (valA - valB);
-            });
-
-            // 3. Render
-            container.innerHTML = '';
-            if (filtered.length === 0) {
-                emptyState.style.display = 'block';
-                return;
-            }
-            emptyState.style.display = 'none';
-
-            filtered.forEach(item => {
-                let statusClass = item.r === 1 ? 'status-ok' : 'status-ko';
-                let statusText = item.r === 1 ? 'AMMESSO' : 'NO';
-                let scoreDisplay = item.sat ? `SAT ${item.sat}` : `Test ${item.s.toFixed(1)}`;
-                
-                let html = `
-                <div class="db-row">
-                    <div class="db-row-left">
-                        <div class="db-course">${item.c}</div>
-                        <div class="db-details">Media: <strong>${item.g}</strong> • ${scoreDisplay}</div>
-                    </div>
-                    <div class="db-status ${statusClass}">${statusText}</div>
-                </div>`;
-                container.insertAdjacentHTML('beforeend', html);
-            });
         }
 
         // --- STRESSOMETRO LOGIC ---
