@@ -290,7 +290,7 @@
         }
 
         .question-text {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
             line-height: 1.4;
             margin-bottom: 24px;
@@ -447,13 +447,13 @@
                 <div class="menu-icon" style="color: var(--luiss-blue); background: var(--luiss-light);">🎓</div>
                 <div class="menu-content">
                     <h3>Prep Luiss</h3>
-                    <p>100 Esercizi Luiss</p>
+                    <p>10 set da 10 domande</p>
                 </div>
             </div>
 
             <div class="footer-info">
                 <div class="footer-text">Dati aggiornati alla sessione Early 2025.</div>
-                <div class="footer-text">Strumento statistico non ufficiale.</div>
+                <div class="footer-text">Strumento statistico non ufficiale, il sito non è indipendente e non affiliato a Università Bocconi o Università Luiss Guido Carli</div>
                 <a href="https://instagram.com/drissyakisoba" target="_blank" class="footer-link">ig: drissyakisoba</a>
             </div>
         </section>
@@ -518,7 +518,7 @@
 
             <div style="padding: 0 8px 24px 8px;">
                  <p style="margin:0; color:var(--text-sec); font-size:14px; line-height:1.5;">
-                    Ogni set contiene 10 domande da svolgere in 15 minuti. Gli esercizi presentano una difficoltà maggiore per allenare la velocità e la gestione dello stress.
+                    Ogni set contiene 10 domande da svolgere in 15 minuti. Gli esercizi presentano una difficoltà maggiore per allenare la velocità e la gestione dello stress. In caso di errori del sito, si invita alla segnalazione nel gruppo Whatsapp
                 </p>
             </div>
 
@@ -781,157 +781,157 @@
             "Geometria Piana & Solida", "Proporzioni & Calcolo", "Esercizi Misti (A)", "Esercizi Misti (B)"
         ];
 
-        // FIXED DATABASE: Undefined removed, Texts corrected.
+        // CORREZIONE DELLE DOMANDE (Testo reso esplicito)
         const RAW_SETS = [
-            [ // SET 1: Verbale
-                {t: "Dario crede che 'Solo i laureati in Economia possano fare richiesta per lo stage'. Il bando recita: 'Possono fare richiesta i laureati in Economia, oppure chi ha maturato 3 anni di esperienza nel settore finanziario'. L'informazione:", o: ["Va contro la convinzione di Dario", "Conferma la convinzione di Dario", "Non ha influenza", "È compatibile"], c: 0},
-                {t: "Elena è convinta che il negozio chiuda alle 19:00. Un cartello dice: 'Apertura continuata dalle 9:00 alle 21:00'. L'informazione:", o: ["Va contro la convinzione di Elena", "Conferma la convinzione", "Non ha influenza", "Specifica solo l'orario mattutino"], c: 0},
-                {t: "Si consideri vera l'affermazione: 'Se e solo se piove, prendo l'ombrello'. Oggi non ho preso l'ombrello. Dunque:", o: ["Non piove", "Piove", "Forse piove", "Ho dimenticato l'ombrello"], c: 0},
-                {t: "Negare la frase: 'Tutti i candidati hanno superato il test o sono stati ammessi con riserva'.", o: ["Esiste almeno un candidato che non ha superato il test e non è stato ammesso con riserva", "Nessun candidato ha superato il test", "Tutti i candidati sono stati bocciati", "Qualche candidato ha superato il test ma non è stato ammesso"], c: 0},
-                {t: "Marco crede che il volo parta dal Terminal 1. Il tabellone indica 'Tutti i voli internazionali partono dal Terminal 2'. Il volo di Marco è per Londra. L'informazione:", o: ["Va contro la convinzione di Marco", "Conferma la convinzione", "Non ha influenza", "È irrilevante"], c: 0},
-                {t: "Condizione necessaria per vincere il concorso è essere residenti in Italia. Luigi ha vinto il concorso. Dunque:", o: ["Luigi risiede in Italia", "Luigi potrebbe non risiedere in Italia", "Tutti i residenti vincono", "Luigi è nato in Italia"], c: 0},
-                {t: "Condizione sufficiente affinché il numero sia pari è che sia divisibile per 4. Il numero X non è pari. Dunque:", o: ["X non è divisibile per 4", "X è divisibile per 4", "X è dispari ma divisibile per 4", "Non si può concludere"], c: 0},
-                {t: "Giulia crede che suo cugino non mangi glutine. Vede il cugino mangiare un piatto di pasta di grano duro. L'evento:", o: ["Smentisce la credenza", "Conferma la credenza", "Non influenza la credenza", "È un'eccezione"], c: 0},
-                {t: "Se è falso che 'Nessun dipendente parla tedesco', allora:", o: ["Almeno un dipendente parla tedesco", "Tutti i dipendenti parlano tedesco", "Nessun dipendente parla inglese", "Chi parla tedesco è dipendente"], c: 0},
-                {t: "Luca crede che il museo sia chiuso il lunedì. Il sito web dice 'Aperto tutti i giorni tranne il martedì'. L'informazione:", o: ["Va contro la convinzione di Luca", "Conferma la convinzione", "Non ha influenza", "È ambigua"], c: 0}
+            [ // SET 1: Critical Verbal Reasoning (Beliefs & Conditionals)
+                {t: "Giulio crede che per accedere alla borsa di studio sia necessario avere un ISEE inferiore a 20.000€ E una media voto superiore a 28. Il bando rettificato afferma che per accedere è sufficiente soddisfare almeno una delle due condizioni. Questa informazione:", o: ["Smentisce/Va contro la convinzione di Giulio", "Conferma la convinzione di Giulio", "Non ha influenza sulla convinzione", "Restringe il campo dei beneficiari"], c: 0},
+                {t: "Luca è convinto che il treno 9605 fermi in tutte le stazioni dell'alta velocità. Un annuncio in stazione specifica che il treno 9605 ferma solo nelle stazioni capoluogo di regione, saltando le intermedie. L'annuncio:", o: ["Va contro la convinzione di Luca", "Conferma la convinzione di Luca", "Non ha influenza", "È un'informazione ridondante"], c: 0},
+                {t: "Se e solo se il tasso di interesse scende, Mario comprerà casa. Sappiamo che Mario non ha comprato casa. Cosa possiamo dedurre con certezza?", o: ["Il tasso di interesse non è sceso", "Il tasso di interesse è salito", "Mario non aveva abbastanza soldi", "Il tasso è sceso ma Mario ha cambiato idea"], c: 0},
+                {t: "Qual è la negazione logica della frase: 'Tutti i candidati ammessi hanno superato il test O hanno presentato una certificazione linguistica'?", o: ["Esiste almeno un candidato ammesso che non ha superato il test E non ha certificazione", "Nessun candidato ammesso ha superato il test", "Tutti i candidati ammessi non hanno certificazione", "Alcuni candidati non sono stati ammessi pur avendo la certificazione"], c: 0},
+                {t: "Anna crede che il nuovo iPhone sia disponibile SOLO in titanio naturale. Il commesso le mostra il catalogo dove appare ANCHE la colorazione titanio blu. Questo fatto:", o: ["Va contro la convinzione di Anna", "Conferma la convinzione", "Non ha influenza", "È un dettaglio irrilevante"], c: 0},
+                {t: "È condizione necessaria ma non sufficiente per passare l'esame studiare il libro di testo. Marco ha studiato il libro di testo. Dunque:", o: ["Marco potrebbe non passare l'esame", "Marco passerà sicuramente l'esame", "Marco non passerà l'esame", "Marco prenderà un voto basso"], c: 0},
+                {t: "Condizione sufficiente affinché il numero sia divisibile per 6 è che sia divisibile per 12. Il numero X NON è divisibile per 6. Dunque:", o: ["X non è divisibile per 12", "X è divisibile per 12", "X è dispari", "X è divisibile per 3"], c: 0},
+                {t: "Silvia crede che suo fratello non abbia mai viaggiato fuori dall'Europa. Trova nel cassetto del fratello un biglietto aereo usato per Tokyo. Questo ritrovamento:", o: ["Smentisce la credenza di Silvia", "Conferma la credenza", "Non influenza la credenza", "Indica che il fratello vuole viaggiare"], c: 0},
+                {t: "Se è FALSO che 'Nessun dipendente parla sia inglese che tedesco', allora è VERO che:", o: ["Almeno un dipendente parla sia inglese che tedesco", "Tutti i dipendenti parlano entrambe le lingue", "Nessun dipendente parla solo inglese", "Tutti parlano tedesco"], c: 0},
+                {t: "Claudio crede che la farmacia di turno sia quella in Piazza Roma. Un passante gli dice che la farmacia di Piazza Roma è chiusa per ristrutturazione. Questa notizia:", o: ["Va contro la convinzione di Claudio", "Conferma la convinzione", "Non ha influenza", "È un'opinione soggettiva"], c: 0}
             ],
-            [ // SET 2: Matematica
-                {t: "Un libro pesa 800g. Le pagine costituiscono il 90% del peso. Si sostituisce la copertina con una che pesa la metà della precedente. Quanto pesa ora il libro?", o: ["760 g", "720 g", "780 g", "750 g"], c: 0}, 
-                {t: "Il prezzo di un'azione aumenta del 20% il primo giorno e diminuisce del 20% il secondo. Rispetto al prezzo iniziale, il prezzo finale è:", o: ["Diminuito del 4%", "Uguale", "Aumentato del 4%", "Diminuito del 10%"], c: 0},
-                {t: "In una ricetta, il rapporto Farina:Zucchero è 3:1 e Zucchero:Burro è 2:1. Se uso 300g di Burro, quanta Farina serve?", o: ["1800 g", "900 g", "600 g", "1200 g"], c: 0}, 
-                {t: "Un triangolo ha base B e altezza H. Se aumento B del 20% e diminuisco H del 20%, l'area:", o: ["Diminuisce del 4%", "Resta invariata", "Aumenta del 4%", "Diminuisce del 2%"], c: 0},
-                {t: "5 macchinari producono 5 pezzi in 5 minuti. Quanti minuti impiegano 100 macchinari a produrre 100 pezzi?", o: ["5 minuti", "100 minuti", "20 minuti", "1 minuto"], c: 0},
-                {t: "Se x : 6 = 15 : y, qual è il valore di x*y?", o: ["90", "21", "2.5", "40"], c: 0},
-                {t: "Un serbatoio perde il 10% del suo contenuto ogni ora. Se parte da 100 litri, quanto contiene dopo 2 ore?", o: ["81 litri", "80 litri", "90 litri", "85 litri"], c: 0},
-                {t: "Risolvi per k: 2x + 3y = k, sapendo che passa per il punto (2, -1).", o: ["1", "5", "-1", "7"], c: 0},
-                {t: "La media di 4 numeri è 25. Se togliamo un numero, la media dei rimanenti diventa 20. Qual è il numero tolto?", o: ["40", "30", "35", "25"], c: 0},
-                {t: "Un cubo di lato L ha volume V. Se il lato diventa 3L, il nuovo volume è:", o: ["27V", "9V", "3V", "6V"], c: 0}
+            [ // SET 2: Math Analysis & Word Problems
+                {t: "Una catena di montaggio ha 4 macchinari. Il primo produce 5 pezzi. Ogni macchinario successivo produce il doppio del precedente meno 2 pezzi. Quanti pezzi produce il quarto macchinario?", o: ["26", "28", "24", "30"], c: 0}, 
+                {t: "Il prezzo di un bene aumenta del 30% e poi il nuovo prezzo viene scontato del 20%. Rispetto al prezzo iniziale, qual è la variazione percentuale complessiva?", o: ["Aumento del 4%", "Aumento del 10%", "Diminuzione del 4%", "Aumento del 6%"], c: 0},
+                {t: "Tre soci dividono un utile di 12.000€. Il secondo prende il doppio del primo. Il terzo prende quanto il primo e il secondo messi insieme. Quanto spetta al terzo?", o: ["6.000€", "4.000€", "8.000€", "3.000€"], c: 0}, 
+                {t: "Un rettangolo ha base B e altezza H. Se B aumenta del 10% e H diminuisce del 10%, come cambia l'area?", o: ["Diminuisce dell'1%", "Resta invariata", "Aumenta dell'1%", "Diminuisce del 10%"], c: 0},
+                {t: "5 stampanti producono 500 pagine in 10 minuti. Quanti minuti impiegano 10 stampanti (della stessa velocità) a produrre 2000 pagine?", o: ["20 minuti", "40 minuti", "10 minuti", "30 minuti"], c: 0},
+                {t: "L'equazione y = 3x/5 può essere scritta come proporzione:", o: ["x : y = 5 : 3", "x : 5 = y : 3", "y : x = 5 : 3", "3 : x = 5 : y"], c: 0},
+                {t: "Un serbatoio perde il 20% del suo contenuto ogni ora rispetto all'ora precedente. Se parte da 100 litri, quanto contiene dopo 2 ore?", o: ["64 litri", "60 litri", "80 litri", "72 litri"], c: 0},
+                {t: "In una libreria ci sono libri Gialli, Fantasy e Storici. I Gialli sono 1/3 del totale. I Fantasy sono 3/4 dei rimanenti. Se ci sono 20 libri Storici, quanti libri ci sono in totale?", o: ["120", "100", "80", "240"], c: 0},
+                {t: "La media di 5 numeri è 30. Se aggiungiamo un sesto numero pari a 60, quanto vale la nuova media?", o: ["35", "40", "45", "32"], c: 0},
+                {t: "Un cubo di lato L ha volume V. Se il lato raddoppia (2L), il nuovo volume sarà:", o: ["8V", "4V", "2V", "6V"], c: 0}
             ],
-            [ // SET 3: Comprensione (FIXED: Added 't' property to all questions)
+            [ // SET 3: Reading Comprehension (Inference focus)
                 {
-                    reading: "La teoria dell'agire comunicativo di Habermas distingue tra agire strumentale, orientato al successo e all'efficacia tecnica, e agire comunicativo, orientato all'intesa e alla comprensione reciproca. Mentre il primo tratta gli interlocutori come mezzi per raggiungere un fine, il secondo presuppone il riconoscimento dell'altro come soggetto razionale capace di argomentare. Nelle società moderne, la colonizzazione del 'mondo della vita' da parte dei sistemi economici e burocratici minaccia di ridurre ogni interazione a pura strumentalità, erodendo le basi della solidarietà sociale.",
-                    t: "Secondo il brano, qual è il rischio principale nelle società moderne?", o: ["La prevalenza dell'agire strumentale su quello comunicativo", "L'incapacità tecnica dei sistemi burocratici", "L'eccessiva solidarietà che blocca l'economia", "La mancanza di successo nelle azioni individuali"], c: 0
+                    reading: "Il 'Nudging', o spinta gentile, è un concetto dell'economia comportamentale che propone di influenzare le decisioni delle persone senza proibire opzioni o cambiare significativamente gli incentivi economici. A differenza della legislazione coercitiva, il nudge altera l'architettura delle scelte per rendere l'opzione desiderabile più accessibile, sfruttando i bias cognitivi umani anziché combatterli.",
+                    t: "Secondo il brano, quale differenza sostanziale esiste tra 'Nudging' e legislazione coercitiva?", o: ["Il Nudging preserva la libertà di scelta formale, la coercizione no", "Il Nudging usa incentivi economici forti, la coercizione no", "La coercizione sfrutta i bias cognitivi, il Nudging li combatte", "Non c'è differenza, entrambi obbligano alla scelta"], c: 0
                 },
                 {
-                    reading: "L'inflazione da costi si verifica quando aumentano i prezzi dei fattori produttivi, come materie prime o salari, indipendentemente dalla domanda aggregata. Questo porta a una contrazione dell'offerta aggregata: le imprese, per mantenere i margini di profitto, alzano i prezzi e riducono la produzione. Un esempio storico è lo shock petrolifero degli anni '70. Al contrario, l'inflazione da domanda deriva da un eccesso di spesa rispetto alla capacità produttiva del sistema.",
-                    t: "L'inflazione da costi è caratterizzata da:", o: ["Aumento dei prezzi e riduzione della produzione", "Aumento della domanda aggregata", "Riduzione dei salari", "Eccesso di capacità produttiva"], c: 0
+                    reading: "L'inflazione da costi si verifica quando aumentano i prezzi dei fattori produttivi, come materie prime o energia, indipendentemente dalla domanda aggregata. Questo porta a una contrazione dell'offerta: le imprese, per mantenere i margini, alzano i prezzi. Un esempio è lo shock petrolifero. Al contrario, l'inflazione da domanda deriva da un eccesso di spesa rispetto alla capacità produttiva.",
+                    t: "In uno scenario di inflazione da costi, in base al testo, ci si aspetta tipicamente:", o: ["Aumento dei prezzi e possibile riduzione della produzione", "Aumento della produzione per coprire i costi", "Riduzione dei prezzi per stimolare la domanda", "Un eccesso di spesa dei consumatori"], c: 0
                 },
                 {
-                    reading: "Gli studi sull'epigenetica dimostrano che l'ambiente può influenzare l'espressione genica senza alterare la sequenza del DNA. Fattori come dieta, stress e inquinamento possono aggiungere marcatori chimici al DNA, attivando o disattivando determinati geni. Queste modifiche possono essere ereditabili, suggerendo che le esperienze di una generazione possono avere ripercussioni biologiche su quelle successive, sfidando la visione classica del determinismo genetico assoluto.",
-                    t: "L'epigenetica suggerisce che:", o: ["L'ambiente modifica l'espressione dei geni, non la sequenza", "Il DNA cambia sequenza in base alla dieta", "I caratteri acquisiti non sono mai ereditabili", "Lo stress non ha impatto biologico"], c: 0
+                    reading: "Gli studi sull'epigenetica dimostrano che l'ambiente può influenzare l'espressione genica senza alterare la sequenza del DNA. Fattori come dieta e stress possono aggiungere marcatori chimici, attivando o disattivando geni. Queste modifiche possono essere ereditabili, suggerendo che le esperienze di una generazione possono avere ripercussioni biologiche su quelle successive.",
+                    t: "L'epigenetica mette in discussione l'idea che:", o: ["Solo le mutazioni nella sequenza del DNA siano ereditabili", "L'ambiente non abbia alcun ruolo nella biologia", "Il DNA sia una struttura chimica instabile", "Lo stress sia puramente psicologico"], c: 0
                 },
                 {
-                    reading: "Il Barocco, nato a Roma nel XVII secolo, si contrappone al rigore rinascimentale attraverso l'uso della linea curva, della teatralità e della meraviglia. L'obiettivo dell'arte barocca non è più l'armonia statica, ma il coinvolgimento emotivo dello spettatore attraverso illusioni ottiche, prospettive ardite e un uso drammatico della luce. Bernini e Borromini incarnano due anime diverse di questo stile: il primo più sontuoso e trionfale, il secondo più inquieto e geometricamente complesso.",
-                    t: "Quale elemento distingue il Barocco dal Rinascimento secondo il testo?", o: ["La ricerca del coinvolgimento emotivo e della dinamicità", "L'uso esclusivo di linee rette", "La ricerca di un'armonia statica e razionale", "L'assenza di prospettiva"], c: 0
+                    reading: "Il Barocco si contrappone al Rinascimento per l'uso della linea curva e della teatralità. L'obiettivo non è l'armonia statica, ma il coinvolgimento emotivo dello spettatore attraverso illusioni ottiche e prospettive ardite. Bernini e Borromini incarnano due anime: il primo trionfale, il secondo inquieto e geometricamente complesso.",
+                    t: "L'affermazione 'Il Barocco cerca l'armonia statica e razionale' è:", o: ["Falsa, contraddice il testo", "Vera, deducibile dal testo", "Non ricavabile dal testo", "Vera solo per Borromini"], c: 0
                 },
                 {
-                    reading: "Il principio di indeterminazione di Heisenberg stabilisce un limite fondamentale alla precisione con cui si possono misurare contemporaneamente coppie di proprietà fisiche, come posizione e quantità di moto. Non è un limite tecnologico, ma intrinseco alla natura ondulatoria della materia. Più precisamente si conosce la posizione di una particella, meno precisamente se ne può conoscere la velocità, e viceversa.",
-                    t: "Il principio di Heisenberg afferma che:", o: ["Esiste un limite intrinseco alla misurazione simultanea di alcune grandezze", "La tecnologia attuale non è abbastanza precisa", "È impossibile misurare la posizione di una particella", "La velocità e la posizione sono sempre identiche"], c: 0
+                    reading: "Il principio di indeterminazione di Heisenberg pone un limite alla precisione con cui si possono misurare coppie di proprietà fisiche coniugate. Non è un limite tecnologico, ma intrinseco alla natura ondulatoria della materia. Più precisa è la misura della posizione, meno precisa sarà quella della quantità di moto.",
+                    t: "Secondo il testo, migliorare la tecnologia di misurazione:", o: ["Non permetterà di superare il limite di indeterminazione", "Risolverà il problema dell'indeterminazione", "Renderà la materia meno ondulatoria", "Permetterà di misurare posizione e velocità con precisione infinita"], c: 0
                 },
                 {
-                    reading: "(Stesso brano su Habermas) Secondo Habermas, l'agire strumentale:",
-                    t: "Secondo Habermas, l'agire strumentale:", o: ["Tratta gli interlocutori come mezzi per un fine", "Mira alla comprensione reciproca", "È alla base della solidarietà sociale", "Non è orientato al successo"], c: 0
+                    reading: "(Stesso brano Nudging) Il Nudging agisce:",
+                    t: "In base al brano, il Nudging agisce principalmente:", o: ["Modificando l'architettura delle scelte", "Imponendo multe salate", "Vietando le opzioni nocive", "Educando razionalmente i cittadini"], c: 0
                 },
                 {
-                    reading: "(Stesso brano su Epigenetica) Le modifiche epigenetiche:",
-                    t: "Le modifiche epigenetiche:", o: ["Possono essere trasmesse alle generazioni successive", "Cancellano la sequenza del DNA", "Sono irreversibili", "Dipendono solo dalla genetica, non dall'ambiente"], c: 0
+                    reading: "(Stesso brano Epigenetica) I marcatori chimici citati:",
+                    t: "I marcatori chimici citati nel testo:", o: ["Non alterano la sequenza base del DNA", "Cancellano parti di DNA", "Sono irreversibili", "Non dipendono dall'ambiente"], c: 0
                 },
                 {
-                    reading: "(Stesso brano su Inflazione) Durante uno shock petrolifero come quello degli anni '70, ci si aspetta:",
-                    t: "Durante uno shock petrolifero come quello degli anni '70, ci si aspetta:", o: ["Inflazione da costi", "Inflazione da domanda", "Deflazione", "Aumento della produzione"], c: 0
+                    reading: "(Stesso brano Inflazione) L'inflazione da domanda è causata da:",
+                    t: "Secondo il testo, l'inflazione da domanda è causata da:", o: ["Eccesso di spesa rispetto alla capacità produttiva", "Aumento del costo del petrolio", "Contrazione dell'offerta aggregata", "Tasse troppo alte"], c: 0
                 },
                 {
-                    reading: "(Stesso brano su Barocco) Borromini viene descritto come:",
-                    t: "Borromini viene descritto come:", o: ["Inquieto e geometricamente complesso", "Sontuoso e trionfale", "Rigoroso e rinascimentale", "Statico"], c: 0
+                    reading: "(Stesso brano Barocco) Borromini si distingue da Bernini per:",
+                    t: "Borromini si distingue da Bernini per:", o: ["Uno stile più inquieto e complesso", "L'uso esclusivo di linee rette", "Il rifiuto del Barocco", "La ricerca dell'armonia statica"], c: 0
                 },
                 {
-                    reading: "(Stesso brano su Heisenberg) Se misuro con estrema precisione la velocità di una particella:",
-                    t: "Se misuro con estrema precisione la velocità di una particella:", o: ["Perdo precisione sulla sua posizione", "Aumento la precisione sulla sua posizione", "Il principio non si applica", "La particella si ferma"], c: 0
+                    reading: "(Stesso brano Heisenberg) Il limite descritto è:",
+                    t: "Il limite descritto da Heisenberg è definito come:", o: ["Intrinseco alla natura della materia", "Dovuto a strumenti imperfetti", "Applicabile solo alla luce", "Superabile nel futuro"], c: 0
                 }
             ],
-            [ // SET 4 (Logica Insiemi)
-                {t: "In un ufficio di 50 persone: 20 parlano Inglese, 15 Francese, 5 entrambe. Quanti non parlano né Inglese né Francese?", o: ["20", "10", "15", "25"], c: 0},
-                {t: "Tutti gli A sono B. Nessun B è C. Qualche D è A. Dunque:", o: ["Nessun A è C", "Qualche C è A", "Tutti i D sono B", "Nessun D è C"], c: 0},
-                {t: "Se è vero che 'Nessun filosofo è ignorante', allora sicuramente:", o: ["Nessun ignorante è filosofo", "Tutti gli ignoranti sono filosofi", "Qualche filosofo è ignorante", "Tutti i filosofi sono saggi"], c: 0},
-                {t: "In una libreria: i Gialli sono il doppio dei Fantasy. I Fantasy sono il triplo degli Horror. Se gli Horror sono 5, quanti libri in totale?", o: ["50", "45", "30", "60"], c: 0},
-                {t: "Quale diagramma rappresenta: Animali, Cani, Gatti?", o: ["Un insieme grande contenente due insiemi disgiunti", "Tre insiemi intersecati", "Un insieme dentro l'altro dentro l'altro", "Tre insiemi separati"], c: 0},
-                {t: "Se X ⊂ Y e Y ∩ Z = ∅, allora:", o: ["X ∩ Z = ∅", "X ∩ Z = X", "X ∪ Z = Y", "Z ⊂ X"], c: 0},
-                {t: "In un gruppo sportivo, il 70% gioca a Calcio, il 40% a Basket. Qual è la percentuale minima di chi gioca a entrambi?", o: ["10%", "30%", "40%", "0%"], c: 0},
-                {t: "Negazione di 'Tutti i giorni mangio frutta e verdura':", o: ["Almeno un giorno non mangio frutta oppure non mangio verdura", "Nessun giorno mangio frutta", "Tutti i giorni non mangio verdura", "Almeno un giorno mangio solo carne"], c: 0},
-                {t: "Tutti i medici sono laureati. Alcuni laureati sono disoccupati. Dunque:", o: ["Non si può concludere nulla sui medici", "Alcuni medici sono disoccupati", "Tutti i medici sono occupati", "Nessun disoccupato è medico"], c: 0},
-                {t: "A è padre di B. B è fratello di C. C è padre di D. A è per D:", o: ["Il nonno", "Lo zio", "Il bisnonno", "Il padre"], c: 0}
+            [ // SET 4: Logic Sets & Syllogisms
+                {t: "In un ufficio di 100 persone: 40 parlano Inglese, 30 Francese, 10 entrambe. Quanti non parlano né Inglese né Francese?", o: ["40", "20", "30", "50"], c: 0},
+                {t: "Tutti gli A sono B. Nessun B è C. Alcuni D sono A. Quale conclusione è certa?", o: ["Nessun A è C", "Tutti i D sono B", "Alcuni C sono A", "Nessun D è C"], c: 0},
+                {t: "Se è vero che 'Nessun filosofo è ignorante', allora è sicuramente vero che:", o: ["Non esistono ignoranti che siano filosofi", "Tutti gli ignoranti sono filosofi", "Alcuni filosofi sono ignoranti", "Chi non è filosofo è ignorante"], c: 0},
+                {t: "In una biblioteca, i libri di Storia sono il doppio dei Romanzi. I Romanzi sono il triplo dei Fumetti. Se i Fumetti sono 10, quanti sono i libri di Storia?", o: ["60", "30", "20", "90"], c: 0},
+                {t: "Quale diagramma rappresenta meglio la relazione tra: Mammiferi, Cani, Rettili?", o: ["Un insieme grande (Mammiferi) che include Cani; Rettili disgiunto", "Tre insiemi intersecati", "Tre insiemi concentrici", "Tre insiemi separati"], c: 0},
+                {t: "Se X è sottoinsieme di Y, e Y non ha elementi in comune con Z, allora si deduce che:", o: ["X non ha elementi in comune con Z", "X ha elementi in comune con Z", "X unito Z è uguale a Y", "Z è sottoinsieme di X"], c: 0},
+                {t: "In un club, il 60% gioca a Tennis, il 50% a Golf. Qual è la percentuale minima di chi pratica entrambi (supponendo che tutti facciano almeno uno sport)?", o: ["10%", "20%", "0%", "30%"], c: 0},
+                {t: "La negazione logica di 'Tutti i giorni vado in palestra e mangio sano' è:", o: ["Almeno un giorno non vado in palestra O non mangio sano", "Nessun giorno vado in palestra", "Tutti i giorni non mangio sano", "Almeno un giorno non vado in palestra E non mangio sano"], c: 0},
+                {t: "Premessa: Tutti i medici sono laureati. Premessa: Alcuni laureati sono disoccupati. Dunque:", o: ["Non si può concludere che alcuni medici siano disoccupati", "Alcuni medici sono disoccupati", "Tutti i medici lavorano", "Nessun disoccupato è laureato"], c: 0},
+                {t: "Se 'Chi dorme non piglia pesci' è vera, e 'Luigi ha preso pesci', allora:", o: ["Luigi non dormiva", "Luigi dormiva", "Luigi è un pescatore", "Luigi è fortunato"], c: 0}
             ],
-            [ // SET 5 (Serie)
-                {t: "Completare la serie: 3, 7, 15, 31, ...", o: ["63", "60", "45", "62"], c: 0},
-                {t: "Completare la serie: 100, 96, 88, 76, 60, ...", o: ["40", "44", "48", "36"], c: 0},
-                {t: "Un treno di 200m entra in una galleria di 800m a 50 m/s. Quanto tempo impiega a uscire completamente?", o: ["20 secondi", "16 secondi", "25 secondi", "10 secondi"], c: 0},
-                {t: "Ho tre scatole con etichette sbagliate: BB (2 bianche), NN (2 nere), Mista. Estraggo 1 pallina dalla scatola 'Mista'. È Bianca. Cosa c'è nella scatola 'Mista'?", o: ["2 Bianche", "2 Nere", "1 Bianca e 1 Nera", "Impossibile dirlo"], c: 0}, 
-                {t: "Individuare l'intruso: Tavolo, Sedia, Armadio, Libro.", o: ["Libro", "Tavolo", "Sedia", "Armadio"], c: 0},
-                {t: "Se GATTO = 5, CANE = 4, ELEFANTE = 8, allora LUPO = ?", o: ["4", "5", "6", "3"], c: 0},
-                {t: "Un orologio va avanti di 5 minuti ogni ora. Se lo regolo a mezzanotte, che ora segnerà (realmente) quando l'orologio segna le 13:00?", o: ["Circa 12:00", "14:05", "11:55", "13:05"], c: 0},
-                {t: "Anagramma di città italiana: NOGAVE.", o: ["GENOVA", "VERONA", "NOVARA", "PADOVA"], c: 0},
-                {t: "Quanti numeri di 2 cifre diverse posso formare con 1, 2, 3?", o: ["6", "9", "3", "5"], c: 0},
-                {t: "In una gara superi l'ultimo. In che posizione sei?", o: ["Impossibile", "Penultimo", "Ultimo", "Primo"], c: 0}
+            [ // SET 5: Series & Problem Solving
+                {t: "Completare la serie numerica: 2, 5, 11, 23, 47, ...", o: ["95", "94", "92", "88"], c: 0},
+                {t: "Individuare il numero mancante: 144, 121, 100, 81, ...", o: ["64", "49", "60", "72"], c: 0},
+                {t: "Un treno lungo 150m entra in una galleria lunga 850m alla velocità di 50 m/s. Quanto tempo passa dall'ingresso della locomotiva all'uscita dell'ultimo vagone?", o: ["20 secondi", "17 secondi", "25 secondi", "15 secondi"], c: 0},
+                {t: "Una cassaforte ha un codice di 3 cifre. La prima è pari, la seconda è il doppio della prima, la terza è la somma delle prime due. Qual è il codice se la somma totale delle cifre è 21?", o: ["Impossibile, nessuna combinazione valida", "4812 (non valido)", "246", "61218 (non valido)"], c: 0}, 
+                {t: "Individuare l'intruso semantico: Violino, Chitarra, Arpa, Flauto.", o: ["Flauto (fiato, gli altri corde)", "Violino", "Chitarra", "Arpa"], c: 0},
+                {t: "Se ROMA = 4, MILANO = 6, TORINO = 6, allora PISA = ?", o: ["4", "5", "3", "2"], c: 0},
+                {t: "Un orologio analogico perde 10 minuti ogni ora. Viene regolato a mezzanotte. Quando l'orologio segnerà le 05:00, che ora sarà realmente?", o: ["06:00", "05:50", "04:10", "05:30"], c: 0},
+                {t: "Anagrammando la parola NOGALOB si ottiene il nome di una città. Quale?", o: ["BOLOGNA", "ANCONA", "GENOVA", "BERGAMO"], c: 0},
+                {t: "Quante password diverse di 2 lettere (alfabeto 21 lettere) posso formare se le lettere NON possono ripetersi?", o: ["420", "441", "400", "210"], c: 0},
+                {t: "In una gara di corsa superi il secondo. In che posizione sei?", o: ["Secondo", "Primo", "Terzo", "Penultimo"], c: 0}
             ],
-            [ // SET 6
-                {t: "Se A implica B, e B è falso, allora:", o: ["A è falso", "A è vero", "Non si sa A", "A è vero o falso"], c: 0},
-                {t: "'È impossibile che non sia vero che non ho mangiato'. Significa:", o: ["Non ho mangiato", "Ho mangiato", "Forse ho mangiato", "Non ho fame"], c: 0},
-                {t: "Tutti i chirurghi sono precisi. Mario non è preciso. Dunque:", o: ["Mario non è un chirurgo", "Mario è un chirurgo distratto", "Mario potrebbe essere chirurgo", "Tutti i precisi sono chirurghi"], c: 0},
-                {t: "Solo se piove prendo l'auto. Prendo l'auto. Dunque:", o: ["Piove", "Non piove", "C'è il sole", "Ho bucato"], c: 0},
-                {t: "Chi dorme non piglia pesci. Luigi piglia pesci. Dunque:", o: ["Luigi non dorme", "Luigi dorme", "Luigi è fortunato", "Non si può dire"], c: 0},
-                {t: "Nessun A è B. Tutti i C sono B. Dunque:", o: ["Nessun C è A", "Qualche C è A", "Tutti gli A sono C", "Nessun A è C (equivalente)"], c: 0},
-                {t: "Se X è maggiore di Y e Y è maggiore di Z, allora:", o: ["X è maggiore di Z", "X è uguale a Z", "Z è maggiore di X", "X è minore di Z"], c: 0},
-                {t: "Quale frase è logicamente equivalente a 'Se studi, passi'?", o: ["Se non passi, non hai studiato", "Se non studi, non passi", "Se passi, hai studiato", "Se studi, non passi"], c: 0},
-                {t: "O mangi la minestra o salti dalla finestra. Non salto dalla finestra. Dunque:", o: ["Mangio la minestra", "Salto dalla finestra", "Non mangio", "Dormo"], c: 0},
-                {t: "Dario mente sempre. Dario dice 'Io sto mentendo'. È un paradosso?", o: ["Sì", "No, è vero", "No, è falso", "Dipende"], c: 0}
+            [ // SET 6: Complex Deductions (Logic B)
+                {t: "Se A implica B (A -> B), e B è falso, allora necessariamente:", o: ["A è falso", "A è vero", "Non si può sapere A", "A diventa vero"], c: 0},
+                {t: "'Non è vero che Luca non ha mancato l'appuntamento'. Significa che:", o: ["Luca ha mancato l'appuntamento", "Luca è andato all'appuntamento", "Luca era in ritardo", "Luca non aveva appuntamenti"], c: 0},
+                {t: "Tutti gli scienziati sono curiosi. Andrea non è curioso. Dunque:", o: ["Andrea non è uno scienziato", "Andrea è uno scienziato distratto", "Andrea potrebbe essere scienziato", "Chi è curioso è scienziato"], c: 0},
+                {t: "Solo se c'è vento faccio surf. Oggi faccio surf. Dunque:", o: ["C'è vento", "Non c'è vento", "Forse c'è vento", "Il mare è calmo"], c: 0},
+                {t: "Chi rompe paga. Giovanni non ha pagato. Dunque:", o: ["Giovanni non ha rotto nulla", "Giovanni ha rotto", "Giovanni non ha soldi", "Non si può dire"], c: 0},
+                {t: "Nessun A è B. Tutti i C sono A. Dunque:", o: ["Nessun C è B", "Qualche C è B", "Tutti i B sono C", "Nessun B è A (ridondante)"], c: 0},
+                {t: "Se X > Y e Y < Z, allora:", o: ["Non si può stabilire la relazione tra X e Z", "X > Z", "X < Z", "X = Z"], c: 0},
+                {t: "La frase 'Se non piove, esco' è logicamente equivalente a:", o: ["Se non esco, allora piove", "Se esco, allora non piove", "Se piove, non esco", "Se non piove, non esco"], c: 0},
+                {t: "O studi o vieni bocciato. Non sono stato bocciato. Dunque:", o: ["Ho studiato", "Non ho studiato", "Il professore è gentile", "Ho copiato"], c: 0},
+                {t: "Il paradosso del mentitore: Se dico 'Io sto mentendo', sto dicendo la verità o mentendo?", o: ["È indecidibile (paradosso)", "Verità", "Menzogna", "Nessuna delle due"], c: 0}
             ],
-            [ // SET 7 (Geometria)
-                {t: "Area di un quadrato con diagonale 10 cm.", o: ["50 cm²", "100 cm²", "25 cm²", "75 cm²"], c: 0},
-                {t: "Un rettangolo ha perimetro 20 e lati interi. Area massima?", o: ["25", "24", "21", "16"], c: 0},
-                {t: "Volume sfera raggio R vs Cilindro raggio R altezza 2R. Rapporto?", o: ["2/3", "3/4", "1/2", "1"], c: 0},
-                {t: "Angoli interni di un pentagono regolare:", o: ["540°", "360°", "720°", "180°"], c: 0},
-                {t: "Area corona circolare con R=5 e r=3.", o: ["16π", "9π", "25π", "4π"], c: 0},
-                {t: "Ipotenusa triangolo rettangolo cateti 5 e 12.", o: ["13", "15", "17", "10"], c: 0},
-                {t: "Se l'area di un cerchio quadruplica, il raggio:", o: ["Raddoppia", "Quadruplica", "Resta uguale", "Triplica"], c: 0},
-                {t: "Quante diagonali ha un esagono?", o: ["9", "6", "12", "5"], c: 0},
-                {t: "Due rette parallele hanno:", o: ["Lo stesso coefficiente angolare", "Coefficienti opposti", "Prodotto coeff. = -1", "Nessuna relazione"], c: 0},
-                {t: "Punto medio tra (2, 4) e (6, 8).", o: ["(4, 6)", "(3, 5)", "(5, 7)", "(8, 12)"], c: 0}
+            [ // SET 7: Geometry (Area, Perimeter, Coordinates)
+                {t: "Un quadrato ha diagonale pari a 6√2 cm. Qual è il suo perimetro?", o: ["24 cm", "12 cm", "36 cm", "18 cm"], c: 0},
+                {t: "Un rettangolo ha area 48 e un lato è il triplo dell'altro. Quanto misura il lato minore?", o: ["4", "12", "6", "8"], c: 0},
+                {t: "Il rapporto tra il volume di un cubo di lato L e quello di un cubo di lato 3L è:", o: ["1 : 27", "1 : 9", "1 : 3", "1 : 6"], c: 0},
+                {t: "La somma degli angoli interni di un esagono regolare è:", o: ["720°", "540°", "360°", "900°"], c: 0},
+                {t: "L'area di una corona circolare compresa tra due cerchi di raggio 10 e 8 è:", o: ["36π", "64π", "100π", "18π"], c: 0},
+                {t: "In un triangolo rettangolo i cateti misurano 9 e 12. L'ipotenusa è:", o: ["15", "13", "18", "21"], c: 0},
+                {t: "Se il raggio di una sfera triplica, il suo volume diventa:", o: ["27 volte più grande", "9 volte più grande", "3 volte più grande", "6 volte più grande"], c: 0},
+                {t: "Quante diagonali ha un decagono (10 lati)? Formula: n(n-3)/2.", o: ["35", "20", "27", "40"], c: 0},
+                {t: "Due rette perpendicolari nel piano cartesiano hanno coefficienti angolari m1 e m2 tali che:", o: ["m1 * m2 = -1", "m1 = m2", "m1 * m2 = 1", "m1 = -m2"], c: 0},
+                {t: "La distanza tra i punti A(1, 2) e B(4, 6) è:", o: ["5", "4", "6", "7"], c: 0}
             ],
-            [ // SET 8 (Calcolo)
-                {t: "0.003 * 0.02 =", o: ["0.00006", "0.0006", "0.006", "0.06"], c: 0},
-                {t: "Radice quadrata di 0.09", o: ["0.3", "0.03", "0.0081", "0.9"], c: 0},
-                {t: "3 alla quarta diviso 3 alla seconda.", o: ["9", "3", "27", "81"], c: 0},
-                {t: "Il 15% di 200 è uguale al 20% di X. X vale:", o: ["150", "100", "300", "120"], c: 0},
-                {t: "Velocità: 60 km in 40 minuti. Km/h?", o: ["90 km/h", "80 km/h", "100 km/h", "60 km/h"], c: 0},
-                {t: "MCD tra 12 e 18.", o: ["6", "3", "2", "12"], c: 0},
-                {t: "mcm tra 4 e 6.", o: ["12", "24", "2", "10"], c: 0},
-                {t: "1/2 + 1/3 + 1/6 =", o: ["1", "5/6", "2/3", "0"], c: 0},
-                {t: "Se 5 operai fanno un muro in 6 giorni, 3 operai ci mettono:", o: ["10 giorni", "8 giorni", "12 giorni", "9 giorni"], c: 0},
-                {t: "Sconto composto: 100€ scontato del 50% e poi ancora del 50%. Prezzo finale?", o: ["25€", "0€", "50€", "75€"], c: 0}
+            [ // SET 8: Calculations & Proportions
+                {t: "0.04 * 0.05 =", o: ["0.002", "0.02", "0.2", "0.0002"], c: 0},
+                {t: "Qual è la radice cubica di 0.027?", o: ["0.3", "0.03", "0.09", "0.003"], c: 0},
+                {t: "(2^3)^2 diviso 2^4 vale:", o: ["4", "8", "2", "16"], c: 0},
+                {t: "Il 20% del 30% di X è uguale a 6. Quanto vale X?", o: ["100", "60", "200", "300"], c: 0},
+                {t: "Un'auto viaggia a 90 km/h. Quanti metri percorre in 2 secondi?", o: ["50 metri", "25 metri", "45 metri", "60 metri"], c: 0},
+                {t: "Il MCD tra 24, 36 e 60 è:", o: ["12", "6", "24", "4"], c: 0},
+                {t: "Il mcm tra 5, 6 e 8 è:", o: ["120", "60", "240", "40"], c: 0},
+                {t: "3/4 + 1/2 - 5/8 =", o: ["5/8", "1/2", "3/8", "7/8"], c: 0},
+                {t: "Se 4 operai costruiscono un muro in 9 ore, in quanto tempo lo costruirebbero 6 operai?", o: ["6 ore", "12 ore", "5 ore", "8 ore"], c: 0},
+                {t: "Un capitale di 100€ investito al 10% annuo composto diventa dopo 2 anni:", o: ["121€", "120€", "110€", "130€"], c: 0}
             ],
-            [ // SET 9
-                {t: "Mattia crede che il suo orologio sia preciso. Segna le 10:00 ma sono le 10:15. L'osservazione:", o: ["Va contro la convinzione", "Conferma", "Non influenza", "È irrilevante"], c: 0},
-                {t: "Area triangolo equilatero lato 6.", o: ["9√3", "36", "18", "12√3"], c: 0},
-                {t: "Serie: A, C, F, J, ...", o: ["O", "N", "M", "P"], c: 0},
-                {t: "Contrario di 'Laconico'", o: ["Prolisso", "Breve", "Conciso", "Taciturno"], c: 0},
-                {t: "Se A ∪ B = A, allora:", o: ["B è sottoinsieme di A", "A è sottoinsieme di B", "A e B sono disgiunti", "A è vuoto"], c: 0},
-                {t: "20% di 50% di 1000.", o: ["100", "200", "50", "10"], c: 0},
-                {t: "Chi scrisse i Promessi Sposi?", o: ["Manzoni", "Leopardi", "Dante", "Verga"], c: 0},
-                {t: "Soluzione di x² - 9 = 0", o: ["+3 e -3", "Solo 3", "Solo -3", "9"], c: 0},
-                {t: "Un anno bisestile ha:", o: ["366 giorni", "365 giorni", "364 giorni", "360 giorni"], c: 0},
-                {t: "Negazione di 'Qualche A è B'", o: ["Nessun A è B", "Tutti gli A sono B", "Qualche A non è B", "Tutti i B sono A"], c: 0}
+            [ // SET 9: Mixed Hard A
+                {t: "Mario crede che per votare serva la scheda elettorale. Al seggio gli dicono che serve anche un documento di identità valido. L'informazione ricevuta al seggio:", o: ["Va contro la convinzione di Mario (era incompleta)", "Conferma la convinzione", "Non ha influenza", "È falso"], c: 0},
+                {t: "Area di un triangolo equilatero di lato 4. Formula: (l²√3)/4.", o: ["4√3", "8", "16", "2√3"], c: 0},
+                {t: "Serie alfabetica: Z, V, R, N, ... (passo indietro)", o: ["J", "K", "I", "L"], c: 0},
+                {t: "Contrario di 'Opulento':", o: ["Misero", "Ricco", "Fastoso", "Eccessivo"], c: 0},
+                {t: "Se l'intersezione tra A e B è vuota, allora:", o: ["A e B non hanno elementi comuni", "A è uguale a B", "A è vuoto", "B è vuoto"], c: 0},
+                {t: "Il 150% di 40 è:", o: ["60", "50", "80", "100"], c: 0},
+                {t: "Se 3x - 5 = x + 7, allora x vale:", o: ["6", "5", "4", "7"], c: 0},
+                {t: "Rapporto tra 0.5 e 0.05", o: ["10", "100", "1", "0.1"], c: 0},
+                {t: "Un anno non bisestile ha:", o: ["365 giorni", "366 giorni", "364 giorni", "360 giorni"], c: 0},
+                {t: "Negazione di 'Nessun studente è bocciato':", o: ["Almeno uno studente è bocciato", "Tutti sono bocciati", "Tutti sono promossi", "Nessuno è promosso"], c: 0}
             ],
-            [ // SET 10
-                {t: "Se il raggio raddoppia, l'area del cerchio:", o: ["Quadruplica", "Raddoppia", "Triplica", "Dimezza"], c: 0},
-                {t: "Probabilità di fare 12 con due dadi.", o: ["1/36", "1/12", "1/6", "1/18"], c: 0},
-                {t: "Mattia crede che la banca sia aperta. È domenica ed è chiusa. L'info:", o: ["Va contro la convinzione", "Conferma", "Non influenza", "È falsa"], c: 0},
-                {t: "Sinonimo di 'Effimero'", o: ["Passeggero", "Duraturo", "Solido", "Antico"], c: 0},
-                {t: "2/3 di 60", o: ["40", "20", "30", "50"], c: 0},
-                {t: "Diagonale quadrato lato 5.", o: ["5√2", "5", "10", "25"], c: 0},
-                {t: "Se non studio, vengo bocciato. Sono stato promosso. Dunque:", o: ["Ho studiato", "Non ho studiato", "Sono fortunato", "Il prof è buono"], c: 0},
-                {t: "Capitale d'Italia", o: ["Roma", "Milano", "Firenze", "Torino"], c: 0},
-                {t: "15% di 200", o: ["30", "20", "15", "40"], c: 0},
-                {t: "Prossimo numero: 2, 4, 8, 16...", o: ["32", "24", "30", "20"], c: 0}
+            [ // SET 10: Mixed Hard B
+                {t: "Se il diametro di un cerchio triplica, l'area:", o: ["Diventa 9 volte maggiore", "Triplica", "Diventa 6 volte maggiore", "Raddoppia"], c: 0},
+                {t: "Probabilità di estrarre un Asso o un Re da un mazzo di 52 carte.", o: ["2/13", "1/13", "1/52", "4/13"], c: 0},
+                {t: "Giulia crede che il museo apra alle 9. Il cartello dice 'Apertura 10:00'. Il cartello:", o: ["Va contro la convinzione di Giulia", "Conferma la convinzione", "Non ha influenza", "È ambigua"], c: 0},
+                {t: "Sinonimo di 'Lapalissiano'", o: ["Ovvio", "Complesso", "Segreto", "Antico"], c: 0},
+                {t: "5/6 di 120", o: ["100", "90", "110", "80"], c: 0},
+                {t: "Diagonale di un rettangolo con lati 6 e 8.", o: ["10", "12", "14", "9"], c: 0},
+                {t: "Se non pago la bolletta, staccano la luce. La luce funziona. Dunque:", o: ["Potrei aver pagato la bolletta (o errore sistema)", "Ho pagato sicuramente", "Non ho pagato", "Hanno staccato l'acqua"], c: 0}, 
+                {t: "Risolvere: (x/2) + 3 = 8", o: ["10", "5", "16", "6"], c: 0},
+                {t: "Sconto del 20% su 80€, poi ulteriore sconto del 10%. Prezzo finale?", o: ["57.6€", "56€", "54€", "58€"], c: 0},
+                {t: "Prossimo numero: 1, 4, 9, 16, 25...", o: ["36", "30", "40", "49"], c: 0}
             ]
         ];
 
